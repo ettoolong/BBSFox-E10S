@@ -1,0 +1,500 @@
+﻿<!ENTITY menu_test.label "BBSFox test">
+<!ENTITY menu_copy.label "複製">
+<!ENTITY menu_ansiCopy.label "複製(包含ANSI色碼)">
+<!ENTITY menu_paste.label "貼上">
+<!ENTITY menu_selAll.label "全選">
+<!ENTITY menu_search.label "搜尋">
+<!ENTITY menu_ansicopy.label "彩色複製">
+<!ENTITY menu_embeddedplayer.label "在浮動視窗中顯示影片">
+<!ENTITY menu_previewpicture.label "顯示縮圖">
+<!ENTITY menu_screenkeyboard.label "開啟標點符號輸入窗">
+<!ENTITY menu_openalllink.label "開啟畫面上所有鏈結">
+<!ENTITY menu_easyread.label "好讀模式">
+<!ENTITY menu_pushthread.label "推文工具">
+<!ENTITY menu_openthreadurl.label "開啟文章網址">
+<!ENTITY menu_changecolortable.label "切換高亮度顯示">
+<!ENTITY menu_replyrobot.label "自動輸入文字">
+<!ENTITY menu_downloadpost.label "下載文章">
+<!ENTITY menu_downtext.label "文字">
+<!ENTITY menu_downansi.label "ANSI彩色">
+<!ENTITY menu_downhtml.label "HTML">
+<!ENTITY menu_loadfile.label "載入檔案">
+<!ENTITY menu_addtoblacklist.label "加入黑名單">
+<!ENTITY menu_removefromblacklist.label "從黑名單中移除">
+<!ENTITY menu_addtrack.label "新增追蹤關鍵字">
+<!ENTITY menu_deltrack.label "取消追蹤關鍵字">
+<!ENTITY menu_cleartrack.label "清除所有的追蹤關鍵字">
+<!ENTITY menu_delaypaste.label "每秒貼上一個字元">
+<!ENTITY menu_copyhtml.label "複製成網頁">
+<!ENTITY menu_mousebrowsing.label "滑鼠瀏覽切換">
+<!ENTITY menu_switchbgdisplay.label "背景圖片顯示切換">
+<!ENTITY emailImageCmd.label "郵寄此圖片…">
+<!ENTITY emailImageCmd.accesskey "n">
+<!ENTITY pushthread_title.label "推文工具">
+<!ENTITY pushthread_ok.label "送出推文">
+<!ENTITY pushthread_cancel.label "取消">
+<!ENTITY pushthread_like.label "推">
+<!ENTITY pushthread_dislike.label "噓">
+<!ENTITY pushthread_comment.label "註解">
+<!ENTITY pushthread_self.label "作者本人">
+<!ENTITY pushthread_textpreview.label "推文預覽">
+<!ENTITY addsite_title.label "新增站台設定">
+<!ENTITY addsite_sitename.label "站台名稱">
+<!ENTITY addsite_siteaddr.label "站台位置">
+<!ENTITY addsite_ok.label "確定">
+<!ENTITY addsite_cancel.label "取消">
+<!ENTITY options_backup.label "備份">
+<!ENTITY options_recover.label "回復">
+<!ENTITY options_help.label "使用手冊">
+<!ENTITY options_apply.label "套用">
+<!ENTITY options_default.label "預設值">
+<!ENTITY options_bbsfoxoptions.label "BBSFox 選項">
+<!ENTITY options_sitesetting.label "站台設定">
+<!ENTITY options_sitename.label "站台名稱">
+<!ENTITY options_siteaddr.label "站台位置">
+<!ENTITY options_addsite.label "新增站台設定">
+<!ENTITY options_delsite.label "刪除站台設定">
+<!ENTITY options_default.label "預設站台">
+<!ENTITY options_setting.label "設定">
+<!ENTITY options_display.label "顯示">
+<!ENTITY options_site.label "站台">
+<!ENTITY options_mouse.label "滑鼠">
+<!ENTITY options_emdeddplayer.label "影片視窗">
+<!ENTITY options_hotkey.label "熱鍵">
+<!ENTITY options_contextmenu.label "快顯功能表">
+<!ENTITY options_other.label "雜項">
+<!ENTITY options_autologin.label "自動登入">
+<!ENTITY options_autoreconnect.label "自動重連">
+<!ENTITY options_telnetprotocol.label "Telnet協定">
+<!ENTITY options_sshprotocol.label "SSH協定">
+<!ENTITY options_proxy.label "代理伺服器">
+<!ENTITY options_noproxyserver.label "無">
+<!ENTITY options_proxyhttp.label "HTTP">
+<!ENTITY options_proxyhttps.label "HTTPS">
+<!ENTITY options_proxysocks4.label "SOCKS 4">
+<!ENTITY options_proxysocks5.label "SOCKS 5">
+<!ENTITY options_proxydirect.label "直接">
+<!ENTITY options_proxyhost.label "伺服器位址：">
+<!ENTITY options_proxyport.label "埠：">
+<!ENTITY options_proxyhint.label "代理伺服器的設定需重新連線才會生效">
+<!ENTITY options_sshlogin.label "SSH 登入資訊">
+<!ENTITY options_sshusername.label "SSH 帳號：">
+<!ENTITY options_sshpassword.label "SSH 密碼：">
+<!ENTITY options_sshprivatekey.label "設定私鑰">
+<!ENTITY options_sshnormallogin.label "一般登入">
+<!ENTITY options_sshanonymous.label "匿名登入">
+<!ENTITY options_browse.label "瀏覽...">
+<!ENTITY options_about.label "關於此套件">
+<!ENTITY options_resolution.label "行列數">
+<!ENTITY options_bbscol.label "行數">
+<!ENTITY options_bbsrow.label "列數">
+<!ENTITY options_screentype.label "字體大小調整方式">
+<!ENTITY options_autoresize.label "隨視窗大小調整字體">
+<!ENTITY options_keepfontaspectratio.label "維持字體長寬比">
+<!ENTITY options_fixboxsize.label "固定畫面大小">
+<!ENTITY options_fixfontsize.label "固定字體大小">
+<!ENTITY options_screensize.label "BBS畫面大小：">
+<!ENTITY options_viewdisplay.label "畫面顯示">
+<!ENTITY options_chardisplay.label "字元顯示">
+<!ENTITY options_colordisplay.label "色彩顯示">
+<!ENTITY options_dbcsdetect.label "自動偵測雙位元組字集文字">
+<!ENTITY options_linewrap1.label "貼上文字超過">
+<!ENTITY options_linewrap2.label "字元自動換行（0 = 關閉不用）">
+<!ENTITY options_linefeed.label "文字超出畫面自動換行">
+<!ENTITY options_fixunicodedisplay.label "修正ANSI圖(只會在維持字體長寬比時套用)">
+<!ENTITY options_foneface.label "字型：">
+<!ENTITY options_fontsize.label "字型大小：">
+<!ENTITY options_codepage.label "編碼：">
+<!ENTITY options_testkey.label "中">
+<!ENTITY options_testkey2.label "█">
+<!ENTITY options_miscellaneous.label "其它設定">
+<!ENTITY options_askasclose.label "關閉BBS連線畫面時若還在連線中要詢問">
+<!ENTITY options_fgbgcolor.label "前背景顏色：">
+<!ENTITY options_bblackfwhite.label "黑底白字">
+<!ENTITY options_bwhitefblack.label "白底黑字">
+<!ENTITY options_reconnecttype.label "重連條件">
+<!ENTITY options_rcdisable.label "不自動重連">
+<!ENTITY options_rcalways.label "只要斷線就重連">
+<!ENTITY options_reconnect1.label "如果在">
+<!ENTITY options_reconnect2.label "秒內斷線則自動重連">
+<!ENTITY options_reconnect3.label "重連間隔">
+<!ENTITY options_reconnect4.label "秒，">
+<!ENTITY options_reconnect5.label "次連線失敗後停止（0 ＝永不停止）">
+<!ENTITY options_enertype.label "當按下ENTER鍵時送出：">
+<!ENTITY options_termtype.label "終端機型態：">
+<!ENTITY options_view.label "畫面對齊">
+<!ENTITY options_haligncenter.label "畫面水平置中">
+<!ENTITY options_valigncenter.label "畫面垂直置中">
+<!ENTITY options_border.label "邊框">
+<!ENTITY options_displayborder.label "顯示邊框">
+<!ENTITY options_bordercolor.label "顏色">
+<!ENTITY options_bbsbackground.label "背景設定">
+<!ENTITY options_backgroundtype.label "背景種類">
+<!ENTITY options_bgpurecolor.label "純色背景(黑色)">
+<!ENTITY options_bgrepeatimage.label "圖片並排">
+<!ENTITY options_bgcenterimage.label "圖片置於中央">
+<!ENTITY options_bgfillimage.label "圖片放大到整個視窗(維持長寬比)">
+<!ENTITY options_bgstretchimage.label "圖片放大到整個視窗">
+<!ENTITY options_selectbgimage.label "設定背景圖片">
+<!ENTITY options_bgbrightness.label "背景圖片亮度">
+<!ENTITY options_displaydelay.label "更新延遲">
+<!ENTITY options_displaydelay2.label "ms">
+<!ENTITY options_antiidle1.label "若閒置">
+<!ENTITY options_antiidle2.label "秒後送出下列字串：">
+<!ENTITY options_antiidle3.label "（0 = 關閉不用）">
+<!ENTITY options_replaceesc1.label "貼上彩色文字把ESC轉換成：">
+<!ENTITY options_replaceesc2.label "大多數站台用^U或^C^H^H">
+<!ENTITY options_preloginprompt.label "登入前的提示：">
+<!ENTITY options_loginprompt.label "登入提示：">
+<!ENTITY options_passwordprompt.label "密碼提示：">
+<!ENTITY options_prelogin.label "登入前的字串：">
+<!ENTITY options_login.label "帳號：">
+<!ENTITY options_passwd.label "密碼：">
+<!ENTITY options_postlogin.label "登入後送出的字串：">
+<!ENTITY options_autologincaution1.label "注意：此處的帳號密碼會以Firefox內建的站台帳號密碼管理方式儲存，">
+<!ENTITY options_autologincaution2.label "若刪除了Firefox內此站台的帳號密碼資料，此處的帳號密碼資料也會被移除，">
+<!ENTITY options_autologincaution3.label "站台帳號密碼管理的位置在：Firefox選項->安全->已存密碼。">
+<!ENTITY options_defaultColor01.label "預設顏色值=000000">
+<!ENTITY options_defaultColor02.label "預設顏色值=800000">
+<!ENTITY options_defaultColor03.label "預設顏色值=008000">
+<!ENTITY options_defaultColor04.label "預設顏色值=808000">
+<!ENTITY options_defaultColor05.label "預設顏色值=000080">
+<!ENTITY options_defaultColor06.label "預設顏色值=800080">
+<!ENTITY options_defaultColor07.label "預設顏色值=008080">
+<!ENTITY options_defaultColor08.label "預設顏色值=C0C0C0">
+<!ENTITY options_defaultColor09.label "預設顏色值=808080">
+<!ENTITY options_defaultColor10.label "預設顏色值=FF0000">
+<!ENTITY options_defaultColor11.label "預設顏色值=00FF00">
+<!ENTITY options_defaultColor12.label "預設顏色值=FFFF00">
+<!ENTITY options_defaultColor13.label "預設顏色值=0000FF">
+<!ENTITY options_defaultColor14.label "預設顏色值=FF00FF">
+<!ENTITY options_defaultColor15.label "預設顏色值=00FFFF">
+<!ENTITY options_defaultColor16.label "預設顏色值=FFFFFF">
+<!ENTITY options_mousewheel.label "滾輪">
+<!ENTITY options_mousebrowsingfunc.label "滑鼠瀏覽">
+<!ENTITY options_mousefn.label "其他">
+<!ENTITY options_mousewheelfunc1.label "滑鼠滾輪">
+<!ENTITY options_mousewheelfunc2.label "滑鼠右鍵+滾輪">
+<!ENTITY options_mousewheelfunc3.label "滑鼠左鍵+滾輪">
+<!ENTITY options_mousewheelaction0.label "無動作">
+<!ENTITY options_mousewheelaction1.label "上/下">
+<!ENTITY options_mousewheelaction2.label "上一頁/下一頁">
+<!ENTITY options_mousewheelaction4.label "第一頁/最後一頁">
+<!ENTITY options_mousewheelaction3.label "同標題上一篇/同標題下一篇">
+<!ENTITY options_mousebrowse.label "使用滑鼠瀏覽">
+<!ENTITY options_mousebrowsesendenter.label "滑鼠瀏覽時長按滑鼠左鍵時送出Enter">
+<!ENTITY options_middlebuttonfunction.label "滑鼠中鍵按下時">
+<!ENTITY options_middlebuttonnone.label "無動作">
+<!ENTITY options_middlebuttonsendenter.label "送出Enter">
+<!ENTITY options_middlebuttonend.label "送出End">
+<!ENTITY options_middlebuttonspace.label "送出空白鍵">
+<!ENTITY options_middlebuttonback.label "回到上一頁">
+<!ENTITY options_middlebuttoncopy.label "複製(如果有選取文字)">
+<!ENTITY options_middlebuttonpaste.label "貼上">
+<!ENTITY options_middlebuttoncopypaste.label "複製(有選取文字)/貼上(無選取文字)">
+<!ENTITY options_mousebrowsinghighlight.label "啟用滑鼠瀏覽的底色效果">
+<!ENTITY options_mousebrowsinghltime.label "持續時間">
+<!ENTITY options_mousebrowsinghltime2.label "ms (0=永久持續)">
+<!ENTITY options_mousebrowsinghandpointer.label "滑鼠瀏覽文章/看板列表使用手指狀游標">
+<!ENTITY options_mousebrowseex.label "啟用進階滑鼠瀏覽(更新文章、同標題第一篇 / 上一篇 / 下一篇 / 最後一篇)">
+<!ENTITY options_dropToPaste.label "當拖放 文字/鏈結/圖片 到BBS視窗時貼上 文字/鏈結/圖片網址">
+<!ENTITY options_dontgotonewtab.label "BBS畫面點擊鏈結後不要自動跳到新的分頁(不建議使用)">
+<!ENTITY options_clearcopiedsel.label "複製完畢自動取消選取">
+<!ENTITY options_showlink.label "偵測鏈結">
+<!ENTITY options_pttaid.label "偵測文章代碼">
+<!ENTITY options_aidnone.label "不偵測">
+<!ENTITY options_aidseek.label "按滑鼠左鍵跳到文章">
+<!ENTITY options_aidread.label "按滑鼠左鍵閱讀文章">
+<!ENTITY options_aidnewtab.label "按滑鼠左鍵開啟網頁版">
+<!ENTITY options_mousegestures.label "滑鼠手勢">
+<!ENTITY options_needfiregesture.label "需安裝FireGestures套件才能使用此功能">
+<!ENTITY options_firegesturescript.label "安裝FireGestures套件">
+<!ENTITY options_firegestureoption.label "設定FireGestures">
+<!ENTITY options_embeddedplayersize.label "浮動影片視窗的大小">
+<!ENTITY options_embeddedplayersize1.label "425x344 (4:3)">
+<!ENTITY options_embeddedplayersize2.label "480x385 (4:3)">
+<!ENTITY options_embeddedplayersize3.label "640x505 (4:3)">
+<!ENTITY options_embeddedplayersize4.label "960x745 (4:3)">
+<!ENTITY options_embeddedplayersize5.label "560x340 (16:9)">
+<!ENTITY options_embeddedplayersize6.label "640x385 (16:9)">
+<!ENTITY options_embeddedplayersize7.label "853x505 (16:9)">
+<!ENTITY options_embeddedplayersize8.label "1280x745 (16:9)">
+<!ENTITY options_embeddedplayeroption.label "影片視窗設定">
+<!ENTITY options_epautoplay.label "自動開始播放影片">
+<!ENTITY options_eploop.label "自動重複播放影片">
+<!ENTITY options_ephtml5.label "使用Html5播放器(只適用於Youtube)">
+<!ENTITY options_epautousehq.label "優先使用高畫質播放">
+<!ENTITY options_epcopyurlbutton.label "顯示[複製網址]按鈕">
+<!ENTITY options_epwhendroplink.label "當拖放一個影片網址到BBS視窗時開啟播放窗">
+<!ENTITY options_hotkeyctrlw.label "熱鍵Ctrl+W">
+<!ENTITY options_hotkeyclosetab.label "瀏覽器預設動作-關閉頁籤">
+<!ENTITY options_hotkeysendcharw.label "BBS預設動作-送出Ctrl+W">
+<!ENTITY options_hotkeyctrlb.label "熱鍵Ctrl+B">
+<!ENTITY options_hotkeyopenbookmark.label "瀏覽器預設動作-開啟書籤">
+<!ENTITY options_hotkeysendcharb.label "BBS預設動作-送出Ctrl+B">
+<!ENTITY options_hotkeyctrll.label "熱鍵Ctrl+L">
+<!ENTITY options_hotkeyurlbar.label "瀏覽器預設動作-網址列輸入">
+<!ENTITY options_hotkeysendcharl.label "BBS預設動作-送出Ctrl+L">
+<!ENTITY options_hotkeyctrlt.label "熱鍵Ctrl+T">
+<!ENTITY options_hotkeynewtab.label "瀏覽器預設動作-開啟新分頁">
+<!ENTITY options_hotkeysendchart.label "BBS預設動作-送出Ctrl+T">
+<!ENTITY options_hotkeyforcopy.label "啟用[複製]熱鍵 Ctrl+C">
+<!ENTITY options_hotkeyforansicopy.label "啟用[複製(包含ANSI色碼)]熱鍵 Ctrl+Shift+C">
+<!ENTITY options_hotkeyforpaste.label "啟用[貼上]熱鍵 Ctrl+Shift+V">
+<!ENTITY options_hotkey2forpaste.label "Alt+P">
+<!ENTITY options_hotkeyforselectall.label "啟用[全選]熱鍵 Ctrl+A">
+<!ENTITY options_hokeyformousebrowsing.label "啟用[滑鼠瀏覽切換]熱鍵 Ctrl+M">
+<!ENTITY options_hokeyforeasyreading.label "啟用[好讀模式]熱鍵 Ctrl+G">
+<!ENTITY options_hokeyforbgdisplay.label "啟用[背景圖片顯示切換]熱鍵 Ctrl+E">
+<!ENTITY options_hotkeyfordownloadpost.label "啟用[下載文章]熱鍵 Ctrl+D">
+<!ENTITY options_hokeyopenthreadurl.label "啟用[開啟文章網址]熱鍵 Ctrl+Shift+Q">
+<!ENTITY options_hokeychangecolortable.label "啟用[切換高亮度顯示]熱鍵 Ctrl+Shift+Z">
+<!ENTITY options_hotkeydowntext.label "文字">
+<!ENTITY options_hotkeydownansi.label "ANSI彩色">
+<!ENTITY options_hotkeydownhtml.label "HTML">
+<!ENTITY options_usehttpcontextmenu.label "使用網頁的快顯功能表">
+<!ENTITY options_bbsfoxcontextmenu.label "BBSFox快顯功能表">
+<!ENTITY options_savepagemenu.label "啟用 [另存新檔...] 項目">
+<!ENTITY options_ansicopymenu.label "啟用 [複製(包含ANSI色碼)] 項目">
+<!ENTITY options_embeddedplayermenu.label "啟用 [在浮動視窗中顯示影片] 項目(此功能目前僅支援Youtube/USTREAM)">
+<!ENTITY options_previewpicturemenu.label "啟用 [顯示縮圖] 項目">
+<!ENTITY options_mousebrowsemenu.label "啟用 [滑鼠瀏覽切換] 項目">
+<!ENTITY options_switchbgdisplaymenu.label "啟用 [背景圖片顯示切換] 項目">
+<!ENTITY options_openalllinkmenu.label "啟用 [開啟畫面上所有鏈結] 項目">
+<!ENTITY options_copyhtmlmenu.label "啟用 [複製成網頁] 項目">
+<!ENTITY options_screenkeyboardmenu.label "啟用 [開啟標點符號輸入窗] 項目">
+<!ENTITY options_keywordtrackmenu.label "啟用 [追蹤關鍵字] 相關項目">
+<!ENTITY options_delaypastemenu.label "啟用 [每秒貼上一個字元] 項目">
+<!ENTITY options_easyreadingmenu.label "啟用 [好讀模式] 項目">
+<!ENTITY options_downloadpostmenu.label "啟用 [下載文章] 項目">
+<!ENTITY options_fileiomenu.label "啟用 [載入檔案] 項目">
+<!ENTITY options_pushthreadmenu.label "啟用 [推文工具] 項目">
+<!ENTITY options_openthreadurlmenu.label "啟用 [開啟文章網址] 項目">
+<!ENTITY options_blacklistemenu.label "啟用 [黑名單] 相關項目">
+<!ENTITY options_onlyforpttsite.label "(只支援PTT)">
+<!ENTITY options_changecolortablemenu.label "啟用 [切換高亮度顯示] 項目">
+<!ENTITY options_usesubmenuforsearchengine.label "使用搜尋引擎子選單">
+<!ENTITY options_submenuforsearchenginenote.label "此項目只適用BBS快顯功能表，通用網頁的快顯功能表請安裝Context Search套件">
+<!ENTITY options_firefoxcontextmenu.label "Firefox快顯功能表">
+<!ENTITY options_optionnote0.label "以下快顯功能表項目在此套件下均可正常使用，">
+<!ENTITY options_optionnote1.label "但因使用頻率較低，可視個人需要在BBS頁面中隱藏指定項目。">
+<!ENTITY options_hidebookmarklinkmenu.label "在BBS視窗隱藏快顯功能表 [此鍵結加入書籤] 項目">
+<!ENTITY options_hidesendlinkmenu.label "在BBS視窗隱藏滑鼠快顯功能表 [郵寄此鍵結] 項目">
+<!ENTITY options_hidebookmarkpagemenu.label "在BBS視窗隱藏快顯功能表 [此頁加入書籤] 項目">
+<!ENTITY options_hidesendpagemenu.label "在BBS視窗隱藏快顯功能表 [郵寄網址] 項目">
+<!ENTITY options_hideviewinfomenu.label "在BBS視窗隱藏快顯功能表 [檢視頁面資訊] 項目">
+<!ENTITY options_hideinspectmenu.label "在BBS視窗隱藏快顯功能表 [檢測元素] 項目">
+<!ENTITY options_downloadlinedelay.label "下載文章時每行間的延遲">
+<!ENTITY options_downloadlinedelay2.label "(ms)建議值600ms">
+<!ENTITY options_screenkeyboardalpha.label "符號輸入窗的透明度">
+<!ENTITY options_screenkeyboardalpha2.label "(0=不透明，100=完全透明)">
+<!ENTITY options_pushthreadlinelength.label "推文工具每行的文字數">
+<!ENTITY options_downloadfullpost.label "總是嘗試從文章的開頭下載文章">
+<!ENTITY options_easyreadingwithimg.label "好讀模式中直接引入圖片內容">
+<!ENTITY options_easyreadingwithvideo.label "好讀模式中直接引入影片內容">
+<!ENTITY options_usekeywordtrack.label "啟用追蹤關鍵字功能">
+<!ENTITY options_keywordtrackcasesensitive.label "追蹤關鍵字區分大小寫">
+<!ENTITY options_deletespacewhencopy.label "複製時去除行尾空白">
+<!ENTITY options_preventnewtongwenautoconv.label "避免新同文堂對BBS頁面作自動轉換">
+<!ENTITY options_servernotify.label "來訊通知">
+<!ENTITY options_blacklistid.label "黑名單">
+<!ENTITY options_enableblacklist.label "啟用黑名單">
+<!ENTITY options_needGrowl1.label "您可能需要安裝">
+<!ENTITY options_needGrowl2.label "Growl">
+<!ENTITY options_needGrowl3.label "才能使此功能正常使用">
+<!ENTITY options_notifywhenbackground.label "只有當BBS頁面不是當前的頁面才產生通知">
+<!ENTITY options_notifybysound.label "聲音通知">
+<!ENTITY options_notifybymessage.label "視窗右下角訊息">
+<!ENTITY options_notifyblockbytime.label "過濾短時間內重複的訊息">
+<!ENTITY options_notifyshowcontent.label "訊息包含來訊內容">
+<!ENTITY options_clickalertaction.label "點擊來訊通知">
+<!ENTITY options_alertactionnone.label "無動作">
+<!ENTITY options_alertactionswitchtab.label "切換到訊息頁面">
+<!ENTITY options_alertactionreply.label "切換到訊息頁面並回訊">
+<!ENTITY options_alertreplystring.label "送出訊息">
+<!ENTITY options_inputbuffer.label "輸入法緩衝區">
+<!ENTITY options_hideinputbuffer.label "不顯示輸入法緩衝區(XP傳統注音輸入法適用)">
+<!ENTITY options_inputbuffersizetype.label "輸入法緩衝區高度">
+<!ENTITY options_samewithfontsize.label "和目前字體大小相同">
+<!ENTITY options_inputbufferfixdsize.label "固定大小">
+<!ENTITY options_defineinputbuffersize.label "指定緩衝區大小">
+<!ENTITY options_picturepreview.label "圖片預覽">
+<!ENTITY options_enablepicturepreview.label "滑鼠停在鍵結上時啟用圖片預覽">
+<!ENTITY options_ctrlpicturepreview.label "只在Ctrl按下時才啟用圖片預覽">
+<!ENTITY options_picturepreviewheight.label "縮圖高度">
+<!ENTITY options_picturepreviewheight2.label "(0=原始大小)">
+<!ENTITY options_picturepreviewinfo.label "顯示縮圖資訊">
+<!ENTITY options_picturepreviewclose.label "以滑鼠左鍵點擊圖片後關閉預覽">
+<!ENTITY options_highlightbgcolor.label "顏色">
+<!ENTITY options_aboutnote0.label "此套件使用">
+<!ENTITY options_aboutnote1.label "GNU General Public License v2">
+<!ENTITY options_aboutnote2.label "授權，">
+<!ENTITY options_aboutnote3.label "套件作者是 ettoolong：ettoolong@hotmail.com">
+<!ENTITY options_aboutnote4.label "套件大量的內容是從">
+<!ENTITY options_aboutnote5.label "pcmanfx">
+<!ENTITY options_aboutnote6.label "移殖而來，部份內容參考自 FireBBS 套件">
+<!ENTITY options_aboutnote7.label "主要差異是不使用 pcmanfx 的繪圖顯示，改用 BBSFox 0.1.2 的文字模式顯示的模組。">
+<!ENTITY options_aboutnote8.label "在此感謝 pcmanfx 開源的作者：[洪任諭 (Hong Jen Yee)：pcman.tw@gmail.com]">
+<!ENTITY options_aboutnote9.label "以及參與 pcmanfx 開發的其他人員：[bootleq：bootleq@gmail.com]">
+<!ENTITY options_aboutnote10.label "協助此套件的問題修正：[u881831(forum.moztw.org)]">
+<!ENTITY options_aboutnote11.label "協助此套件翻譯、提出功能建議、測試和問題回報：[pc102880(forum.moztw.org)]">
+<!ENTITY options_aboutnote12.label "提出功能建議、測試和問題回報：">
+<!ENTITY options_aboutnote13.label "  [筆筆(forum.moztw.org)]">
+<!ENTITY options_aboutnote14.label "  [homegoyes(forum.moztw.org)]">
+<!ENTITY options_aboutnote15.label "  [Velociraptor(forum.moztw.org)]">
+<!ENTITY options_aboutnote16.label "套件網站：">
+<!ENTITY options_aboutnote17.label "BBSFox">
+<!ENTITY options_aboutnote18.label "參考套件：">
+<!ENTITY options_aboutnote19.label "專案首頁">
+<!ENTITY options_aboutnote20.label "作者的網頁空間">
+<!ENTITY options_aboutnote21.label "Mozilla套件">
+<!ENTITY options_aboutnote22.label "討論區/技術支援">
+<!ENTITY options_aboutnote23.label "pcmanfx-0.1.8_r40+_alpha_1.xpi">
+<!ENTITY options_aboutnote24.label "FireBBS v0.3.0">
+<!ENTITY options_aboutnote25.label "FireBBS.l-hedgehog">
+<!ENTITY TITLE "產生FireGestures腳本">
+<!ENTITY BBSSCRIPT0 "／BBS頁面手勢：">
+<!ENTITY BBSSCRIPT1 "BBS頁面手勢：">
+<!ENTITY BBSGESTURES "當手勢作用在BBS視窗時：">
+<!ENTITY KEYPAGEUP "按鍵:Page Up">
+<!ENTITY KEYPAGEDOWN "按鍵:Page Down">
+<!ENTITY KEYEND "按鍵:End">
+<!ENTITY KEYHOME "按鍵:Home">
+<!ENTITY KEYLEFT "按鍵:Arrow Left">
+<!ENTITY KEYUP "按鍵:Arrow Up">
+<!ENTITY KEYRIGHT "按鍵:Arrow Right">
+<!ENTITY KEYDOWN "按鍵:Arrow Down">
+<!ENTITY COPY "複製">
+<!ENTITY ANSICOPY "彩色複製">
+<!ENTITY PASTE "貼上">
+<!ENTITY DELAYPASTE "每秒貼上一個字元">
+<!ENTITY SELALL "全選">
+<!ENTITY OPENALLLINK "開啟畫面上所有鏈結">
+<!ENTITY SWITCHMOUSEBROWSING "滑鼠瀏覽切換">
+<!ENTITY SWITCHBGDISPLAY "背景圖片顯示切換">
+<!ENTITY EASYREADING "好讀模式">
+<!ENTITY PUSHTHREAD "推文工具">
+<!ENTITY OPENTHREADURL "開啟文章網址">
+<!ENTITY CHANGECOLORTABLE "切換高亮度顯示">
+<!ENTITY DOWNLOADPOSTTEXT "下載文章(純文字)">
+<!ENTITY DOWNLOADPOSTANSI "下載文章(ANSI彩色)">
+<!ENTITY DOWNLOADPOSTHTML "下載文章(HTML)">
+<!ENTITY LOADFILE "載入檔案">
+<!ENTITY OPENSYMBOLINPUT "開啟符號輸入視窗／關閉符號輸入視窗">
+<!ENTITY OPENEP "在浮動視窗中顯示影片">
+<!ENTITY CLOSEEP "關閉影片浮動視窗">
+<!ENTITY MINEP "最小化影片浮動視窗／還原影片浮動視窗">
+<!ENTITY OPENPV "顯示鍵結縮圖">
+<!ENTITY CLOSEPV "關閉所有縮圖">
+<!ENTITY SENDSTR "送出字串">
+<!ENTITY SEARCHSELSTRING "搜尋圈選的字串">
+<!ENTITY CUSTOMSTRING "自訂的送出字串：">
+<!ENTITY CUSTOMCOMMAND "搜尋指令：">
+<!ENTITY CUSTOMPARAMETER "搜尋參數：">
+<!ENTITY HTMLGESTURES "當手勢作用在一般網頁視窗時：">
+<!ENTITY NOTUSED "不作用在一般網頁">
+<!ENTITY BROWSE "--瀏覽--">
+<!ENTITY BACK "上一頁">
+<!ENTITY FORWARD "下一頁">
+<!ENTITY RELOAD "重新載入">
+<!ENTITY RELOADSKIPCACHE "重新載入(略過快取)">
+<!ENTITY STOP "停止">
+<!ENTITY HOME "首頁">
+<!ENTITY GOUPPERLEVEL "回到上一層">
+<!ENTITY INCREMENTURL "遞增網址裡頭的數字">
+<!ENTITY DECREMENTURL "遞減網址裡頭的數字">
+<!ENTITY WINDOWFN "--視窗--">
+<!ENTITY NEWNAVIGATOR "開新視窗">
+<!ENTITY CLOSEWINDOW "關閉視窗">
+<!ENTITY UNDOCLOSEWINDOW "恢復已關閉視窗">
+<!ENTITY MINIMIZEWINDOW "視窗最小化">
+<!ENTITY MAXIMIZEWINDOW "視窗最大化／回復視窗大小">
+<!ENTITY FULLSCREEN "全螢幕">
+<!ENTITY TABS "--分頁--">
+<!ENTITY NEWNAVIGATORTAB "開新分頁">
+<!ENTITY CLOSETAB "關閉分頁">
+<!ENTITY CLOSETABORWINDOW "關閉分頁／關閉視窗">
+<!ENTITY UNDOCLOSETAB "復原已關閉分頁">
+<!ENTITY PREVIOUSTAB "上一個分頁">
+<!ENTITY NEXTTAB "下一個分頁">
+<!ENTITY DUPLICATETAB "複製分頁">
+<!ENTITY DETACHTAB "移動到新視窗">
+<!ENTITY DTOGGLEPINTAB "釘選分頁／還原成普通分頁">
+<!ENTITY RELOADALLTABS "重新載入所有分頁">
+<!ENTITY CLOSEOTHERTABS "關閉其他分頁">
+<!ENTITY CLOSELEFTTABS "關閉所有左方分頁">
+<!ENTITY CLOSERIGHTTABS "關閉所有右方分頁">
+<!ENTITY TOGGLETABVIEW "分頁群組">
+<!ENTITY PAGES "--頁面--">
+<!ENTITY TEXTZOOMENLARGE "只縮放文字-放大">
+<!ENTITY TEXTZOOMREDUCE "只縮放文字-縮小">
+<!ENTITY TEXTZOOMRESET "只縮放文字-重設">
+<!ENTITY FULLZOOMENLARGE "縮放-放大">
+<!ENTITY FULLZOOMREDUCE "縮放-縮小">
+<!ENTITY FULLZOOMRESET "縮放-重設">
+<!ENTITY SCROLLTOP "捲動到頁首">
+<!ENTITY SCROLLBOTTOM "捲動到頁尾">
+<!ENTITY SCROLLPAGEUP "向上捲動">
+<!ENTITY SCROLLPAGEDOWN "向下捲動">
+<!ENTITY ADDBOOKMARKAS "此頁加入書籤">
+<!ENTITY SAVEPAGE "另存新檔...">
+<!ENTITY PAGESOURCE "檢視原始碼">
+<!ENTITY PAGEINFO "檢視頁面資訊">
+<!ENTITY PRINTPREVIEW "預覽列印">
+<!ENTITY PRINT "列印...">
+<!ENTITY FRAMES "--頁框--">
+<!ENTITY SHOWONLYTHISFRAME "只顯示本頁框">
+<!ENTITY OPENFRAME "用新視窗開啟頁框">
+<!ENTITY OPENFRAMEINTAB "用新分頁開啟頁框">
+<!ENTITY RELOADFRAME "重新載入頁框">
+<!ENTITY ADDBOOKMARKFORFRAME "此頁框加入書籤">
+<!ENTITY SAVEFRAME "頁框另存新檔...">
+<!ENTITY VIEWFRAMESOURCE "檢視頁框原始碼">
+<!ENTITY VIEWFRAMEINFO "檢視頁框資訊">
+<!ENTITY LINKS "--鏈結--">
+<!ENTITY OPENLINK "用新視窗開啟鏈結">
+<!ENTITY OPENLINKINBGTAB "用新分頁開啟鏈結(背景分頁)">
+<!ENTITY OPENLINKINFGTAB "用新分頁開啟鏈結(前景分頁)">
+<!ENTITY OPENLINKINPRIVATEWINDOW "用新隱私視窗開啟鏈結">
+<!ENTITY ADDBOOKMARKFORLINK "此鏈結加入書籤">
+<!ENTITY SAVELINK "鏈結另存新檔...">
+<!ENTITY IMAGES "--圖片--">
+<!ENTITY VIEWIMAGE "檢視圖片">
+<!ENTITY SAVEIMAGE "圖片另存新檔...">
+<!ENTITY SAVEIMAGENOW "立刻儲存圖片">
+<!ENTITY SELECTIONS "--選擇--">
+<!ENTITY WEBSEARCH "搜尋選取的文字">
+<!ENTITY OPENLINKSINSELECTION "開啟選取範圍內所有的鏈結">
+<!ENTITY OPENURLSINSELECTION "開啟選取範圍內的所有網址／搜尋選取的文字">
+<!ENTITY TOOLS "--工具--">
+<!ENTITY DOWNLOADS "下載">
+<!ENTITY ADDONS "附加元件">
+<!ENTITY PRIVATEBROWSING "新增隱私視窗">
+<!ENTITY SANITIZE "清除最近的歷史記錄...">
+<!ENTITY DEVTOOLBOX "網頁開發者 - 網頁工具箱">
+<!ENTITY INSPECT "檢測">
+<!ENTITY ERRORCONSOLE "錯誤主控台">
+<!ENTITY WEBCONSOLE "網頁主控台">
+<!ENTITY SCRATCHPAD "程式碼速記本">
+<!ENTITY STYLEEDITOR "樣式編輯器">  
+<!ENTITY BOOKMARKSIDEBAR "於側邊欄顯示書籤">
+<!ENTITY HISTORYSIDEBAR "於側邊欄顯示瀏覽記錄">
+<!ENTITY FINDBAR "開啟／關閉搜尋列">
+<!ENTITY RESTARTAPP "重新啟動Firefox">
+<!ENTITY PREFERENCES "FireGestures - 選項">
+<!ENTITY POPUPS "--彈出類--">
+<!ENTITY BFHISTORYPOPUP "[彈出視窗]上／下一頁瀏覽記錄">
+<!ENTITY ALLTABSPOPUP "[彈出視窗]列出所有分頁">
+<!ENTITY SHOWALLTAB "[彈出視窗]列出所有分頁(預覽模式)">
+<!ENTITY CLOSEDTABSPOPUP "[彈出視窗]最近關閉的分頁">
+<!ENTITY WEBSEARCHPOPUP "[彈出視窗]以選取的搜尋引擎搜尋文字">
+<!ENTITY HYBRIDS "--混合類--">
+<!ENTITY HYBRIDBOOKMARK "[混合手勢]加入書籤...(鏈結／頁框／頁面)">
+<!ENTITY HYBRIDSAVE "[混合手勢]另存新檔...(鏈結／圖片／頁框／頁面)">
+<!ENTITY HYBRIDSENDURL "[混合手勢]寄出...(鏈結／頁框／頁面)">
+<!ENTITY HYBRIDCOPYURL "[混合手勢]複製網址(鏈結／圖片／頁框／頁面)">
+<!ENTITY HYBRIDVIEWSOURCE "[混合手勢]檢視原始碼(選擇／頁框／頁面)">
+<!ENTITY HYBRIDPROPERTIES "[混合手勢]屬性(鏈結／圖片／頁框／頁面)">
+<!ENTITY GENSCRIPT "產生腳本">
+<!ENTITY COPYSCRIPT "複製腳本">
+<!ENTITY DRAGLINK "拖曳此鏈結至FireGestures的手勢對應清單以安裝此腳本">

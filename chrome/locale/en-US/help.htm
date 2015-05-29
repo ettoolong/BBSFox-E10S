@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>BBSFox user manual</title>
+  <style type="text/css">
+  .mhl
+  {
+    color:#ff0000;
+    font-weight: bold;
+  }
+  .s1
+  {
+    color:#ff0000;
+  }
+  .s2
+  {
+    color:#0000ff;
+  }
+  </style>
+</head>
+
+<body>
+<span class='mhl'>Connect to site：</span><br/>
+<span>For example, we want to connect site <span class='s2'>aaa.bbb.ccc.ddd</span></span><br/>
+<span>Type <span class='s2'>telnet://aaa.bbb.ccc.ddd</span> in Firefox URL bar to connect site. BBSFox use telnet default port <span class='s2'>23</span> to make connection.</span><br/>
+<span>If the site use specific port such as <span class='s2'>8888</span>, Type <span class='s2'>telnet://aaa.bbb.ccc.ddd:8888</span> in Firefox URL bar to connect site.</span><br/>
+<br/>
+<span class='mhl'>General Hot Key:</span><br/>
+<span>(Hotkey can be enable/disable in preference.)</span><br/>
+<span><span class='s2'>Ctrl + Shift + V </span>(Paste)</span><br/>
+<span><span class='s2'>Ctrl + A </span>(Select All)</span><br/>
+<span><span class='s2'>Select a preferred text and press Ctrl + C </span>(Copy)</span><br/>
+<span><span class='s2'>Select a preferred text and press Ctrl + &gt;</span> (Add selected text to keywords pool)</span><br/>
+<span><span class='s2'>Select a preferred text and press Ctrl + &lt;</span> (Remove selected text from keywords pool)</span><br/>
+<span><span class='s2'>Ctrl+D</span> (Downlod post to system clipboard)</span><br/>
+<span><span class='s2'>Ctrl+E</span> (Display/Hide BBS background image)</span><br/>
+<span><span class='s2'>Ctrl+M</span> (Mouse browsing ON / OFF)</span><br/>
+<br/>
+<span class='mhl'>Mouse Browsing:</span><br/>
+<span>(Refer to the preference to enable the feature.)</span><br/>
+<span class='s2'>General page</span><br/>
+<span><span class='s2'>Page's left side</span> = Arrow left(Go to the previous page)</span><br/>
+<span><span class='s2'>Page's other part</span> = Enter (Click to access the article)</span><br/>
+<br/>
+<span class='s2'>While under the main board or the article list</span><br/>
+<span>Refer to the following diagram:</span><br/>
+<div style='z-index:1;position:relative;'><img src='chrome://bbsfox/skin/help/areadefine1.png' alt="" />
+<div style='z-index:3;position:absolute;left:250px;top:0px;'><img src='chrome://bbsfox/skin/cursor/home.png' alt="" /></div>
+<div style='z-index:3;position:absolute;left:0px;top:250px;'><img src='chrome://bbsfox/skin/cursor/back.png' alt="" /></div>
+<div style='z-index:3;position:absolute;left:250px;top:417px;'><img src='chrome://bbsfox/skin/cursor/end.png' alt="" /></div>
+<div style='z-index:3;position:absolute;left:650px;top:300px;'><img src='chrome://bbsfox/skin/cursor/pagedown.png' alt="" /></div>
+<div style='z-index:3;position:absolute;left:650px;top:150px;'><img src='chrome://bbsfox/skin/cursor/pageup.png' alt="" /></div>
+</div>
+<span><span class='s2'>Red area</span> = Home (First page)</span><br/>
+<span><span class='s2'>Green area</span> = End (Last page)</span><br/>
+<span><span class='s2'>Blue area</span> = Page Up (Page up)</span><br/>
+<span><span class='s2'>Yellow area</span> = Page Down (Page down)</span><br/>
+<span><span class='s2'>Orange area</span> = Arrow left (Go to the previous page)</span><br/>
+<span><span class='s2'>Purple area</span> = Enter (Enter the board,/Read the article)</span><br/>
+<br/>
+<span class='s2'>While reading articles</span><br/>
+<span>Refer to the following diagram:</span><br/>
+<div style='z-index:1;position:relative;'><img src='chrome://bbsfox/skin/help/areadefine2.png' alt="" />
+<div style='z-index:3;position:absolute;left:0px;top:250px;'><img src='chrome://bbsfox/skin/cursor/back.png' alt="" /></div>
+<div style='z-index:3;position:absolute;left:250px;top:417px;'><img src='chrome://bbsfox/skin/cursor/end.png' alt="" /></div>
+<div style='z-index:3;position:absolute;left:250px;top:300px;'><img src='chrome://bbsfox/skin/cursor/pagedown.png' alt="" /></div>
+<div style='z-index:3;position:absolute;left:250px;top:150px;'><img src='chrome://bbsfox/skin/cursor/pageup.png' alt="" /></div>
+</div>
+<span><span class='s2'>Green area</span> = End (Last page)</span><br/>
+<span><span class='s2'>Blue area</span> = Page Up (Page up)</span><br/>
+<span><span class='s2'>Yellow area</span> = Page Down (Page down)</span><br/>
+<span><span class='s2'>Yellow area</span> = Arrow left(Go to previous page)</span><br/>
+<br/>
+<span>Some notes about Mouse Browsing:</span><br/>
+<span><span class='s2'>While selecting a preferred text, mouse browsing would be blocked temporally.</span></span><br/>
+<span>By single click, mouse browsing can be restored.</span><br/>
+<span><span class='s2'>While under mouse browsing, texts cannot be selected by double click (ignored automatically).</span>For the concern that after the text is selected,</span><br/>
+<span>the next click is ignored by the previous action.</span><br/>
+<span><span class='s2'>Use ctrl + M to switch ON/OFF mouse browsing temporarily for the sake of general operation.</span></span><br/>
+<span>It is applied to all existing BBS windows for safety.</span><br/>
+<br/>
+<span class='mhl'>Advanced Mouse Browsing:</span><br/>
+<span>(Refer to the preference to enable the feature.)</span><br/>
+<span class='s2'>While under the article list or reading the article</span><br/>
+<span><span class='s2'>Top left corner of the page</span> = Send command '=' (Go to the top of the thread.)</span><br/>
+<span><span class='s2'>The second/third line on the top left part of the page</span> = Send command '[' (Go to the preceding article within the thread.)</span><br/>
+<span><span class='s2'>Top right corner of the page</span> = Send command ']' (Go to the next article within the thread.)</span><br/>
+<span><span class='s2'>Bottom right corner of the page</span> = Go to the last article within the thread.</span><br/>
+<span><span class='s2'>Bottom left corner of the page</span> = Send command arrow left + Enter + End (Refresh the article.)</span><br/>
+<br/>
+<span class='mhl'>Gestures:</span><br/>
+<span>Create FireGestures script in the BBSFox preference page</span><br/>
+<br/>
+<span class='mhl'>Menu for Right Button of the Mouse:</span><br/>
+<span><span class='s2'>Save as</span> = Save the current page as HTML format</span><br/>
+<span><span class='s2'>Copy</span> = Store the selected text to the clipboard.</span><br/>
+<span><span class='s2'>Paste</span> = Get the selected text from the clipboard.</span><br/>
+<span><span class='s2'>Select All</span> = Select the whole text of the page.</span><br/>
+<span><span class='s2'>Enable Punctuation Window</span> = Open the window for punctuation. (Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Enable Embedded Player</span> = Only for video link of Youtube. Right click on the Youtube link to enable the feature and a small frame would pop up in the main BBS window. (Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Show Preview Image</span> = Show image link content.(Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Open All Links</span> = Open all link in new tabs.(Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Download Post</span> = Download article to system clipboard.(Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>File I/O</span> = Save system clipboard content to file / Load file content to BBS.(Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Mouse browsing ON/OFF</span> = enable/disable the mouse browsing feature.(Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Background Image Display On/Off</span> = Switch BBS background image Display or hide.(Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Add to keyword pool</span> = Add selected text to the keywords pool. All keywords would be highlighted.(Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Cancel the keyword</span> = Remove selected text from the keyword pool.(Need to be enabled first in the preference.)</span><br/>
+<span><span class='s2'>Clear up keyword pool</span> = Remove all keywords from the keyword pool.(Need to be enabled first in the preference.)</span><br/>
+<br/>
+<span class='mhl'>F.A.Q.</span><br/>
+<br/>
+<span class='mhl'>About Font Test:</span><br/>
+<span>Font test is based on some basic fonts, but it is possible that BBSFox makes a mistake over the detection.</span><br/>
+<span>If the layout goes wrong or ASCII pattern is messed up after a new font is applied, the font is not suitable for BBSFox.</span><br/>
+<br/>
+<span class='mhl'>Preview for Pictures:</span><br>
+<span>The feature "Preview for pictures" determines whether a picture can be previewed by its format from the hyperlink. If it is hard to recognize, the picture preview takes no effect.</span><br>
+<span>To achieve perfect recognition, the code segment would be much more complex, which degrades the performance.</span><br>
+<span>Therefore, no further modification or improvement will be made over this issue.</span><br>
+<br/>
+<span class='mhl'>Native Gestures Support:</span><br/>
+<span>So far, native gestures are not supported. FireGetures are adopted to achieve these features.</span><br/>
+<span>However, mouse browsing is different from the native gestures. It's a build-in feature for BBSFox.</span><br/>
+<br/>
+<span><span class='s2'>About the great flexibility in interacting with other add-ons, there are pros and cons.</span>For its advantage, the user can do things within a BBS page, like a regular page.</span><br/>
+<span>For its drawback, the more add-ons BBSFox interacts with, the more chances of conflict the user may encounter. The only way to solve this is solve them one by one.</span><br/>
+<span>The goals of the add-on are enhancement of BBS browsing, improved compatibility and better interaction with other add-ons.</span><br/>
+<br/>
+<span class='mhl'>About the Future...</span><br/>
+<span class='s2'>The add-on is meant to pure BBS browsing only, there won't be further enhancement for standard telnet console support in the future.</span><br/>
+<span>For commonly used features, the author would refer to other add-ons and adopt the feature.</span><br/>
+<span>BBSFox is a hybrid add-on, the author is not mastered in every aspect. For a better BBSFox, users' feedbacks and the open source of other add-ons both play important roles in the future.</span><br/>
+<br/>
+<span>If interested, you may contact the author.</span><br/>
+<span>The author would give you as much assistance as he can, e.g. the functionality of the code segment, the reason for writing in this way or ideas for improvement.</span><br/>
+<span>Under GPL restriction, any developer interested in the source code of the plug-in can utilize the code freely.</span><br/>
+<br/>
+
+<span class='mhl'>Acknowledgement:</span><br/>
+<span>Thanks for the author of PCMAN grants authorization and all developers of pcmanfx project.</span><br/>
+<span>Thanks for the author of pcmanfx-0.1.8_r40+_alpha devotes to the open source of the project.</span><br/>
+</body>
+
+</html>

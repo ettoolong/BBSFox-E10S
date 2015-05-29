@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://bbsfox/skin/bbsfox.css" type="text/css"?>
+
+<!DOCTYPE window [
+<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
+%browserDTD;
+<!ENTITY % bbsfoxDTD SYSTEM "chrome://bbsfox/locale/bbsfox.dtd" >
+%bbsfoxDTD;
+]>
+
+<overlay id="bbsfoxOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="chrome://bbsfox/content/bbsfoxOverlay.js"/>
+  <script type="application/x-javascript" src="chrome://browser/content/utilityOverlay.js"/>
+
+  <window id="main-window">
+    <stringbundleset id="bbsfoxoverlay-stringbundleset">
+      <stringbundle id="bbsfoxoverlay-string-bundle" src="chrome://bbsfox/locale/bbsfox.properties"/>
+    </stringbundleset>
+  </window>
+
+  <menupopup id="contentAreaContextMenu">
+    <menuitem id="context-openlinkincurrent" label="&openLinkCmdInCurrent.label;" accesskey="&openLinkCmdInCurrent.accesskey;" oncommand="ETT_BBSFOX_Overlay.openLinkInCurrent();"/>
+    <menuitem id="context-viewimage" label="&viewImageCmd.label;" accesskey="&viewImageCmd.accesskey;" oncommand="ETT_BBSFOX_Overlay.viewimage(event);" onclick="checkForMiddleClick(this, event);"/>
+    <menuitem id="context-savepage" label="&savePageCmd.label;" accesskey="&savePageCmd.accesskey2;" oncommand="ETT_BBSFOX_Overlay.savePageAs();"/>
+    <menuitem id="bbsfox_menu-ansiCopy" label="&menu_ansiCopy.label;" insertafter="context-copy" oncommand="ETT_BBSFOX_Overlay.copyAnsi();"/>
+    <menuitem id="bbsfox_menu-openAllLink" label="&menu_openalllink.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.openAllLink();"/>
+    <menuitem id="bbsfox_menu-previewPicture" label="&menu_previewpicture.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.previewPicture();"/>
+    <menuitem id="bbsfox_menu-embeddedPlayer" label="&menu_embeddedplayer.label;" accesskey="Y" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.embeddedPlayer();"/>
+    <menuitem id="bbsfox_menu-screenKeyboard" label="&menu_screenkeyboard.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.screenKeyboard();"/>
+
+    <menuitem id="bbsfox_menu-delayPaste" label="&menu_delaypaste.label;" oncommand="ETT_BBSFOX_Overlay.delayPasteText();"/>
+    <menuitem id="bbsfox_menu-copyHtml" label="&menu_copyhtml.label;" oncommand="ETT_BBSFOX_Overlay.copyHtml();"/>
+    <menuitem id="bbsfox_menu-mouseBrowsing" label="&menu_mousebrowsing.label;" oncommand="ETT_BBSFOX_Overlay.switchMouseBrowse();"/>
+    <menuitem id="bbsfox_menu-BgDisplay" label="&menu_switchbgdisplay.label;" oncommand="ETT_BBSFOX_Overlay.switchBgDisplay();"/>
+    <menuitem id="bbsfox_menu-easyRead" label="&menu_easyread.label;" oncommand="ETT_BBSFOX_Overlay.easyReading();"/>
+    <menuitem id="bbsfox_menu-pushThread" label="&menu_pushthread.label;" oncommand="ETT_BBSFOX_Overlay.pushThread();"/>
+    <menuitem id="bbsfox_menu-openThreadUrl" label="&menu_openthreadurl.label;" oncommand="ETT_BBSFOX_Overlay.openThreadUrl();"/>
+    <menuitem id="bbsfox_menu-changeColorTable" label="&menu_changecolortable.label;" oncommand="ETT_BBSFOX_Overlay.changeColorTable();"/>
+    <menu id="bbsfox_menu-downloadPost" label="&menu_downloadpost.label;">
+      <menupopup>
+        <menuitem label="&menu_downtext.label;" oncommand="ETT_BBSFOX_Overlay.downloadPost(0);"/>
+        <menuitem label="&menu_downansi.label;" oncommand="ETT_BBSFOX_Overlay.downloadPost(1);"/>
+        <menuitem label="&menu_downhtml.label;" oncommand="ETT_BBSFOX_Overlay.downloadPost(2);"/>
+      </menupopup>
+    </menu>
+    <menuitem id="bbsfox_menu-fileIo" label="&menu_loadfile.label;" oncommand="ETT_BBSFOX_Overlay.loadFile();"/>
+    <menuitem id="bbsfox_menu-addToBlacklist" label="&menu_addtoblacklist.label;" oncommand="ETT_BBSFOX_Overlay.addToBlacklist();"/>
+    <menuitem id="bbsfox_menu-removeFromBlacklist" label="&menu_removefromblacklist.label;" oncommand="ETT_BBSFOX_Overlay.removeFromBlacklist();"/>
+  </menupopup>
+</overlay>

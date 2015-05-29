@@ -1,0 +1,14 @@
+content bbsfox chrome/content/
+
+locale bbsfox en-US chrome/locale/en-US/
+locale bbsfox zh-TW chrome/locale/zh-TW/
+
+skin bbsfox classic/1.0 chrome/skin/default/
+
+overlay chrome://browser/content/browser.xul chrome://bbsfox/content/bbsfoxOverlay.xul
+
+resource bbsfox modules/
+
+component {4B85A989-79D6-4f96-887A-BA479D3B2890} components/bbsfox_observer.js
+contract @mozilla.org/bbsfox;1 {4B85A989-79D6-4f96-887A-BA479D3B2890}
+category profile-after-change @mozilla.org/bbsfox;1 @mozilla.org/bbsfox;1

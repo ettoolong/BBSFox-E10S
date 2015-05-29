@@ -1,0 +1,500 @@
+﻿<!ENTITY menu_test.label "BBSFox test">
+<!ENTITY menu_copy.label "Copy">
+<!ENTITY menu_ansiCopy.label "Copy with ANSI Color">
+<!ENTITY menu_paste.label "Paste">
+<!ENTITY menu_selAll.label "Select All">
+<!ENTITY menu_search.label "Search">
+<!ENTITY menu_ansicopy.label "AnsiCopy">
+<!ENTITY menu_embeddedplayer.label "Enable Embedded Player">
+<!ENTITY menu_previewpicture.label "Show Preview Image">
+<!ENTITY menu_screenkeyboard.label "Enable Punctuation Window">
+<!ENTITY menu_openalllink.label "Open All Links">
+<!ENTITY menu_easyread.label "Easy Reading Mode">
+<!ENTITY menu_pushthread.label "Push Thread Tool">
+<!ENTITY menu_openthreadurl.label "Open Thread URL">
+<!ENTITY menu_changecolortable.label "Switch Normal/Highlight Display">
+<!ENTITY menu_replyrobot.label "Auto Input Text">
+<!ENTITY menu_downloadpost.label "Download Post">
+<!ENTITY menu_downtext.label "Text">
+<!ENTITY menu_downansi.label "AnsiColor">
+<!ENTITY menu_downhtml.label "HTML">
+<!ENTITY menu_loadfile.label "Load File">
+<!ENTITY menu_addtoblacklist.label "Add to Blacklist">
+<!ENTITY menu_removefromblacklist.label "Remove from Blacklist">
+<!ENTITY menu_addtrack.label "Add To Keyword Pool">
+<!ENTITY menu_deltrack.label "Cancel This Keyword">
+<!ENTITY menu_cleartrack.label "Clear Pp Keyword Pool">
+<!ENTITY menu_delaypaste.label "Paste One Char Per Second">
+<!ENTITY menu_copyhtml.label "Copy As HTML">
+<!ENTITY menu_mousebrowsing.label "Mouse Browsing On/Off">
+<!ENTITY menu_switchbgdisplay.label "Background Image Display On/Off">
+<!ENTITY emailImageCmd.label "Send Image…">
+<!ENTITY emailImageCmd.accesskey "n">
+<!ENTITY pushthread_title.label "Push thread tool">
+<!ENTITY pushthread_ok.label "Push">
+<!ENTITY pushthread_cancel.label "Cancel">
+<!ENTITY pushthread_like.label "Like">
+<!ENTITY pushthread_dislike.label "Dislike">
+<!ENTITY pushthread_comment.label "Comment">
+<!ENTITY pushthread_self.label "Self-comment">
+<!ENTITY pushthread_textpreview.label "Text Preview">
+<!ENTITY addsite_title.label "Add site setting">
+<!ENTITY addsite_sitename.label "Site name">
+<!ENTITY addsite_siteaddr.label "Site Address">
+<!ENTITY addsite_ok.label "OK">
+<!ENTITY addsite_cancel.label "Cancel">
+<!ENTITY options_backup.label "Backup">
+<!ENTITY options_recover.label "Restore">
+<!ENTITY options_help.label "Help">
+<!ENTITY options_apply.label "Apply">
+<!ENTITY options_default.label "Default">
+<!ENTITY options_bbsfoxoptions.label "BBSFox Options">
+<!ENTITY options_sitesetting.label "Site settings">
+<!ENTITY options_sitename.label "Site name">
+<!ENTITY options_siteaddr.label "Site address">
+<!ENTITY options_addsite.label "Add site">
+<!ENTITY options_delsite.label "Delete site">
+<!ENTITY options_default.label "Default">
+<!ENTITY options_setting.label "Setting">
+<!ENTITY options_display.label "Display">
+<!ENTITY options_site.label "Site">
+<!ENTITY options_mouse.label "Mouse">
+<!ENTITY options_emdeddplayer.label "Video">
+<!ENTITY options_hotkey.label "Hotkeys">
+<!ENTITY options_contextmenu.label "Context menu">
+<!ENTITY options_other.label "Misc">
+<!ENTITY options_autologin.label "Auto Login">
+<!ENTITY options_autoreconnect.label "Auto Reconnect">
+<!ENTITY options_telnetprotocol.label "Telnet Protocol">
+<!ENTITY options_sshprotocol.label "SSH Protocol">
+<!ENTITY options_proxy.label "Proxy">
+<!ENTITY options_noproxyserver.label "None">
+<!ENTITY options_proxyhttp.label "HTTP">
+<!ENTITY options_proxyhttps.label "HTTPS">
+<!ENTITY options_proxysocks4.label "SOCKS 4">
+<!ENTITY options_proxysocks5.label "SOCKS 5">
+<!ENTITY options_proxydirect.label "Direct">
+<!ENTITY options_proxyhost.label "Host:">
+<!ENTITY options_proxyport.label "Port:">
+<!ENTITY options_proxyhint.label "Proxy preferences apply after reconnect.">
+<!ENTITY options_sshlogin.label "SSH Login">
+<!ENTITY options_sshusername.label "SSH Account:">
+<!ENTITY options_sshpassword.label "SSH Password:">
+<!ENTITY options_sshprivatekey.label "Select Private Key">
+<!ENTITY options_sshnormallogin.label "Normal login">
+<!ENTITY options_sshanonymous.label "Anonymous">
+<!ENTITY options_browse.label "Browse...">
+<!ENTITY options_about.label "About...">
+<!ENTITY options_resolution.label "Columns and rows">
+<!ENTITY options_bbscol.label "Columns">
+<!ENTITY options_bbsrow.label "rows">
+<!ENTITY options_screentype.label "Font size">
+<!ENTITY options_autoresize.label "Varying font size by window size">
+<!ENTITY options_keepfontaspectratio.label "Keep font aspect ratio">
+<!ENTITY options_fixboxsize.label "Fixed screen size">
+<!ENTITY options_fixfontsize.label "Fixed font size">
+<!ENTITY options_screensize.label "Screen size">
+<!ENTITY options_viewdisplay.label "View">
+<!ENTITY options_chardisplay.label "Text">
+<!ENTITY options_colordisplay.label "Color">
+<!ENTITY options_dbcsdetect.label "Detect DBCS words">
+<!ENTITY options_linewrap1.label "Line wrap for texts longer than">
+<!ENTITY options_linewrap2.label "(0 = disabled)">
+<!ENTITY options_linefeed.label "If text is longer than screen line feeds">
+<!ENTITY options_fixunicodedisplay.label "Fix AsciiArt Display">
+<!ENTITY options_foneface.label "Font face">
+<!ENTITY options_fontsize.label "Font size">
+<!ENTITY options_codepage.label "Codepage:">
+<!ENTITY options_testkey.label "中">
+<!ENTITY options_testkey2.label "█">
+<!ENTITY options_miscellaneous.label "Miscellaneous">
+<!ENTITY options_askasclose.label "Ask before closing connecting BBS">
+<!ENTITY options_fgbgcolor.label "FG/BG color:">
+<!ENTITY options_bblackfwhite.label "B:black/F:white">
+<!ENTITY options_bwhitefblack.label "B:white/F:black">
+<!ENTITY options_reconnecttype.label "Auto reconnect condition">
+<!ENTITY options_rcdisable.label "Disable">
+<!ENTITY options_rcalways.label "Always">
+<!ENTITY options_reconnect1.label "Auto-reconnect if connection failed within">
+<!ENTITY options_reconnect2.label "seconds.">
+<!ENTITY options_reconnect3.label "Reconnect delay">
+<!ENTITY options_reconnect4.label "seconds. Stop after">
+<!ENTITY options_reconnect5.label "failures. (0 = never stop)">
+<!ENTITY options_enertype.label "When pressing ENTER send:">
+<!ENTITY options_termtype.label "Terminal type:">
+<!ENTITY options_view.label "Alignment">
+<!ENTITY options_haligncenter.label "Horizontally centered">
+<!ENTITY options_valigncenter.label "Vertically centered">
+<!ENTITY options_border.label "Border">
+<!ENTITY options_displayborder.label "Display border">
+<!ENTITY options_bordercolor.label "Color">
+<!ENTITY options_bbsbackground.label "BBS Background">
+<!ENTITY options_backgroundtype.label "Background Type">
+<!ENTITY options_bgpurecolor.label "Single color (Black)">
+<!ENTITY options_bgrepeatimage.label "Repeat image">
+<!ENTITY options_bgcenterimage.label "Center image">
+<!ENTITY options_bgfillimage.label "Image fill BBS view (original aspect ratio)">
+<!ENTITY options_bgstretchimage.label "Stretch image">
+<!ENTITY options_selectbgimage.label "Select background image">
+<!ENTITY options_bgbrightness.label "Background Image Brightness">
+<!ENTITY options_displaydelay.label "Display update delay">
+<!ENTITY options_displaydelay2.label "ms">
+<!ENTITY options_antiidle1.label "After idling">
+<!ENTITY options_antiidle2.label "seconds sends">
+<!ENTITY options_antiidle3.label "(0 sec = disabled)">
+<!ENTITY options_replaceesc1.label "As ANSI pasting replace ESC as:">
+<!ENTITY options_replaceesc2.label "Most BBS use ^U or ^C^H^H">
+<!ENTITY options_preloginprompt.label "Prelogin Prompt:">
+<!ENTITY options_loginprompt.label "Login Prompt:">
+<!ENTITY options_passwordprompt.label "Password Prompt:">
+<!ENTITY options_prelogin.label "Prelogin String:">
+<!ENTITY options_login.label "User Name:">
+<!ENTITY options_passwd.label "Password:">
+<!ENTITY options_postlogin.label "Post Login String:">
+<!ENTITY options_autologincaution1.label "NOTE: Your password will be stored by Firefox site password manager.">
+<!ENTITY options_autologincaution2.label "If you delete site password in Firefox, will delete password at here.">
+<!ENTITY options_autologincaution3.label "Firefox site password manager : Firefox Options->Security->Saved Passwords">
+<!ENTITY options_defaultColor01.label "default color=000000">
+<!ENTITY options_defaultColor02.label "default color=800000">
+<!ENTITY options_defaultColor03.label "default color=008000">
+<!ENTITY options_defaultColor04.label "default color=808000">
+<!ENTITY options_defaultColor05.label "default color=000080">
+<!ENTITY options_defaultColor06.label "default color=800080">
+<!ENTITY options_defaultColor07.label "default color=008080">
+<!ENTITY options_defaultColor08.label "default color=C0C0C0">
+<!ENTITY options_defaultColor09.label "default color=808080">
+<!ENTITY options_defaultColor10.label "default color=FF0000">
+<!ENTITY options_defaultColor11.label "default color=00FF00">
+<!ENTITY options_defaultColor12.label "default color=FFFF00">
+<!ENTITY options_defaultColor13.label "default color=0000FF">
+<!ENTITY options_defaultColor14.label "default color=FF00FF">
+<!ENTITY options_defaultColor15.label "default color=00FFFF">
+<!ENTITY options_defaultColor16.label "default color=FFFFFF">
+<!ENTITY options_mousewheel.label "Mouse wheel">
+<!ENTITY options_mousebrowsingfunc.label "Mouse browsing">
+<!ENTITY options_mousefn.label "Other">
+<!ENTITY options_mousewheelfunc1.label "Mouse wheel:">
+<!ENTITY options_mousewheelfunc2.label "mouse right button + mouse wheel:">
+<!ENTITY options_mousewheelfunc3.label "mouse left button + mouse wheel:">
+<!ENTITY options_mousewheelaction0.label "No Action">
+<!ENTITY options_mousewheelaction1.label "Control up/down">
+<!ENTITY options_mousewheelaction2.label "Control Page up/Page down">
+<!ENTITY options_mousewheelaction4.label "Control Home/End">
+<!ENTITY options_mousewheelaction3.label "Control Prevous thread/Next thread">
+<!ENTITY options_mousebrowse.label "Enable mouse browsing">
+<!ENTITY options_mousebrowsesendenter.label "In mouse browsing mode, send [Enter] after mouse left button press for 1 second">
+<!ENTITY options_middlebuttonfunction.label "When middle button press">
+<!ENTITY options_middlebuttonnone.label "No action">
+<!ENTITY options_middlebuttonsendenter.label "Send [Enter]">
+<!ENTITY options_middlebuttonend.label "Send [End]">
+<!ENTITY options_middlebuttonspace.label "Send [Space]">
+<!ENTITY options_middlebuttonback.label "Back to prevous page">
+<!ENTITY options_middlebuttoncopy.label "Copy(if some text be selected)">
+<!ENTITY options_middlebuttonpaste.label "Paste">
+<!ENTITY options_middlebuttoncopypaste.label "Copy(if some text be selected)/Paste">
+<!ENTITY options_mousebrowsinghighlight.label "Enable mouse browsing highlight effect">
+<!ENTITY options_mousebrowsinghltime.label "Keep hightlight">
+<!ENTITY options_mousebrowsinghltime2.label "ms (0=Always)">
+<!ENTITY options_mousebrowsinghandpointer.label "Hand point cursor for mouse browsing">
+<!ENTITY options_mousebrowseex.label "Enable advanced mouse browsing function">
+<!ENTITY options_dropToPaste.label "Paste [Text/Link/Image URL] when drop [Text/Link/Image] on BBS View">
+<!ENTITY options_dontgotonewtab.label "Don't go to the new tab after clicking links in BBS (not recommend)">
+<!ENTITY options_clearcopiedsel.label "Clear selection after copying">
+<!ENTITY options_showlink.label "Detect link">
+<!ENTITY options_pttaid.label "Detect Aid(only for ptt.cc site)">
+<!ENTITY options_aidnone.label "Don't detect">
+<!ENTITY options_aidseek.label "Mouse click seek thread">
+<!ENTITY options_aidread.label "Mouse click read thread">
+<!ENTITY options_aidnewtab.label "Mouse click open thread link">
+<!ENTITY options_mousegestures.label "Mouse gesture">
+<!ENTITY options_needfiregesture.label "For this function, you need install FireGestures Add-on">
+<!ENTITY options_firegesturescript.label "Install FireGestures">
+<!ENTITY options_firegestureoption.label "FireGestures Options">
+<!ENTITY options_embeddedplayersize.label "Embedded player size">
+<!ENTITY options_embeddedplayersize1.label "425x344 (4:3)">
+<!ENTITY options_embeddedplayersize2.label "480x385 (4:3)">
+<!ENTITY options_embeddedplayersize3.label "640x505 (4:3)">
+<!ENTITY options_embeddedplayersize4.label "960x745 (4:3)">
+<!ENTITY options_embeddedplayersize5.label "560x340 (16:9)">
+<!ENTITY options_embeddedplayersize6.label "640x385 (16:9)">
+<!ENTITY options_embeddedplayersize7.label "853x505 (16:9)">
+<!ENTITY options_embeddedplayersize8.label "1280x745 (16:9)">
+<!ENTITY options_embeddedplayeroption.label "Embedded player options">
+<!ENTITY options_epautoplay.label "Auto play">
+<!ENTITY options_eploop.label "Loop">
+<!ENTITY options_ephtml5.label "Use Html5 Player(Only for Youtube)">
+<!ENTITY options_epautousehq.label "Higher priority for HQ video">
+<!ENTITY options_epcopyurlbutton.label "Display [Copy URL] button">
+<!ENTITY options_epwhendroplink.label "Open embedded player when drop a video URL on BBS view">
+<!ENTITY options_hotkeyctrlw.label "Hotkey [Ctrl+W]">
+<!ENTITY options_hotkeyclosetab.label "Browser Default - Close Tab">
+<!ENTITY options_hotkeysendcharw.label "BBS Default - Send Ctrl+W">
+<!ENTITY options_hotkeyctrlb.label "Hotkey [Ctrl+B]">
+<!ENTITY options_hotkeyopenbookmark.label "Browser Default - Open Bookmark">
+<!ENTITY options_hotkeysendcharb.label "BBS Default - Send Ctrl+B">
+<!ENTITY options_hotkeyctrll.label "Hotkey [Ctrl+L]">
+<!ENTITY options_hotkeyurlbar.label "Browser Default - Set focus to URL bar">
+<!ENTITY options_hotkeysendcharl.label "BBS Default - Send Ctrl+L">
+<!ENTITY options_hotkeyctrlt.label "Hotkey [Ctrl+T]">
+<!ENTITY options_hotkeynewtab.label "Browser Default - Open new tab">
+<!ENTITY options_hotkeysendchart.label "BBS Default - Send Ctrl+T">
+<!ENTITY options_hotkeyforcopy.label "Enable Copy [Ctrl+C]">
+<!ENTITY options_hotkeyforansicopy.label "Enable Copy with ANSI color [Ctrl+Shift+C]">
+<!ENTITY options_hotkeyforpaste.label "Enable Paste [Ctrl+Shift+V]">
+<!ENTITY options_hotkey2forpaste.label "[Alt+P]">
+<!ENTITY options_hotkeyforselectall.label "Enable Select All [Ctrl+A]">
+<!ENTITY options_hokeyformousebrowsing.label "Enable Mouse Browsing On/Off [Ctrl+M]">
+<!ENTITY options_hokeyforeasyreading.label "Enable Easy Reading Mode [Ctrl+G]">
+<!ENTITY options_hokeyforbgdisplay.label "Enable Background Image Display On/Off[Ctrl+E]">
+<!ENTITY options_hotkeyfordownloadpost.label "Enable Download Post [Ctrl+D]">
+<!ENTITY options_hokeyopenthreadurl.label "Enable Open Thread URL [Ctrl+Shift+Q]">
+<!ENTITY options_hokeychangecolortable.label "Enable Switch Normal/Highlight Display [Ctrl+Shift+Z]">
+<!ENTITY options_hotkeydowntext.label "Text">
+<!ENTITY options_hotkeydownansi.label "AnsiCopy">
+<!ENTITY options_hotkeydownhtml.label "HTML">
+<!ENTITY options_usehttpcontextmenu.label "Use web page context menu">
+<!ENTITY options_bbsfoxcontextmenu.label "BBSFox context menu">
+<!ENTITY options_savepagemenu.label "Enable item [Save Page As...]">
+<!ENTITY options_ansicopymenu.label "Enable item [Copy with ANSI Color]">
+<!ENTITY options_embeddedplayermenu.label "Enable item [Enable Embedded Player](only support Youtube/USTREAM)">
+<!ENTITY options_previewpicturemenu.label "Enable item [Show Preview Image]">
+<!ENTITY options_mousebrowsemenu.label "Enable item [Mouse Browsing On/Off]">
+<!ENTITY options_switchbgdisplaymenu.label "Enable item [Background Image Display On/Off]">
+<!ENTITY options_openalllinkmenu.label "Enable item [Open All Links]">
+<!ENTITY options_copyhtmlmenu.label "Enable item [Save As HTML]">
+<!ENTITY options_screenkeyboardmenu.label "Enable item [Enable punctuation window]">
+<!ENTITY options_keywordtrackmenu.label "Enable item [Keyword Pool]">
+<!ENTITY options_delaypastemenu.label "Enable item [Paste One Char Per Second]">
+<!ENTITY options_easyreadingmenu.label "Enable item [Easy Reading Mode]">
+<!ENTITY options_downloadpostmenu.label "Enable item [Download Post]">
+<!ENTITY options_fileiomenu.label "Enable item [Load File]">
+<!ENTITY options_pushthreadmenu.label "Enable item [Push Thread Tool]">
+<!ENTITY options_openthreadurlmenu.label "Enable item [Open Thread URL]">
+<!ENTITY options_blacklistemenu.label "Enable item [Blacklist]">
+<!ENTITY options_onlyforpttsite.label "(only for ptt.cc site)">
+<!ENTITY options_changecolortablemenu.label "Enable item [Switch Normal/Highlight Display]">
+<!ENTITY options_usesubmenuforsearchengine.label "Use sub-menu for search engine.">
+<!ENTITY options_submenuforsearchenginenote.label "This item only for BBS context menu.For web context you can install add-on [Context Search]">
+<!ENTITY options_firefoxcontextmenu.label "Firefox context menu">
+<!ENTITY options_optionnote0.label "The following context menu items are working properly for pcmanfx,">
+<!ENTITY options_optionnote1.label "For infrequent items, the users could hide them as they like.">
+<!ENTITY options_hidebookmarklinkmenu.label "Hide item [Add link to bookmark] in context menu when at BBS page">
+<!ENTITY options_hidesendlinkmenu.label "Hide item [Send link] in context menu when at BBS page">
+<!ENTITY options_hidebookmarkpagemenu.label "Hide item [Add page to bookmark] in context menu when at BBS page">
+<!ENTITY options_hidesendpagemenu.label "Hide item [Send page] in context menu when at BBS page">
+<!ENTITY options_hideviewinfomenu.label "Hide item [View info] in context menu when at BBS page">
+<!ENTITY options_hideinspectmenu.label "Hide item [Inspect Element] in context menu when at BBS page">
+<!ENTITY options_downloadlinedelay.label "Line delay in download post">
+<!ENTITY options_downloadlinedelay2.label "(ms) default is 600ms">
+<!ENTITY options_screenkeyboardalpha.label "Transparency for punctuation window">
+<!ENTITY options_screenkeyboardalpha2.label "(0 = Opaque, 100 = Transparent)">
+<!ENTITY options_pushthreadlinelength.label "Text length in Push Thread Tool">
+<!ENTITY options_downloadfullpost.label "Always try to download full post">
+<!ENTITY options_easyreadingwithimg.label "Insert image in easy reading mode">
+<!ENTITY options_easyreadingwithvideo.label "Insert video in easy reading mode">
+<!ENTITY options_usekeywordtrack.label "Enable keyword pool">
+<!ENTITY options_keywordtrackcasesensitive.label "Keyword pool case sensitive">
+<!ENTITY options_deletespacewhencopy.label "Discard trailing space characters when copied">
+<!ENTITY options_preventnewtongwenautoconv.label "Prevent add-on NewTongWenTang auto convert BBS page">
+<!ENTITY options_servernotify.label "Notification">
+<!ENTITY options_blacklistid.label "Blacklist">
+<!ENTITY options_enableblacklist.label "Enable Blacklist">
+<!ENTITY options_needGrowl1.label "To use this function, You need install">
+<!ENTITY options_needGrowl2.label "Growl">
+<!ENTITY options_needGrowl3.label "">
+<!ENTITY options_notifywhenbackground.label "Notify when not at current page">
+<!ENTITY options_notifybysound.label "Notify by sound">
+<!ENTITY options_notifybymessage.label "Notify by message">
+<!ENTITY options_notifyblockbytime.label "Filter message in one second">
+<!ENTITY options_notifyshowcontent.label "Message include content">
+<!ENTITY options_clickalertaction.label "Click Notification Message">
+<!ENTITY options_alertactionnone.label "No action">
+<!ENTITY options_alertactionswitchtab.label "Switch tab">
+<!ENTITY options_alertactionreply.label "Switch tab and reply">
+<!ENTITY options_alertreplystring.label "Send message">
+<!ENTITY options_inputbuffer.label "IME punctuation window">
+<!ENTITY options_hideinputbuffer.label "Disable punctuation window (applicable to Microsoft Phonetic IME)">
+<!ENTITY options_inputbuffersizetype.label "IME punctuation window size">
+<!ENTITY options_samewithfontsize.label "Same with font size">
+<!ENTITY options_inputbufferfixdsize.label "Fixed Size">
+<!ENTITY options_defineinputbuffersize.label "Size">
+<!ENTITY options_picturepreview.label "Image preview">
+<!ENTITY options_enablepicturepreview.label "Show preview image when mouse on image link">
+<!ENTITY options_ctrlpicturepreview.label "Need press [Ctrl]">
+<!ENTITY options_picturepreviewheight.label "Preview height">
+<!ENTITY options_picturepreviewheight2.label "(0 for original size)">
+<!ENTITY options_picturepreviewinfo.label "Display image information">
+<!ENTITY options_picturepreviewclose.label "Click mouse left button to close preview image">
+<!ENTITY options_highlightbgcolor.label "color">
+<!ENTITY options_aboutnote0.label "The Add-on is authorized by">
+<!ENTITY options_aboutnote1.label "GNU General Public License v2.">
+<!ENTITY options_aboutnote2.label "">
+<!ENTITY options_aboutnote3.label "The author is ettoolong(ettoolong@hotmail.com)">
+<!ENTITY options_aboutnote4.label "The main code segment is adopted from">
+<!ENTITY options_aboutnote5.label "pcmanfx">
+<!ENTITY options_aboutnote6.label "partly from FireBBS">
+<!ENTITY options_aboutnote7.label "The major difference is the drawing display, adopted from BBSFox 0.1.2, not pcmanfx">
+<!ENTITY options_aboutnote8.label "Thanks for the author of pcmanfx Hong Jen Yee(pcman.tw@gmail.com)">
+<!ENTITY options_aboutnote9.label "Also thanks for the co-author of pcmanfx bootleq(bootleq@gmail.com)">
+<!ENTITY options_aboutnote10.label "Fix bugs for this add-on: u881831(forum.moztw.org)">
+<!ENTITY options_aboutnote11.label "Translation, function suggestion, test and bug report: pc102880(forum.moztw.org)">
+<!ENTITY options_aboutnote12.label "Function suggestion, test and bug report:">
+<!ENTITY options_aboutnote13.label "  [筆筆(forum.moztw.org)]">
+<!ENTITY options_aboutnote14.label "  [homegoyes(forum.moztw.org)]">
+<!ENTITY options_aboutnote15.label "  [Velociraptor(forum.moztw.org)]">
+<!ENTITY options_aboutnote16.label "Add-on web site:">
+<!ENTITY options_aboutnote17.label "BBSFox">
+<!ENTITY options_aboutnote18.label "other telnet Add-on:">
+<!ENTITY options_aboutnote19.label "project home">
+<!ENTITY options_aboutnote20.label "web site">
+<!ENTITY options_aboutnote21.label "Mozilla Add-on">
+<!ENTITY options_aboutnote22.label "technical support">
+<!ENTITY options_aboutnote23.label "pcmanfx-0.1.8_r40+_alpha_1.xpi">
+<!ENTITY options_aboutnote24.label "FireBBS v0.3.0">
+<!ENTITY options_aboutnote25.label "FireBBS.l-hedgehog">
+<!ENTITY TITLE "Create FireGestures Script">
+<!ENTITY BBSSCRIPT0 "/BBS page - gestures: ">
+<!ENTITY BBSSCRIPT1 "BBS page - gestures: ">
+<!ENTITY BBSGESTURES "For gestures in BBS windows: ">
+<!ENTITY KEYPAGEUP "Key:Page Up">
+<!ENTITY KEYPAGEDOWN "Key:Page Down">
+<!ENTITY KEYEND "Key:End">
+<!ENTITY KEYHOME "Key:Home">
+<!ENTITY KEYLEFT "Key:Arrow Left">
+<!ENTITY KEYUP "Key:Arrow Up">
+<!ENTITY KEYRIGHT "Key:Arrow Right">
+<!ENTITY KEYDOWN "Key:Arrow Down">
+<!ENTITY COPY "Copy">
+<!ENTITY ANSICOPY "Copy with ANSI Color">
+<!ENTITY PASTE "Paste">
+<!ENTITY SELALL "Select All">
+<!ENTITY OPENALLLINK "Open All Link">
+<!ENTITY SWITCHMOUSEBROWSING "Mouse Browsing On/Off">
+<!ENTITY SWITCHBGDISPLAY "Background Image Display On/Off">
+<!ENTITY DELAYPASTE "Paste one char per second">
+<!ENTITY EASYREADING "Easy Reading Mode">
+<!ENTITY PUSHTHREAD "Push Thread Tool">
+<!ENTITY OPENTHREADURL "Open Thread URL">
+<!ENTITY CHANGECOLORTABLE "Switch Normal/Highlight Display">
+<!ENTITY DOWNLOADPOSTTEXT "Download post(Text)">
+<!ENTITY DOWNLOADPOSTANSI "Download post(Ansi Color)">
+<!ENTITY DOWNLOADPOSTHTML "Download post(HTML)">
+<!ENTITY LOADFILE "Load File">
+<!ENTITY OPENSYMBOLINPUT "Open Punctuation Window/Close Punctuation Window">
+<!ENTITY OPENEP "Enable embedded player">
+<!ENTITY CLOSEEP "Close embedded player">
+<!ENTITY MINEP "Minimize embedded player/Restore embedded player">
+<!ENTITY OPENPV "Show link image preview">
+<!ENTITY CLOSEPV "Close all link image preview">
+<!ENTITY SENDSTR "Send Strings">
+<!ENTITY SEARCHSELSTRING "Search Select Text">
+<!ENTITY CUSTOMSTRING "Custom String: ">
+<!ENTITY CUSTOMCOMMAND "Custom Command: ">
+<!ENTITY CUSTOMPARAMETER "Custom Parameter: ">
+<!ENTITY HTMLGESTURES "For gestures in general HTTP windows: ">
+<!ENTITY NOTUSED "Not used in general web pages">
+<!ENTITY BROWSE "--Navigation--">
+<!ENTITY BACK "Back">
+<!ENTITY FORWARD "Forward">
+<!ENTITY RELOAD "Reload">
+<!ENTITY RELOADSKIPCACHE "Reload (Skip Cache)">
+<!ENTITY STOP "Stop">
+<!ENTITY HOME "Home">
+<!ENTITY GOUPPERLEVEL "Go Upper Level">
+<!ENTITY INCREMENTURL "Increment Number in URL">
+<!ENTITY DECREMENTURL "Decrement Number in URL">
+<!ENTITY WINDOWFN "--WIndow--">
+<!ENTITY NEWNAVIGATOR "New Window">
+<!ENTITY CLOSEWINDOW "Close Window">
+<!ENTITY UNDOCLOSEWINDOW "Undo Close Window">
+<!ENTITY MINIMIZEWINDOW "Minimize Window">
+<!ENTITY MAXIMIZEWINDOW "Maximize Window / Restore Window Size">
+<!ENTITY FULLSCREEN "Full Screen">
+<!ENTITY TABS "--Tab--">
+<!ENTITY NEWNAVIGATORTAB "New Tab">
+<!ENTITY CLOSETAB "Close Tab">
+<!ENTITY CLOSETABORWINDOW "Close Tab / Close Window">
+<!ENTITY UNDOCLOSETAB "Undo Close Tab">
+<!ENTITY PREVIOUSTAB "Previous Tab">
+<!ENTITY NEXTTAB "Next Tab">
+<!ENTITY DUPLICATETAB "Duplicate Tab">
+<!ENTITY DETACHTAB "Move to New Window">
+<!ENTITY DTOGGLEPINTAB "Pin Tab / Unpin Tab">
+<!ENTITY RELOADALLTABS "Reload All Tabs">
+<!ENTITY CLOSEOTHERTABS "Close Other Tabs">
+<!ENTITY CLOSELEFTTABS "Close Left Tabs">
+<!ENTITY CLOSERIGHTTABS "Close Right Tabs">
+<!ENTITY TOGGLETABVIEW "Tab Groups">
+<!ENTITY PAGES "--Page--">
+<!ENTITY TEXTZOOMENLARGE "Zoom Text Only - Zoom In">
+<!ENTITY TEXTZOOMREDUCE "Zoom Text Only - Zoom Out">
+<!ENTITY TEXTZOOMRESET "Zoom Text Only - Reset">
+<!ENTITY FULLZOOMENLARGE "Zoom - Zoom In">
+<!ENTITY FULLZOOMREDUCE "Zoom - Zoom Out">
+<!ENTITY FULLZOOMRESET "Zoom - Reset">
+<!ENTITY SCROLLTOP "Scroll to Top">
+<!ENTITY SCROLLBOTTOM "Scroll to Bottom">
+<!ENTITY SCROLLPAGEUP "Page Up">
+<!ENTITY SCROLLPAGEDOWN "Page Down">
+<!ENTITY ADDBOOKMARKAS "Bookmark This Page">
+<!ENTITY SAVEPAGE "Save Page As...">
+<!ENTITY PAGESOURCE "View Page Source">
+<!ENTITY PAGEINFO "View Page Info">
+<!ENTITY PRINTPREVIEW "Print Preview">
+<!ENTITY PRINT "Print...">
+<!ENTITY FRAMES "--Frame--">
+<!ENTITY SHOWONLYTHISFRAME "Show Only This Frame">
+<!ENTITY OPENFRAME "Open Frame in New Window">
+<!ENTITY OPENFRAMEINTAB "Open Frame in New Tab">
+<!ENTITY RELOADFRAME "Reload Frame">
+<!ENTITY ADDBOOKMARKFORFRAME "Bookmark This Frame">
+<!ENTITY SAVEFRAME "Save Frame As...">
+<!ENTITY VIEWFRAMESOURCE "View Frame Source">
+<!ENTITY VIEWFRAMEINFO "View Frame Info">
+<!ENTITY LINKS "--Link--">
+<!ENTITY OPENLINK "Open Link in New Window">
+<!ENTITY OPENLINKINBGTAB "Open Link in New Tab (Background Tab)">
+<!ENTITY OPENLINKINFGTAB "Open Link in New Tab (Foreground Tab)">
+<!ENTITY OPENLINKINPRIVATEWINDOW "Open Link in New Private Window">
+<!ENTITY ADDBOOKMARKFORLINK "Bookmark This Link">
+<!ENTITY SAVELINK "Save Link As...">
+<!ENTITY IMAGES "--Image--">
+<!ENTITY VIEWIMAGE "View Image">
+<!ENTITY SAVEIMAGE "Save Image As...">
+<!ENTITY SAVEIMAGENOW "Save Image Now">
+<!ENTITY SELECTIONS "--Selection--">
+<!ENTITY WEBSEARCH "Search for Selection">
+<!ENTITY OPENLINKSINSELECTION "Open All Links in Selection">
+<!ENTITY OPENURLSINSELECTION "Open All Links in Selection / Search for Selection">
+<!ENTITY TOOLS "--Tools--">
+<!ENTITY DOWNLOADS "Downloads">
+<!ENTITY ADDONS "Add-ons">
+<!ENTITY PRIVATEBROWSING "New Private Window">
+<!ENTITY SANITIZE "Clear Recent History...">
+<!ENTITY DEVTOOLBOX "Web Developer - Toggle Tools">
+<!ENTITY INSPECT "Inspect">
+<!ENTITY ERRORCONSOLE "Error Console">
+<!ENTITY WEBCONSOLE "Web Console">
+<!ENTITY SCRATCHPAD "Scratchpad">
+<!ENTITY STYLEEDITOR "Style Editor">
+<!ENTITY BOOKMARKSIDEBAR "Show Bookmarks Sidebar">
+<!ENTITY HISTORYSIDEBAR "Show History Sidebar">
+<!ENTITY FINDBAR "Open / Close Find Bar">
+<!ENTITY RESTARTAPP "Restart Firefox">
+<!ENTITY PREFERENCES "FireGestures - Options">
+<!ENTITY POPUPS "--Popup Type--">
+<!ENTITY BFHISTORYPOPUP "[Popup] Back / Forward History">
+<!ENTITY ALLTABSPOPUP "[Popup] List all tabs">
+<!ENTITY SHOWALLTAB "[Popup] List all tabs (Preview Mode)">
+<!ENTITY CLOSEDTABSPOPUP "[Popup] Recently Closed Tabs">
+<!ENTITY WEBSEARCHPOPUP "[Popup] Search for Selection with...">
+<!ENTITY HYBRIDS "--Hybrid Type--">
+<!ENTITY HYBRIDBOOKMARK "[Hybrid] Bookmark (Link / Frame / Page)">
+<!ENTITY HYBRIDSAVE "[Hybrid] Save As... (Link / Image / Frame / Page)">
+<!ENTITY HYBRIDSENDURL "[Hybrid] Send... (Link / Image / Page)">
+<!ENTITY HYBRIDCOPYURL "[Hybrid] Copy Location (Link / Image / Frame / Page)">
+<!ENTITY HYBRIDVIEWSOURCE "[Hybrid] View Source (Selection / Frame / Page)">
+<!ENTITY HYBRIDPROPERTIES "[Hybrid]Properties (Link / Image / Frame / Page)">
+<!ENTITY GENSCRIPT "Create Script">
+<!ENTITY COPYSCRIPT "Copy Script">
+<!ENTITY DRAGLINK "Drag this link to the mapping lists of FireGestures to install this script">

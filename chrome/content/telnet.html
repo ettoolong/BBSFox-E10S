@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="zh-TW">
+  <head>
+    <style id="ColorDefine1">
+      body {
+        --bbscolor-0:#000000;
+        --bbscolor-inv-0:#ffffff;
+      }
+    </style>
+    <link rel="icon" type='image/gif' href="chrome://bbsfox/skin/logo/logo.png"/>
+    <link rel="stylesheet" type="text/css" href="chrome://bbsfox/skin/bbs.css"/>
+    <link rel="stylesheet" type="text/css" id="ColorCSS" href="chrome://bbsfox/skin/color.css"/>
+    <link rel="stylesheet" type="text/css" id="ColorFix" href="chrome://bbsfox/skin/color-normal.css"/>
+    <title></title>
+    <script type="text/javascript" src="chrome://bbsfox/content/mainpage.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/stringutil.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/aidhandler.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/symbolTable.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/asciiTable.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ctrlTable.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/telnet.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/alertService.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/termview.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/termbuf.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ansiparser.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ansiColor.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ansiFile.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/robot.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/symbolinput.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/embeddedPlayer.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/pictureViewer.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/browserutils.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/bbsbackground.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/prefhandler.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/gesturehandler.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/overlayCmdListener.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/pptPicLoader.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/imgurPicLoader.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/bbsfox.js"></script>
+  </head>
+  <body id='topwin'>
+    <div id='BBSBackgroundImage' style="z-index:0;position:absolute;left:0px;top:0px;"></div>
+    <div id='BBSWindow'>
+      <input id="t" type="text" style="border: none; width: 200px; height: 24px; position:absolute; left:-10000px; top:0px; z-index:2;resize: none;" autofocus/>
+      <div id='cursorDiv' class='main' style='z-index:1;'>
+        <div id="cursor" class="terminal_display">_</div>
+      </div>
+      <div id='main' class='main'>
+      </div>
+
+      <div id="PictureWindow" class="extUI drag" style="z-index:2;">
+        <div id="PicturePreviewLoading" class="extUI floatWindowClientArea4">
+          <img id="PicLoadingImage" src="chrome://bbsfox/skin/state_icon/connecting.gif" alt=""/>
+        </div>
+        <div id="PicturePreview" class="extUI floatWindowClientArea4" style="display: none;">
+        </div>
+        <span id="PicturePreviewInfo" style="position: absolute;left:5px;top:5px;z-index:5;display:none;"></span>
+      </div>
+
+    </div> <!--BBSWindow end-->
+    <div id="BBSFoxFontTest" style="left:-10000px; top:-10000px;position: absolute;overflow: hidden;"></div>
+    <div id="hideobj" style="display: none;">
+      <span id="cmdHandler"></span>
+      <div id="TrackKeyWordList"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE page SYSTEM "chrome://bbsfox/locale/bbsfox.dtd" >
+<?xml-stylesheet href="chrome://bbsfox/skin/pushThread.css" type="text/css"?>
+
+<dialog id="pushThreadWindow"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    title="&pushthread_title.label;"
+    buttons="accept,cancel"
+    buttonlabelcancel="&pushthread_cancel.label;"
+    buttonlabelaccept="&pushthread_ok.label;"
+    buttondisabledaccept="true"
+    onload="BBSPushThread.init();"
+    ondialogaccept="return BBSPushThread.onSendAllText();"
+    ondialogcancel="return BBSPushThread.onCancel();"
+    persist="width height screenX screenY"
+    windowtype="pushThreadWindowType">
+
+  <script type="application/x-javascript" src="chrome://bbsfox/content/pushThread.js"/>
+  <box flex="1">
+    <vbox flex="1">
+      <radiogroup id="PushthreadType">
+        <hbox>
+          <radio value="1" label="&pushthread_like.label;" checked="true"/>
+          <radio value="2" label="&pushthread_dislike.label;"/>
+          <radio value="3" label="&pushthread_comment.label;"/>
+          <radio value="4" label="&pushthread_self.label;"/>
+        </hbox>
+      </radiogroup>
+      <textbox flex="1" id="pushThreadText" multiline="true" rows="8" wrap="off" oninput="BBSPushThread.setPreview();"/>
+      <label value=""/>
+      <label value="&pushthread_textpreview.label;"/>
+      <textbox flex="1" id="textPreview" multiline="true" rows="8" wrap="off" readonly="true"/>
+    </vbox>
+  </box>
+</dialog>

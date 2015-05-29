@@ -1,0 +1,9 @@
+@import url(chrome://global/skin/);
+
+menulist[bbsfox_images_autosize="true"] > menupopup > menuitem > .menu-iconic-left{
+  display: -moz-box;
+}
+menulist[bbsfox_images_autosize="true"] > menupopup > menuitem .menu-iconic-icon{
+  width: auto;
+  height: auto;
+}

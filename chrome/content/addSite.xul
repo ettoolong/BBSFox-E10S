@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE page SYSTEM "chrome://bbsfox/locale/bbsfox.dtd" >
+<?xml-stylesheet href="chrome://bbsfox/skin/options.css" type="text/css"?>
+
+<dialog id="bbsfox-addSite"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    title="&addsite_title.label;"
+    buttondisabledaccept="true"
+    ondialogaccept="return btnOkClick();"
+    persist="width height screenX screenY"
+    windowtype="addSiteDialogWindowType">
+  <script type="application/x-javascript" src="chrome://bbsfox/content/addSite.js"/>
+    <vbox>
+      <hbox align="center">
+        <label value="&addsite_sitename.label;"/>
+        <spacer flex="1"/>
+        <textbox id="siteName" clickSelectsAll="true" oninput="checkValue();"/>
+      </hbox>
+      <hbox align="center">
+        <label value="&addsite_siteaddr.label;"/>
+        <spacer flex="1"/>
+        <textbox id="siteAddr" clickSelectsAll="true" oninput="checkValue();"/>
+      </hbox>
+    </vbox>
+</dialog>
