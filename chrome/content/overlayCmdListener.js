@@ -38,6 +38,16 @@ BBSOverlayCmdListener.prototype={
               return;
             bbscore.conn.send('\x1b[4~');
             break;
+          case "doArrowLeft":
+            if(bbscore.cancelDownloadAndPaste())
+              return;
+            bbscore.conn.send('\x1b[D');
+            break;
+          case "doArrowRight":
+            if(bbscore.cancelDownloadAndPaste())
+              return;
+            bbscore.conn.send('\x1b[C');
+            break;
           case "cancelHoldMouse":
             bbscore.cancelMouseDownTimer();
             break;
@@ -77,6 +87,10 @@ BBSOverlayCmdListener.prototype={
             if(bbscore.symbolinput)
               bbscore.symbolinput.displayWindow();
             break;
+          case "switchSymbolInput":
+            if(bbscore.symbolinput)
+              bbscore.symbolinput.switchWindow();
+            break;
           case "doSavePage":
             bbscore.doSavePage();
             break;
@@ -110,7 +124,6 @@ BBSOverlayCmdListener.prototype={
           case "checkFireGestureKey":
             if(bbscore.cancelDownloadAndPaste())
               return;
-            bbscore.gesture.checkFireGestureKey();
             break;
           case "openPlayerWindow":
             if(bbscore.playerMgr){
@@ -121,6 +134,29 @@ BBSOverlayCmdListener.prototype={
               else if(data.videoType == "R")
                 bbscore.playerMgr.openUrecordWindow(data.videoUrl);
             }
+            break;
+          case "openPlayerWindowEx":
+            if(bbscore.playerMgr){
+              var testresult = bbscore.playerMgr.testURL(data.videoUrl);
+              if(testresult==1)
+                bbscore.playerMgr.openYoutubeWindow(data.videoUrl);
+              else if(testresult==2)
+                bbscore.playerMgr.openUstreamWindow(data.videoUrl);
+              else if(testresult==3)
+                bbscore.playerMgr.openUrecordWindow(data.videoUrl);
+            }
+            break;
+          case "minimizeEmbeddedPlayer":
+            if(bbscore.playerMgr)
+              bbscore.playerMgr.minimizeAllEmbededPlayer();
+            break;
+          case "closePictureViewer":
+            if(bbscore.picViewerMgr)
+              bbscore.picViewerMgr.closeAllPictureViewer();
+            break;
+          case "closeEmbeddedPlayer":
+            if(bbscore.playerMgr)
+              bbscore.playerMgr.closeAllEmbededPlayer();
             break;
           case "previewPicture":
             if(bbscore.picViewerMgr)
@@ -159,6 +195,13 @@ BBSOverlayCmdListener.prototype={
           case "loginInfoReady":
             bbscore.robot.initialAutoLogin(data.result);
             bbscore.connect();
+            break;
+          case "sendCodeStr":
+            bbscore.sendCodeStr(data.codeStr, 0);
+            break;
+          case "sendCodeStrEx":
+            bbscore.sendCodeStr(data.codeStr, 0);
+            bbscore.sendCodeStr(data.codeStr2, 0);
             break;
           case "setAlert":
             //bbscore.view.showAlertMessageEx(false, true, false, data.alertMessage);

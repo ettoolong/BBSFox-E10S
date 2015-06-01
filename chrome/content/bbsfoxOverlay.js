@@ -607,7 +607,7 @@ var ETT_BBSFOX_Overlay =
   },
 
   trim_right: function(str) {
-    return this.replace(/\s+$/,'');
+    return str.replace(/\s+$/,'');
   },
 
   trim_both: function(str) {

@@ -866,38 +866,38 @@
               <label control='bbsScript' value='&BBSGESTURES;'/>
               <menulist id='bbsScript' oncommand="checkSelect();">
                 <menupopup>
-                  <menuitem value='Page Up' label='&KEYPAGEUP;'/>
-                  <menuitem value='Page Down' label='&KEYPAGEDOWN;'/>
-                  <menuitem value='End' label='&KEYEND;'/>
-                  <menuitem value='Home' label='&KEYHOME;'/>
-                  <menuitem value='Arrow Left' label='&KEYLEFT;'/>
-                  <menuitem value='Arrow Up' label='&KEYUP;'/>
-                  <menuitem value='Arrow Right' label='&KEYRIGHT;'/>
-                  <menuitem value='Arrow Down' label='&KEYDOWN;'/>
-                  <menuitem value='Copy' label='&COPY;'/>
-                  <menuitem value='AnsiCopy' label='&ANSICOPY;'/>
-                  <menuitem value='Paste' label='&PASTE;'/>
-                  <menuitem value='DelayPasteText' label='&DELAYPASTE;' id="DelayPasteGesture" hidden="true"/>
-                  <menuitem value='SelectAll' label='&SELALL;'/>
-                  <menuitem value='OpenAllLink' label='&OPENALLLINK;'/>
-                  <menuitem value='SwitchMouseBrowsing' label='&SWITCHMOUSEBROWSING;'/>
-                  <menuitem value='SwitchBgDisplay' label='&SWITCHBGDISPLAY;'/>
-                  <menuitem value='EasyReading' label='&EASYREADING;'/>
-                  <menuitem value='PushThread' label='&PUSHTHREAD;' id="PushThreadGesture" hidden="true"/>
-                  <menuitem value='OpenThreadUrl' label='&OPENTHREADURL;' id="OpenThreadUrlGesture" hidden="true"/>
-                  <menuitem value='ChangeColorTable' label='&CHANGECOLORTABLE;'/>
-                  <menuitem value='DownloadPostText' label='&DOWNLOADPOSTTEXT;'/>
-                  <menuitem value='DownloadPostAnsi' label='&DOWNLOADPOSTANSI;'/>
-                  <menuitem value='DownloadPostHtml' label='&DOWNLOADPOSTHTML;'/>
-                  <menuitem value='LoadFile' label='&LOADFILE;'/>
-                  <menuitem value='SymbolInput' label='&OPENSYMBOLINPUT;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doPageUp");' label='&KEYPAGEUP;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doPageDown");' label='&KEYPAGEDOWN;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doEnd");' label='&KEYEND;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doHome");' label='&KEYHOME;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doArrowLeft");' label='&KEYLEFT;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doArrowUp");' label='&KEYUP;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doArrowRight");' label='&KEYRIGHT;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doArrowDown");' label='&KEYDOWN;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.copyText();' resetFocus='false' label='&COPY;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.copyAnsi();' label='&ANSICOPY;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.pasteText();' label='&PASTE;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.delayPasteText();' label='&DELAYPASTE;' id="DelayPasteGesture" hidden="true"/>
+                  <menuitem value='ETT_BBSFOX_Overlay.selectAllText();' label='&SELALL;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.openAllLink();' label='&OPENALLLINK;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.switchMouseBrowse();' label='&SWITCHMOUSEBROWSING;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.switchBgDisplay();' label='&SWITCHBGDISPLAY;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.easyReading();' label='&EASYREADING;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.pushThread();' label='&PUSHTHREAD;' id="PushThreadGesture" hidden="true"/>
+                  <menuitem value='ETT_BBSFOX_Overlay.openThreadUrl();' label='&OPENTHREADURL;' id="OpenThreadUrlGesture" hidden="true"/>
+                  <menuitem value='ETT_BBSFOX_Overlay.changeColorTable();' label='&CHANGECOLORTABLE;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.downloadPost(0);' label='&DOWNLOADPOSTTEXT;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.downloadPost(1);' label='&DOWNLOADPOSTANSI;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.downloadPost(2);' label='&DOWNLOADPOSTHTML;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.loadFile();' label='&LOADFILE;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("switchSymbolInput");' label='&OPENSYMBOLINPUT;'/>
                   <menuitem value='OpenEmbeddedPlayer' label='&OPENEP;'/>
-                  <menuitem value='MinimizeEmbeddedPlayer' label='&MINEP;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("minimizeEmbeddedPlayer");' label='&MINEP;'/>
                   <menuitem value='OpenPictureViewer' label='&OPENPV;'/>
-                  <menuitem value='ClosePictureViewer' label='&CLOSEPV;'/>
-                  <menuitem value='CloseEmbeddedPlayer' label='&CLOSEEP;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("closePictureViewer");' label='&CLOSEPV;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("closeEmbeddedPlayer");' label='&CLOSEEP;'/>
                   <menuitem value='SendString' label='&SENDSTR;'/>
-                  <menuitem value='Searchselstring' label='&SEARCHSELSTRING;'/>
+                  <menuitem value='SearchSelString' label='&SEARCHSELSTRING;'/>
                 </menupopup>
               </menulist>
             </hbox>

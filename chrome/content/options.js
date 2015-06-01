@@ -531,7 +531,7 @@ BBSFoxOptions.prototype = {
       srcfile.append("_bg."+siteAddr2);
       dstfile.append("bbsfoxBg");
       dir.initWithPath(dstfile.path);
-      
+
       if (!dstfile.exists() || !dstfile.isDirectory()) {
         // read and write permissions to owner and group, read-only for others.
         dstfile.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0774);
@@ -596,7 +596,7 @@ BBSFoxOptions.prototype = {
     fp.defaultString = "BBSFox_Backup.sqlite";
     //if (fp.show() == fp.returnCancel || !fp.file) return;
     fp.open(function(result) {
-    	if(result != fp.returnCancel && fp.file) {
+      if(result != fp.returnCancel && fp.file) {
 
         var file = fp.file.QueryInterface(Components.interfaces.nsIFile);
         //if file already exists delete it.
@@ -701,10 +701,10 @@ BBSFoxOptions.prototype = {
         if(dbConn)
         {
           dbConn.asyncClose();
-        } 		
-    	}
+        }
+      }
     }.bind(this));
-    
+
   },
 
   backupbgfile: function(branch, dbConn, params, site) {
@@ -753,7 +753,7 @@ BBSFoxOptions.prototype = {
     //if (fp.show() == fp.returnCancel || !fp.file) return false;
 
     fp.open(function(result) {
-    	if(result != fp.returnCancel && fp.file) {    
+      if(result != fp.returnCancel && fp.file) {
 
         var strBundle = document.getElementById("bbsfoxoptions-string-bundle");
         var message = strBundle.getString('recoverwarning');
@@ -857,7 +857,7 @@ BBSFoxOptions.prototype = {
   },
 
   recoverbgfile: function(branch, dbConn, site) {
-  	var _this = this;
+    var _this = this;
     var CiStr = Components.interfaces.nsISupportsString;
     var type = branch.getIntPref("host_"+site+".BackgroundType");
     if(type!=0)
@@ -1084,7 +1084,7 @@ function onSelectBGImage()
 
   fp.open(function(result) {
     if(result != fp.returnCancel && fp.file) {
-  
+
       if(!fp.file.exists()) return;
 
       //TmpD / ProfD
@@ -1291,61 +1291,55 @@ function copyScript()
 
 function createScript()
 {
-  //TODO: need modify for e10s
-  /*
   var scriptData = '';
   var cmdstr = '';
   //var selindex = document.getElementById('bbsScript').selectedIndex;
   //var selvalue = document.getElementById('bbsScriptopt'+selindex).value;
-
   var httpstr = document.getElementById('httpScript').selectedItem.label;
   var bbsstr = document.getElementById('bbsScript').selectedItem.label;
+  var resetFocus = document.getElementById('bbsScript').selectedItem.getAttribute("resetFocus");
+  if(resetFocus=='false') {
+    cmdstr+='  var eventStatus = ETT_BBSFOX_Overlay.getEventStatus();\r';
+    cmdstr+='  if(eventStatus) eventStatus.resetFocus = false;\r';
+  }
+
   if(document.getElementById('bbsScript').value == 'OpenEmbeddedPlayer')
   {
-    cmdstr+='            var srcNode = FireGestures.sourceNode;\r';
-    cmdstr+='            var url = FireGestures.getLinkURL(srcNode);\r';
-    cmdstr+='            if(url){\r';
-    cmdstr+='               ak.setAttribute("EPURL", url);\r';
-    cmdstr+='               ak.setAttribute("FireGestureKey", "EmbeddedPlayer");\r';
-    cmdstr+='            }\r';
-    cmdstr+='            else{\r';
-    cmdstr+='             throw FireGestures._getLocaleString("ERROR_NOT_ON_LINK");\r';
-    cmdstr+='            }\r';
+    cmdstr+='  var srcNode = FireGestures.sourceNode;\r';
+    cmdstr+='  var url = FireGestures.getLinkURL(srcNode);\r';
+    cmdstr+='  if(url){\r';
+    cmdstr+='    ETT_BBSFOX_Overlay.setBBSCmd("checkFireGestureKey");\r';
+    cmdstr+='    ETT_BBSFOX_Overlay.setBBSCmdEx({command:"openPlayerWindowEx", videoUrl:url});\r';
+    cmdstr+='  } else {\r';
+    cmdstr+='    throw FireGestures._getLocaleString("ERROR_NOT_ON_LINK");\r';
+    cmdstr+='  }\r';
   }
   else if(document.getElementById('bbsScript').value == 'OpenPictureViewer')
   {
-    cmdstr+='            var srcNode = FireGestures.sourceNode;\r';
-    cmdstr+='            var url = FireGestures.getLinkURL(srcNode);\r';
-    cmdstr+='            if(url){\r';
-    cmdstr+='               ak.setAttribute("PVURL", url);\r';
-    cmdstr+='               ak.setAttribute("FireGestureKey", "OpenPictureViewer");\r';
-    cmdstr+='            }\r';
-    cmdstr+='            else{\r';
-    cmdstr+='             throw FireGestures._getLocaleString("ERROR_NOT_ON_LINK");\r';
-    cmdstr+='            }\r';
+    cmdstr+='  var srcNode = FireGestures.sourceNode;\r';
+    cmdstr+='  var url = FireGestures.getLinkURL(srcNode);\r';
+    cmdstr+='  if(url){\r';
+    cmdstr+='    ETT_BBSFOX_Overlay.setBBSCmd("checkFireGestureKey");\r';
+    cmdstr+='    ETT_BBSFOX_Overlay.setBBSCmdEx({command:"previewPicture", pictureUrl:url});\r';
+    cmdstr+='  } else {\r';
+    cmdstr+='    throw FireGestures._getLocaleString("ERROR_NOT_ON_LINK");\r';
+    cmdstr+='  }\r';
   }
   else if(document.getElementById('bbsScript').value == 'SendString')
   {
-    cmdstr+='            ak.setAttribute("FireGestureKey", "codestr,';
-    cmdstr+=document.getElementById('textedit').value;
-    cmdstr+='");\r';
+    cmdstr+='  ETT_BBSFOX_Overlay.setBBSCmd("checkFireGestureKey");\r';
+    cmdstr+='  ETT_BBSFOX_Overlay.setBBSCmdEx({command:"sendCodeStr", codeStr:"' + document.getElementById('textedit').value + '"});\r';
   }
-  else if(document.getElementById('bbsScript').value == 'Searchselstring')
+  else if(document.getElementById('bbsScript').value == 'SearchSelString')
   {
-    cmdstr+='            ak.setAttribute("FireGestureKey", "codestrEx,';
-    cmdstr+=document.getElementById('textedit2').value;
-    cmdstr+='");\r';
-    cmdstr+='            ak.setAttribute("FireGestureKeyEx", "codestrEx,';
-    cmdstr+=document.getElementById('textedit3').value;
-    cmdstr+='");\r';
+    cmdstr+='  ETT_BBSFOX_Overlay.setBBSCmd("checkFireGestureKey");\r';
+    cmdstr+='  ETT_BBSFOX_Overlay.setBBSCmdEx({command:"sendCodeStrEx", codeStr:"' + document.getElementById('textedit2').value + '"});\r';
+    cmdstr+='  ETT_BBSFOX_Overlay.setBBSCmdEx({command:"sendCodeStrEx", codeStr2:"' + document.getElementById('textedit3').value + '"});\r';
   }
   else
   {
-    cmdstr+='            ak.setAttribute("FireGestureKey", "';
-    cmdstr+=document.getElementById('bbsScript').value;
-    cmdstr+='");\r';
-    //
-    //
+    cmdstr+='  ETT_BBSFOX_Overlay.setBBSCmd("checkFireGestureKey");\r';
+    cmdstr+='  ' + document.getElementById('bbsScript').value + '\r';
   }
   var bbsscript0 = document.getElementById('textspan4').value;
   var bbsscript1 = document.getElementById('textspan5').value;
@@ -1361,28 +1355,9 @@ function createScript()
   elem = document.getElementById('scriptText');
   elem.value = '//' + scriptCaption+ '\r';
   {
-    scriptData+='var aBrowser = gBrowser;\r';
-    scriptData+='if (aBrowser && aBrowser.currentURI){\r';
-    scriptData+='  var scheme = aBrowser.currentURI.scheme;\r';
-    scriptData+='  if(scheme=="telnet" || scheme=="ssh"){\r';
-    scriptData+='    if ( aBrowser.contentDocument\r';
-    scriptData+='      && aBrowser.contentDocument.getElementById("main")\r';
-    scriptData+='      && aBrowser.contentDocument.getElementById("cursor")\r';
-    scriptData+='      && aBrowser.contentDocument.getElementById("hideobj")){\r';
-    scriptData+='        var ak = aBrowser.contentDocument.getElementById("cmdHandler");\r';
-    scriptData+='        var doc = aBrowser.contentDocument;\r';
-    scriptData+='      if(ak){\r';
+    scriptData+='if(gBrowser.mCurrentTab.overlayPrefs){\r';
     scriptData+=cmdstr;
-    scriptData+='        if ("createEvent" in doc) {\r';
-    scriptData+='          ak.setAttribute("bbsfoxCommand", "checkFireGestureKey");\r';
-    scriptData+='          var evt = doc.createEvent("Events");\r';
-    scriptData+='          evt.initEvent("OverlayCommand", false, false);\r';
-    scriptData+='          ak.dispatchEvent(evt);\r';
-    scriptData+='        }\r';
-    scriptData+='        return;\r';
-    scriptData+='      }\r';
-    scriptData+='    }\r';
-    scriptData+='  }\r';
+    scriptData+='  return;\r';
     scriptData+='}';
   }
   if(document.getElementById('httpScript').value!='')
@@ -1402,5 +1377,4 @@ function createScript()
   elem.setAttribute('hrefdata', 'data:text/javascript,' + scriptData);
   elem.style.display = 'block';
   document.getElementById('note').style.display = 'block';
-  */
 }

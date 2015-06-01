@@ -24,7 +24,6 @@ function BBSFox() {
     this.picViewerMgr = new PicViewerMgr(this.pptPicLoader, this.imgurPicLoader);
     this.bbsbg = new BBSBackground(this);
     this.symbolinput = new SymbolInput(this);
-    this.gesture = new BBSGestureHandler(this);
     this.overlaycmd = new BBSOverlayCmdListener(this);
     this.buf.setView(this.view, this.prefs);
     this.buf.severNotifyStr=this.getLM('messageNotify');
@@ -288,7 +287,7 @@ BBSFox.prototype={
     },
 
     trim_right: function(str) {
-      return this.replace(/\s+$/,'');
+      return str.replace(/\s+$/,'');
     },
 
     trim_both: function(str) {
@@ -1349,8 +1348,6 @@ BBSFox.prototype={
         }
         event.preventDefault();
       }
-      //if(event.button==2)
-      //  this.checkFireGestureKey();
     },
 
     mouse_move: function(event) {
