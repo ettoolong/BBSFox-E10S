@@ -130,7 +130,10 @@ BBSOverlayCmdListener.prototype={
             bbscore.ansiColor.file.savePage(data.downloadColor);
             break;
           case "doLoadFile":
-            bbscore.ansiColor.file.openFile();
+            bbscore.ansiColor.file.loadFile();
+            break;
+          case "doPasteFileData":
+            bbscore.ansiColor.file.doPasteFileData(data.fileData);
             break;
           case "checkPrefExist":
             bbscore.doSiteSettingCheck(250);
@@ -152,6 +155,10 @@ BBSOverlayCmdListener.prototype={
             break;
           case "removeFromBlacklist":
             bbscore.removeFromBlacklist();
+            break;
+          case "loginInfoReady":
+            bbscore.robot.initialAutoLogin(data.result);
+            bbscore.connect();
             break;
           case "setAlert":
             //bbscore.view.showAlertMessageEx(false, true, false, data.alertMessage);

@@ -21,7 +21,7 @@ function startup() {
   }
   bbsfox.setInputAreaFocus();
   resize();
-  bbsfox.connect();//document.location.host
+  //bbsfox.connect();//document.location.host
 }
 
 function release() {

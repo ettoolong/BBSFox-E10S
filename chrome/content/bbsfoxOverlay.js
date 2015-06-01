@@ -114,7 +114,10 @@ var ETT_BBSFOX_Overlay =
         this.writePrefs(data.branchName, data.name, data.vtype, data.value);
         break;
       case "openFilepicker":
-        this.openFilepicker(data.title, data.mode, data.defaultExtension, data.defaultString, data.appendFilters, data.saveData, data.convertUTF8);
+        this.openFilepicker(data, message.target);
+        break;
+      case "loadAutoLoginInfo":
+        this.loadAutoLoginInfo(data.querys, message.target);
         break;
       case "setTabFocus":
         //var tab = gBrowser.getTabForBrowser( message.target );
@@ -486,10 +489,14 @@ var ETT_BBSFOX_Overlay =
     document.defaultView.gBrowser.selectedBrowser.messageManager
     .sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", {command:command});
   },
-  setBBSCmdEx: function(commandSet) {
-    //browserMM
-    document.defaultView.gBrowser.selectedBrowser.messageManager
-    .sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
+  setBBSCmdEx: function(commandSet, target) {
+    var browserMM;
+    if(target) {
+      browserMM = target.messageManager;
+    } else {
+    	browserMM = document.defaultView.gBrowser.selectedBrowser.messageManager;
+    }
+    browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
   },
 
   writePrefs: function(branchName, name, vtype, value) {
@@ -509,13 +516,41 @@ var ETT_BBSFOX_Overlay =
     }
   },
 
-  openFilepicker: function(title, mode, extension, defaultStr, filters, data, convertUTF8) {
+  loadAutoLoginInfo: function(querys, target) {
+    //TODO: load auto login info, send a message to tab(set ready status to start connection)
+    var result = {};
+    for(var i=0;i<querys.length;++i){
+      try{
+        var logins = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager).findLogins({}, querys[i].url, querys[i].ds, null);
+        if(logins.length) {
+        	result[querys[i].protocol] = { userName: logins[0]['username'], password: logins[0]['password'] };
+        } else {
+        	result[querys[i].protocol] = { userName: '', password: '' };
+        }
+      }catch(ex){
+       	result[querys[i].protocol] = { userName: '', password: '' };
+      }
+    }
+    this.setBBSCmdEx({command: "loginInfoReady", result: result}, target);
+  },
+
+  openFilepicker: function(data, target) {
+      var title = data.title;
+      var mode = data.mode;
+      var extension = data.extension;
+      var defaultStr = data.defaultStr;
+      var filters = data.filters;
+      var writeData = data.writeData;
+      var convertUTF8 = data.convertUTF8;
+      var postCommand = data.postCommand;
+
       var nsIFilePicker = Components.interfaces.nsIFilePicker;
       var fileChooser = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
       fileChooser.init(window, title, mode);
-
-      fileChooser.defaultExtension = extension;
-      fileChooser.defaultString = defaultStr;
+      if(extension)
+        fileChooser.defaultExtension = extension;
+      if(defaultStr)
+        fileChooser.defaultString = defaultStr;
       for(var i=0;i<filters.length;++i)
         fileChooser.appendFilters(filters[i]);
       fileChooser.open(function(result) {
@@ -523,27 +558,41 @@ var ETT_BBSFOX_Overlay =
         //returnCancel    1
         //returnReplace   2
         if (result != nsIFilePicker.returnCancel) {
-          // file is nsIFile, data is a string
-          var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-          if(fileChooser.file.exists()){
-            fileChooser.file.remove(true);
+
+          if(mode == nsIFilePicker.modeSave) {
+            // file is nsIFile, data is a string
+            var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+            if(fileChooser.file.exists()){
+              fileChooser.file.remove(true);
+            }
+            fileChooser.file.create(fileChooser.file.NORMAL_FILE_TYPE, 0666);
+            foStream.init(fileChooser.file, 0x02 | 0x08 | 0x20, 0666, null);
+            if(convertUTF8) {
+              var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+              converter.init(foStream, "UTF-8", 0, 0);
+              converter.writeString(writeData);
+              converter.close(); // this closes foStream
+            } else {
+              foStream.write(writeData, writeData.length);
+              if (foStream instanceof Components.interfaces.nsISafeOutputStream)
+                foStream.finish();
+              else
+                foStream.close();
+            }
+          } else if(mode == nsIFilePicker.modeSave) {
+            var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+            // Read data with 2-color DBCS char
+            fstream.init(fp.file, -1, -1, false);
+            var bstream = Components.classes["@mozilla.org/binaryinputstream;1"].createInstance(Components.interfaces.nsIBinaryInputStream);
+            bstream.setInputStream(fstream);
+            var bytes = bstream.readBytes(bstream.available());
+            if(postCommand) {
+              this.setBBSCmdEx({command: postCommand, fileData: bytes}, target);
+            }
           }
-          fileChooser.file.create(fileChooser.file.NORMAL_FILE_TYPE, 0666);
-          foStream.init(fileChooser.file, 0x02 | 0x08 | 0x20, 0666, null);
-          if(convertUTF8) {
-            var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
-            converter.init(foStream, "UTF-8", 0, 0);
-            converter.writeString(data);
-            converter.close(); // this closes foStream
-          } else {
-            foStream.write(data, data.length);
-            if (foStream instanceof Components.interfaces.nsISafeOutputStream)
-              foStream.finish();
-            else
-              foStream.close();
-          }
+
         }
-      });
+      }.bind(this));
   },
 
   getPrefs: function() {

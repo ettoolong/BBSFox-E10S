@@ -139,7 +139,7 @@ BBSGestureHandler.prototype={
           doGesture = true;
           break;
         case "LoadFile":
-          bbscore.ansiColor.file.openFile();
+          bbscore.ansiColor.file.loadFile();
           doGesture = true;
           break;
         case "SelectAll":

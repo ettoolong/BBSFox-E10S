@@ -96,7 +96,7 @@ ConnectCore.prototype={
         this.connectTime = Date.now();
         this.connectCount++;
         // Check AutoLogin Stage
-        this.listener.robot.initialAutoLogin();
+        //this.listener.robot.initialAutoLogin();
     },
 
     close: function() {

@@ -17,7 +17,7 @@
 [cr="Iq15"]{color:var(--bbscolor-inv-15);}
 [cr*="Iq"][show="0"]{color:transparent;}
 .qq{color:RGBA(0,0,0,0);}
-.qq0{color:RGBA(0,0,0,0);background-color:var(--bbscolor-0);}
+.qq0{color:RGBA(0,0,0,0);}
 .qq1{color:RGBA(0,0,0,0);background-color:var(--bbscolor-1);}
 .qq2{color:RGBA(0,0,0,0);background-color:var(--bbscolor-2);}
 .qq3{color:RGBA(0,0,0,0);background-color:var(--bbscolor-3);}

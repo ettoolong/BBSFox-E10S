@@ -54,10 +54,10 @@ Robot.prototype={
     },
     */
     // Modified from pcmanx-gtk2
-    initialAutoLogin: function() {
-        var acc = this.listener.loadLoginData('chrome://bbsfox2','telnet://'); //load login data
-        this.prefs.loginStr[1] = acc[0];
-        this.prefs.loginStr[2] = acc[1];
+    initialAutoLogin: function(result) {
+        //var acc = this.listener.loadLoginData('chrome://bbsfox2','telnet://'); //load login data
+        this.prefs.loginStr[1] = result.telnet.userName;
+        this.prefs.loginStr[2] = result.telnet.password;
 
         if(this.prefs.loginStr[1])
             this.autoLoginStage = this.prefs.loginStr[0] ? 1 : 2;
@@ -270,7 +270,7 @@ DownloadArticle.prototype={
       if(fontFace=="")
         fontFace = "MingLiu";
       var bgcolor = (this.listener.view.colorTable==0) ? this.prefs.bbsColor[0] : this.listener.view.invertColor(this.prefs.bbsColor[0]);
-      
+
       selstr = '<!DOCTYPE html><html><head><meta charset="utf-8"><title></title><style type="text/css">';
       selstr += '.main {font-family: ';
       selstr += fontFace;

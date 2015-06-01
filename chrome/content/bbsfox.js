@@ -864,6 +864,7 @@ BBSFox.prototype={
         if(this.prefs) {
           this.prefs.updateEventPrefs(); //force update
           this.prefs.updateOverlayPrefs(); //force update
+          this.loadLoginData();
         } else {
         }
       } else {
@@ -1829,20 +1830,29 @@ BBSFox.prototype={
       }
     },
 
-    loadLoginData: function(ds, ss){
-      var url = this.isDefaultPref ? ds : ss + this.siteAuthInfo;
-      try {
-        var logins = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager).findLogins({}, url, ds, null);
-        if(logins.length)
-        {
-          return [logins[0]['username'], logins[0]['password']];
-        }
-        else
-        {
-          return ['',''];
-        }
-      } catch(e) {
-        return ['',''];
+    loadLoginData: function(){
+      var ds, ss, url;
+      if(document.location.protocol == 'telnet:') {
+        ds = 'chrome://bbsfox2';
+        ss = 'telnet://';
+        url = this.isDefaultPref ? ds : ss + this.siteAuthInfo;
+        this.sendCoreCommand({command: "loadAutoLoginInfo", querys: [{
+                              protocol: "telnet",
+                              url: url,
+                              ds: ds}]});
+      } else if(document.location.protocol == 'ssh:') {
+        var querys = [];
+        ds = 'chrome://bbsfox2';
+        ss = 'telnet://';
+        url = this.isDefaultPref ? ds : ss + this.siteAuthInfo;
+        querys.push({protocol: "telnet", url: url, ds: ds})
+
+        ds = 'chrome://bbsfox3';
+        ss = 'ssh://';
+        url = this.isDefaultPref ? ds : ss + this.siteAuthInfo;
+        querys.push({protocol: "ssh", url: url, ds: ds})
+
+        this.sendCoreCommand({command: "loadAutoLoginInfo", querys: querys});
       }
     },
 

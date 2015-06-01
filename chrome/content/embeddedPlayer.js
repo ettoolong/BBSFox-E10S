@@ -70,6 +70,9 @@ function EmbeddedPlayer(playerURL, showbtn, playerSize) {
     box3.classList.add('dragUI');
     box3.classList.add('nonspan');
 
+    /*
+    // XUL <menulist> not working in E10S (Firefox bug ?)
+    // Modify: Use html tag <select>
     var sizeSelect = document.createElementNS(XUL_NS, 'menulist');
     box3.appendChild(sizeSelect);
     sizeSelect.style.fontSize='12px';
@@ -88,6 +91,34 @@ function EmbeddedPlayer(playerURL, showbtn, playerSize) {
     sizeSelect.insertItemAt(0, '425 x 344 (4:3)', 0);
     sizeSelect.selectedIndex = playerSize;
     sizeSelect.addEventListener('command', this.selectitem.bind(this), false);
+    */
+    // XUL <menulist> not working in E10S (Firefox bug ?)
+    // Modify: Use html tag <select>
+    //create select tag - start
+    var sizeSelect = document.createElement('select');
+    box3.appendChild(sizeSelect);
+    sizeSelect.style.fontSize='12px';
+    sizeSelect.style.margin='4px 2px';
+    sizeSelect.setAttribute('editable','false');
+    sizeSelect.classList.add('extUI');
+    sizeSelect.classList.add('buttonUI');
+    sizeSelect.classList.add('WinBtn');
+    sizeSelect.setAttribute('sizetopopup','always');
+    //
+    var resArr = ['425 x 344 (4:3)', '480 x 385 (4:3)', '640 x 505 (4:3)', '960 x 745 (4:3)',
+                  '560 x 340 (16:9)', '640 x 385 (16:9)', '853 x 505 (16:9)', '1280 x 745 (16:9)'];
+    for(var i=0;i<resArr.length;++i)
+    {
+      var option = document.createElement('option');
+      option.text = resArr[i];
+      option.value = i;
+      option.classList.add('extUI');
+      sizeSelect.appendChild(option);
+    }
+    //
+    sizeSelect.selectedIndex = playerSize;
+    sizeSelect.addEventListener('change', this.selectitem.bind(this), false);
+    //create select tag - end
 
     var copyUrlBtn = document.createElementNS(XUL_NS, 'button');
     box3.appendChild(copyUrlBtn);
@@ -288,7 +319,7 @@ EmbeddedPlayer.prototype={
     this.removeAllChild(n);
     n.appendChild(doc.body.firstChild);
   },
-      
+
   createLinkStr: function(pt, code, w, h, loop, autoPlay, autoUseHighQuality) {
     if(pt=='Y')
     {
@@ -660,7 +691,7 @@ PlayerMgr.prototype={
         }
       }
     }
-	
+
     if(youtubeURLType==1 || youtubeURLType==2 || youtubeURLType==3)
     {
       tempurl = 'http://www.youtube.com/watch?v='+aurl;

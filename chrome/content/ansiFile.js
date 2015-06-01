@@ -4,17 +4,14 @@ function AnsiFile(ansiColor) {
 }
 
 AnsiFile.prototype = {
-    openFile: function() {
+    doPasteFileData: function(data) {
+        //TODO: remove clipboard operation, paste data directly
         //FIXME: load file with different charset
-        var data = this.loadFile();
-        if(!data)
-            return;
-
         var text = this.ansi.convertStringToUTF8(data);
         this.ansi.ansiClipboard(text);
-        this.ansi.paste();
+        this.ansi.paste();        
     },
-
+    
     savePage: function(saveMode) {
         //FIXME: save file with different charset
         /*
@@ -55,31 +52,12 @@ AnsiFile.prototype = {
     },
 
     loadFile: function() {
-    	//TODO: need modify for E10S
-    	/*
-        var nsIFilePicker = Components.interfaces.nsIFilePicker;
-        var fp = Components.classes["@mozilla.org/filepicker;1"]
-                           .createInstance(nsIFilePicker);
-        fp.init(window, null, nsIFilePicker.modeOpen);
-        fp.appendFilters(nsIFilePicker.filterAll);
-        if(fp.show() == nsIFilePicker.returnCancel)
-            return '';
-        if(!fp.file.exists())
-            return '';
-
-        var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
-                                .createInstance(Components.interfaces.nsIFileInputStream);
-        // Read data with 2-color DBCS char
-        fstream.init(fp.file, -1, -1, false);
-
-        var bstream = Components.classes["@mozilla.org/binaryinputstream;1"]
-                      .createInstance(Components.interfaces.nsIBinaryInputStream);
-        bstream.setInputStream(fstream);
-        var bytes = bstream.readBytes(bstream.available());
-
-        return bytes;
-      */
-      return [];
+      var nsIFilePicker = Components.interfaces.nsIFilePicker;
+      bbsfox.sendCoreCommand({command: "openFilepicker",
+                              title: null,
+                              mode: nsIFilePicker.modeOpen,
+                              appendFilters: [nsIFilePicker.filterAll],
+                              postCommand: "doPasteFileData"});
     },
 
     saveFile: function(data, saveMode) {
@@ -130,7 +108,7 @@ AnsiFile.prototype = {
                               mode: nsIFilePicker.modeSave,
                               defaultExtension:"html",
                               defaultString: "newhtml",
-                              appendFilters: [nsIFilePicker.filterHTML],
+                              appendFilters: appendFilters,
                               saveData: data,
                               convertUTF8: convertUTF8});
     },
