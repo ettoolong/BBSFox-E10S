@@ -97,6 +97,7 @@
 <!ENTITY options_viewdisplay.label "View">
 <!ENTITY options_chardisplay.label "Text">
 <!ENTITY options_colordisplay.label "Color">
+<!ENTITY options_colordisplaynote.label "Notice: Change color define will also change background color in BBS view.">
 <!ENTITY options_dbcsdetect.label "Detect DBCS words">
 <!ENTITY options_linewrap1.label "Line wrap for texts longer than">
 <!ENTITY options_linewrap2.label "(0 = disabled)">
@@ -330,28 +331,29 @@
 <!ENTITY options_aboutnote1.label "GNU General Public License v2.">
 <!ENTITY options_aboutnote2.label "">
 <!ENTITY options_aboutnote3.label "The author is ettoolong(ettoolong@hotmail.com)">
-<!ENTITY options_aboutnote4.label "The main code segment is adopted from">
-<!ENTITY options_aboutnote5.label "pcmanfx">
-<!ENTITY options_aboutnote6.label "partly from FireBBS">
-<!ENTITY options_aboutnote7.label "The major difference is the drawing display, adopted from BBSFox 0.1.2, not pcmanfx">
-<!ENTITY options_aboutnote8.label "Thanks for the author of pcmanfx Hong Jen Yee(pcman.tw@gmail.com)">
-<!ENTITY options_aboutnote9.label "Also thanks for the co-author of pcmanfx bootleq(bootleq@gmail.com)">
-<!ENTITY options_aboutnote10.label "Fix bugs for this add-on: u881831(forum.moztw.org)">
-<!ENTITY options_aboutnote11.label "Translation, function suggestion, test and bug report: pc102880(forum.moztw.org)">
-<!ENTITY options_aboutnote12.label "Function suggestion, test and bug report:">
-<!ENTITY options_aboutnote13.label "  [筆筆(forum.moztw.org)]">
-<!ENTITY options_aboutnote14.label "  [homegoyes(forum.moztw.org)]">
-<!ENTITY options_aboutnote15.label "  [Velociraptor(forum.moztw.org)]">
-<!ENTITY options_aboutnote16.label "Add-on web site:">
-<!ENTITY options_aboutnote17.label "BBSFox">
-<!ENTITY options_aboutnote18.label "other telnet Add-on:">
-<!ENTITY options_aboutnote19.label "project home">
-<!ENTITY options_aboutnote20.label "web site">
-<!ENTITY options_aboutnote21.label "Mozilla Add-on">
-<!ENTITY options_aboutnote22.label "technical support">
+<!ENTITY options_aboutnote4.label "The main code segment is adopted from pcmanfx partly from FireBBS.">
+<!ENTITY options_aboutnote5.label "The major difference is the drawing display, adopted from BBSFox 0.1.2, not pcmanfx">
+<!ENTITY options_aboutnote6.label "Thanks for the author of pcmanfx Hong Jen Yee(pcman.tw@gmail.com)">
+<!ENTITY options_aboutnote7.label "Also thanks for the co-author of pcmanfx bootleq(bootleq@gmail.com)">
+<!ENTITY options_aboutnote8.label "Fix bugs for this add-on: u881831(forum.moztw.org)">
+<!ENTITY options_aboutnote9.label "Translation, function suggestion, test and bug report: pc102880(forum.moztw.org)">
+<!ENTITY options_aboutnote10.label "Function suggestion, test and bug report:">
+<!ENTITY options_aboutnote11.label "  [筆筆(forum.moztw.org)]">
+<!ENTITY options_aboutnote12.label "  [homegoyes(forum.moztw.org)]">
+<!ENTITY options_aboutnote13.label "  [Velociraptor(forum.moztw.org)]">
+<!ENTITY options_aboutnote14.label "Add-on web site:">
+<!ENTITY options_aboutnote15.label "BBSFox">
+<!ENTITY options_aboutnote16.label "other telnet Add-on:">
+<!ENTITY options_aboutnote17.label "project home">
+<!ENTITY options_aboutnote18.label "web site">
+<!ENTITY options_aboutnote19.label "Mozilla Add-on">
+<!ENTITY options_aboutnote20.label "technical support">
+<!ENTITY options_aboutnote21.label "Source Code-3.0.50">
+<!ENTITY options_aboutnote22.label "Source Code-E10S">
 <!ENTITY options_aboutnote23.label "pcmanfx-0.1.8_r40+_alpha_1.xpi">
 <!ENTITY options_aboutnote24.label "FireBBS v0.3.0">
 <!ENTITY options_aboutnote25.label "FireBBS.l-hedgehog">
+<!ENTITY options_aboutnote26.label "pcmanfx">
 <!ENTITY TITLE "Create FireGestures Script">
 <!ENTITY BBSSCRIPT0 "/BBS page - gestures: ">
 <!ENTITY BBSSCRIPT1 "BBS page - gestures: ">

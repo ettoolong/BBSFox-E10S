@@ -85,7 +85,7 @@ function BBSFox() {
     this.timerOnsec = null;
 
     //window.controllers.insertControllerAt(0, this.documentControllers);            // to override default commands for window, can't working in E10S
-    //this.DocInputArea.controllers.insertControllerAt(0, this.documentControllers); // to override default commands for inputbox, can't working in E10S
+    this.DocInputArea.controllers.insertControllerAt(0, this.documentControllers); // to override default commands for inputbox, can't working in E10S
 }
 
 BBSFox.prototype={
@@ -100,10 +100,8 @@ BBSFox.prototype={
     PttRegEx: /^((bbs\.)?(ptt(2|3)?\.cc)|(ptt(2|3)?\.twbbs\.org))$/i,
     //there are some problem: http://www.ustream.tv/xxx -> http://www.ustream.tv/channel/xxx
 
-    /*
     documentControllers: {
       supportsCommand: function(cmd){
-        console.log('supportsCommand');
         switch (cmd) {
           case "cmd_undo":
           case "cmd_redo":
@@ -154,7 +152,6 @@ BBSFox.prototype={
       },
       onEvent: function(e){ }
     },
-    */
 
     connect: function() {
         this.conn.connect(document.location.hostname, document.location.port ? document.location.port : BBSFOX_DEFAULT_PORT);
@@ -1647,7 +1644,7 @@ BBSFox.prototype={
           event.stopPropagation();
         }
         else if(event.ctrlKey && !event.altKey && event.shiftKey && (event.charCode == 122 || event.charCode == 90) && this.prefs.hokeyChangeColorTable) { //Shift + ^Z, do change color table
-          this.view.ChangeColorTable();
+          this.view.changeColorTable();
           event.preventDefault();
           event.stopPropagation();
         }
@@ -1771,18 +1768,6 @@ BBSFox.prototype={
       {
         this.CmdHandler.setAttribute('LastPicAddr', '');
       }
-    },
-
-    cleanupTempFiles: function(event){
-      for(var i=0;i<this.tempFiles.length;++i)
-      {
-        try{
-          this.tempFiles[i].remove(true);
-        }
-        catch(e){
-        }
-      }
-      this.tempFiles.length = 0;
     },
 
     window_beforeunload: function(event){

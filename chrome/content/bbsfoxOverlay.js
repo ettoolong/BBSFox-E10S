@@ -29,6 +29,7 @@ var ETT_BBSFOX_Overlay =
     eventMap.set('view-menu-ps', this.bbsfoxViewMenuShowing.bind(this));
     eventMap.set('tabAttrModified', this.tabAttrModified.bind(this));
     eventMap.set('tabSelect', this.tabSelect.bind(this));
+    eventMap.set('tabClose', this.tabClose.bind(this));
     eventMap.set('cmd_savePage', this.cmdSavePage.bind(this));
     eventMap.set('cmd_paste', this.cmdPaste.bind(this));
     eventMap.set('cmd_copy', this.cmdCopy.bind(this));
@@ -46,6 +47,7 @@ var ETT_BBSFOX_Overlay =
     if(viewmenu) viewmenu.addEventListener('popupshowing', eventMap.get('view-menu-ps'), false);
     gBrowser.tabContainer.addEventListener('TabAttrModified', eventMap.get('tabAttrModified'), true);
     gBrowser.tabContainer.addEventListener('TabSelect', eventMap.get('tabSelect'), false);
+    gBrowser.tabContainer.addEventListener('TabClose', eventMap.get('tabClose'), false);
     document.getElementById('Browser:SavePage').addEventListener('command', eventMap.get('cmd_savePage'), true);
     document.getElementById('cmd_paste').addEventListener('command', eventMap.get('cmd_paste'), true);
     document.getElementById('cmd_copy').addEventListener('command', eventMap.get('cmd_copy'), true);
@@ -64,6 +66,7 @@ var ETT_BBSFOX_Overlay =
 
     //remove event listener - start
     var eventMap = this.eventMap;
+    gBrowser.tabContainer.removeEventListener('TabClose', eventMap.get('tabClose'), false);
     gBrowser.tabContainer.removeEventListener('TabSelect', eventMap.get('tabSelect'), false);
     gBrowser.tabContainer.removeEventListener('TabAttrModified', eventMap.get('tabAttrModified'), true);
     var viewmenu = document.getElementById('view-menu');
@@ -104,8 +107,6 @@ var ETT_BBSFOX_Overlay =
         break;
       case "openNewTabs":
         this.openNewTabs(data.urls, data.ref, data.charset, data.loadInBg);
-        //gBrowser.loadOneTab(url, null, charset, null, true, false);
-        //openNewTabs: function(urls, ref, charset, loadInBg) {
         break;
       case "resetStatusBar":
         XULBrowserWindow.setOverLink("");
@@ -118,6 +119,9 @@ var ETT_BBSFOX_Overlay =
         break;
       case "loadAutoLoginInfo":
         this.loadAutoLoginInfo(data.querys, message.target);
+        break;
+      case "openEasyReadingTab":
+        this.openEasyReadingTab(data.htmlData, message.target);
         break;
       case "setTabFocus":
         //var tab = gBrowser.getTabForBrowser( message.target );
@@ -318,7 +322,7 @@ var ETT_BBSFOX_Overlay =
 
         this.setItemVisible("context-paste", true);
         //this.setItemVisible("context-selectall", false);
-        this.setItemEnable("context-selectall", true);    //TODO: need fix, it still disable :(
+        //this.setItemEnable("context-selectall", true);    //TODO: need fix, it still disable :(
         var pasteCmd = !(document.getElementById("context-paste").disabled);
         this.setItemVisible("bbsfox_menu-delayPaste", prefs.delayPasteMenu && pasteCmd); //check clipboard first ?
 
@@ -334,7 +338,7 @@ var ETT_BBSFOX_Overlay =
         this.setItemVisible("bbsfox_menu-pushThread", !contextMenuInfo.isTextSelected && prefs.pushThreadMenu);
         this.setItemVisible("bbsfox_menu-openThreadUrl", !contextMenuInfo.isTextSelected && prefs.openThreadUrlMenu);
         this.setItemVisible("bbsfox_menu-changeColorTable", !contextMenuInfo.isTextSelected && prefs.changeColorTableMenu);
-        this.setItemVisible("bbsfox_menu-changeColorTable", !contextMenuInfo.isTextSelected && prefs.downloadPostMenu);
+        this.setItemVisible("bbsfox_menu-downloadPost", !contextMenuInfo.isTextSelected && prefs.downloadPostMenu);
         this.setItemVisible("bbsfox_menu-fileIo", !contextMenuInfo.isTextSelected && prefs.fileIoMenu);
         this.setItemVisible("bbsfox_menu-mouseBrowsing", !contextMenuInfo.isTextSelected && prefs.mouseBrowseMenu);
         this.setItemVisible("bbsfox_menu-BgDisplay", !contextMenuInfo.isTextSelected && prefs.switchBgDisplayMenu && prefs.enableBackground);
@@ -471,6 +475,12 @@ var ETT_BBSFOX_Overlay =
     }
   },
 
+  tabClose : function (event) {
+    if(event.target.tempFiles) {
+      this.cleanupTempFiles(event.target.tempFiles);
+    }
+  },
+
   tabSelect : function (event) {
     if(event.target.overlayPrefs)
       this.setBBSCmd("setInputAreaFocus");
@@ -489,12 +499,13 @@ var ETT_BBSFOX_Overlay =
     document.defaultView.gBrowser.selectedBrowser.messageManager
     .sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", {command:command});
   },
+
   setBBSCmdEx: function(commandSet, target) {
     var browserMM;
     if(target) {
       browserMM = target.messageManager;
     } else {
-    	browserMM = document.defaultView.gBrowser.selectedBrowser.messageManager;
+      browserMM = document.defaultView.gBrowser.selectedBrowser.messageManager;
     }
     browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
   },
@@ -523,12 +534,12 @@ var ETT_BBSFOX_Overlay =
       try{
         var logins = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager).findLogins({}, querys[i].url, querys[i].ds, null);
         if(logins.length) {
-        	result[querys[i].protocol] = { userName: logins[0]['username'], password: logins[0]['password'] };
+          result[querys[i].protocol] = { userName: logins[0]['username'], password: logins[0]['password'] };
         } else {
-        	result[querys[i].protocol] = { userName: '', password: '' };
+          result[querys[i].protocol] = { userName: '', password: '' };
         }
       }catch(ex){
-       	result[querys[i].protocol] = { userName: '', password: '' };
+        result[querys[i].protocol] = { userName: '', password: '' };
       }
     }
     this.setBBSCmdEx({command: "loginInfoReady", result: result}, target);
@@ -537,10 +548,10 @@ var ETT_BBSFOX_Overlay =
   openFilepicker: function(data, target) {
       var title = data.title;
       var mode = data.mode;
-      var extension = data.extension;
-      var defaultStr = data.defaultStr;
-      var filters = data.filters;
-      var writeData = data.writeData;
+      var extension = data.defaultExtension;
+      var defaultStr = data.defaultString;
+      var filters = data.appendFilters;
+      var writeData = data.saveData;
       var convertUTF8 = data.convertUTF8;
       var postCommand = data.postCommand;
 
@@ -579,20 +590,50 @@ var ETT_BBSFOX_Overlay =
               else
                 foStream.close();
             }
-          } else if(mode == nsIFilePicker.modeSave) {
+          } else if(mode == nsIFilePicker.modeOpen) {
             var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
             // Read data with 2-color DBCS char
-            fstream.init(fp.file, -1, -1, false);
+            fstream.init(fileChooser.file, -1, -1, false);
             var bstream = Components.classes["@mozilla.org/binaryinputstream;1"].createInstance(Components.interfaces.nsIBinaryInputStream);
             bstream.setInputStream(fstream);
             var bytes = bstream.readBytes(bstream.available());
             if(postCommand) {
               this.setBBSCmdEx({command: postCommand, fileData: bytes}, target);
             }
+            bstream.close();
+            fstream.close();
           }
 
         }
       }.bind(this));
+  },
+
+  openEasyReadingTab: function(htmlData, target) {
+      //var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+      var filetmp = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("TmpD", Components.interfaces.nsIFile);
+      filetmp.append('easyreading.htm');
+      filetmp.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0666);
+      var ostream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+      ostream.init(filetmp, -1, -1, 0);
+      var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+      converter.init(ostream, "UTF-8", 0, 0);
+      converter.writeString(htmlData);
+      converter.flush();
+      converter.close();
+      var tempURI = this.ioService.newFileURI(filetmp).spec;
+      this.openNewTabs([tempURI], null, "UTF-8", true);
+      var tab = gBrowser.getTabForBrowser(target);
+      if(!tab.tempFiles)
+        tab.tempFiles = [filetmp];
+      else
+        tab.tempFiles.push(filetmp);
+  },
+
+  cleanupTempFiles: function(files) {
+    console.log('overlay cleanupTempFiles');
+    for(var i=0;i<files.length;++i) {
+      files[i].remove(true);
+    }
   },
 
   getPrefs: function() {
@@ -615,7 +656,7 @@ var ETT_BBSFOX_Overlay =
   },
 
   openURL: function(aURL) {
-    this.openNewTabs(aURL, null, null, false);
+    this.openNewTabs([aURL], null, null, false);
   },
 
   setVersion: function(addon) {
@@ -796,7 +837,7 @@ var ETT_BBSFOX_Overlay =
   },
 
   cmdPaste: function(event) {
-    /* if we handle this command, we get paste text twice. (even if we set preventDefault!)
+    /*// if we handle this command, we get paste text twice. (even if we set preventDefault!)
     if(this.isOnBBSPage()) {
       this.pasteText();
       event.stopPropagation();
@@ -1009,6 +1050,8 @@ var ETT_BBSFOX_Overlay =
     },
 
     mouse_scroll: function(event) {
+      if(event.target.tagName!='tabbrowser' || event.target.getAttribute('id') != 'content')
+        return;
       if (gBrowser && gBrowser.currentURI){
         var scheme = gBrowser.currentURI.scheme;
         if(scheme!='telnet' && scheme!='ssh')
@@ -1191,7 +1234,7 @@ var ETT_BBSFOX_Overlay =
       //eventMap.set('input', this.text_input.bind(this));
       //eventMap.set('load', this.doc_load.bind(this));
 
-      gBrowser.addEventListener('DOMMouseScroll', eventMap.get('DOMMouseScroll'), true);
+      window.addEventListener('DOMMouseScroll', eventMap.get('DOMMouseScroll'), true);
       gBrowser.addEventListener("contextmenu", eventMap.get('contextmenu'), true);
       //document.getElementById('contentAreaContextMenu').addEventListener('popupshowing', eventMap.get('contextmenu'), true);
       gBrowser.addEventListener("mousedown", eventMap.get('mousedown'), true);
@@ -1204,7 +1247,7 @@ var ETT_BBSFOX_Overlay =
     release: function() {
       var eventMap = this.owner.eventMap;
 
-      gBrowser.removeEventListener("DOMMouseScroll", eventMap.get('DOMMouseScroll'), true);
+      window.removeEventListener("DOMMouseScroll", eventMap.get('DOMMouseScroll'), true);
       gBrowser.removeEventListener("contextmenu", eventMap.get('contextmenu'), true);
       //document.getElementById('contentAreaContextMenu').removeEventListener('popupshowing', eventMap.get('contextmenu'), true);
       gBrowser.removeEventListener("mousedown", eventMap.get('mousedown'), true);

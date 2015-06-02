@@ -5,6 +5,7 @@ function AnsiColor(listener) {
 }
 
 AnsiColor.prototype = {
+	  /*
     copy: function() {
         var sel = this.listener.view.selection;
         if(!sel.hasSelection())
@@ -17,9 +18,10 @@ AnsiColor.prototype = {
         //if(this.listener.prefs.ClearCopiedSel)
         //    sel.cancelSel(true);
     },
+    */
 
-    paste: function() {
-        var text = this.ansiClipboard();
+    paste: function(text) {
+        //var text = this.ansiClipboard();
         if(!text)
             return false; // use normal paste
 
@@ -33,6 +35,7 @@ AnsiColor.prototype = {
         return true; // paste successfully, stop normal paste
     },
 
+    /*
     ansiClipboard: function(text) {
         //FIXME: better approach to listen the change of the system clipboard
         // If user copy string the same as follows, it won't work
@@ -75,6 +78,7 @@ AnsiColor.prototype = {
             return text;
         }
     },
+    */
 
     convertStringToUTF8: function(str, converted, Encoding) {
         if(!converted) {
@@ -110,10 +114,7 @@ AnsiColor.prototype = {
         if(!Encoding)
             Encoding = this.listener.prefs.charset;
         if(Encoding.toLowerCase() == 'big5') {
-            if(!this.listener.conn.uaoConvLoaded) {
-                Components.utils.import("resource://pcmanfx2/uao.js");
-                this.listener.conn.uaoConvLoaded = true;
-            }
+            this.listener.buf.loaduao();
             var text = uaoConv.u2b(str);
         } else {
             this.listener.conn.oconv.charset = Encoding;

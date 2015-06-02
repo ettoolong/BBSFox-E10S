@@ -1036,9 +1036,9 @@ function load() {
   if(isDevVersion)
   {
     var devItems =['DelayPasteGesture','PushThreadGesture','OpenThreadUrlGesture',
-                 'DelayPasteMenu','LoadUrlInBG','PushThreadMenu',
-                 'OpenThreadUrlMenu','PushThreadLineLengthSet','NotifyShowContent',
-                 'UseSubMenuForSearchEngine','HokeyOpenThreadUrl','EPHtml5',
+                 'DelayPasteMenu','LoadUrlInBG','PushThreadMenuOpt',
+                 'OpenThreadUrlMenuOpt','PushThreadLineLengthSet','NotifyShowContent',
+                 'HokeyOpenThreadUrlOpt','EPHtml5',
                  'FixUnicodeDisplay','resolution','DetectAid','blacklistid','ColorDefine'];
 
     for(var i=0;i<devItems.length;++i) {
@@ -1054,6 +1054,7 @@ function load() {
   //See: https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIProtocolProxyService
   //check FX version > 33.0.3
   var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
+  /*
   var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
   //See: https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIVersionComparator
   if(versionChecker.compare(appInfo.version, "33.0.3") >= 0) {
@@ -1061,6 +1062,7 @@ function load() {
     document.getElementById('TelnetHttpsProxy').hidden=false;
     document.getElementById('SshHttpsProxy').hidden=false;
   }
+  */
 
   options.onFontChange();
   alertActionChange();

@@ -97,6 +97,7 @@
 <!ENTITY options_viewdisplay.label "畫面顯示">
 <!ENTITY options_chardisplay.label "字元顯示">
 <!ENTITY options_colordisplay.label "色彩顯示">
+<!ENTITY options_colordisplaynote.label "注意：變更此處的色彩定義會一併影響純色背景和滑鼠瀏覽的底色效果">
 <!ENTITY options_dbcsdetect.label "自動偵測雙位元組字集文字">
 <!ENTITY options_linewrap1.label "貼上文字超過">
 <!ENTITY options_linewrap2.label "字元自動換行（0 = 關閉不用）">
@@ -330,28 +331,29 @@
 <!ENTITY options_aboutnote1.label "GNU General Public License v2">
 <!ENTITY options_aboutnote2.label "授權，">
 <!ENTITY options_aboutnote3.label "套件作者是 ettoolong：ettoolong@hotmail.com">
-<!ENTITY options_aboutnote4.label "套件大量的內容是從">
-<!ENTITY options_aboutnote5.label "pcmanfx">
-<!ENTITY options_aboutnote6.label "移殖而來，部份內容參考自 FireBBS 套件">
-<!ENTITY options_aboutnote7.label "主要差異是不使用 pcmanfx 的繪圖顯示，改用 BBSFox 0.1.2 的文字模式顯示的模組。">
-<!ENTITY options_aboutnote8.label "在此感謝 pcmanfx 開源的作者：[洪任諭 (Hong Jen Yee)：pcman.tw@gmail.com]">
-<!ENTITY options_aboutnote9.label "以及參與 pcmanfx 開發的其他人員：[bootleq：bootleq@gmail.com]">
-<!ENTITY options_aboutnote10.label "協助此套件的問題修正：[u881831(forum.moztw.org)]">
-<!ENTITY options_aboutnote11.label "協助此套件翻譯、提出功能建議、測試和問題回報：[pc102880(forum.moztw.org)]">
-<!ENTITY options_aboutnote12.label "提出功能建議、測試和問題回報：">
-<!ENTITY options_aboutnote13.label "  [筆筆(forum.moztw.org)]">
-<!ENTITY options_aboutnote14.label "  [homegoyes(forum.moztw.org)]">
-<!ENTITY options_aboutnote15.label "  [Velociraptor(forum.moztw.org)]">
-<!ENTITY options_aboutnote16.label "套件網站：">
-<!ENTITY options_aboutnote17.label "BBSFox">
-<!ENTITY options_aboutnote18.label "參考套件：">
-<!ENTITY options_aboutnote19.label "專案首頁">
-<!ENTITY options_aboutnote20.label "作者的網頁空間">
-<!ENTITY options_aboutnote21.label "Mozilla套件">
-<!ENTITY options_aboutnote22.label "討論區/技術支援">
+<!ENTITY options_aboutnote4.label "套件大量的內容是從 pcmanfx 移殖而來，部份內容參考自 FireBBS 套件。">
+<!ENTITY options_aboutnote5.label "主要差異是不使用 pcmanfx 的繪圖顯示，改用 BBSFox 0.1.2 的文字模式顯示的模組。">
+<!ENTITY options_aboutnote6.label "在此感謝 pcmanfx 開源的作者：[洪任諭 (Hong Jen Yee)：pcman.tw@gmail.com]">
+<!ENTITY options_aboutnote7.label "以及參與 pcmanfx 開發的其他人員：[bootleq：bootleq@gmail.com]">
+<!ENTITY options_aboutnote8.label "協助此套件的問題修正：[u881831(forum.moztw.org)]">
+<!ENTITY options_aboutnote9.label "協助此套件翻譯、提出功能建議、測試和問題回報：[pc102880(forum.moztw.org)]">
+<!ENTITY options_aboutnote10.label "提出功能建議、測試和問題回報：">
+<!ENTITY options_aboutnote11.label "  [筆筆(forum.moztw.org)]">
+<!ENTITY options_aboutnote12.label "  [homegoyes(forum.moztw.org)]">
+<!ENTITY options_aboutnote13.label "  [Velociraptor(forum.moztw.org)]">
+<!ENTITY options_aboutnote14.label "套件網站：">
+<!ENTITY options_aboutnote15.label "BBSFox">
+<!ENTITY options_aboutnote16.label "參考套件：">
+<!ENTITY options_aboutnote17.label "專案首頁">
+<!ENTITY options_aboutnote18.label "作者的網頁空間">
+<!ENTITY options_aboutnote19.label "Mozilla套件">
+<!ENTITY options_aboutnote20.label "討論區/技術支援">
+<!ENTITY options_aboutnote21.label "原始碼-3.0.50">
+<!ENTITY options_aboutnote22.label "原始碼-E10S">
 <!ENTITY options_aboutnote23.label "pcmanfx-0.1.8_r40+_alpha_1.xpi">
 <!ENTITY options_aboutnote24.label "FireBBS v0.3.0">
 <!ENTITY options_aboutnote25.label "FireBBS.l-hedgehog">
+<!ENTITY options_aboutnote26.label "pcmanfx">
 <!ENTITY TITLE "產生FireGestures腳本">
 <!ENTITY BBSSCRIPT0 "／BBS頁面手勢：">
 <!ENTITY BBSSCRIPT1 "BBS頁面手勢：">

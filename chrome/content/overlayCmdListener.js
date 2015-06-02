@@ -184,7 +184,7 @@ BBSOverlayCmdListener.prototype={
             bbscore.OpenThreadUrl();
             break;
           case "changeColorTable":
-            bbscore.ChangeColorTable();
+            bbscore.view.changeColorTable();
             break;
           case "addToBlacklist":
             bbscore.addToBlacklist();

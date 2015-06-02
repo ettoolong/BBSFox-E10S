@@ -27,7 +27,6 @@ function startup() {
 function release() {
   //document.getElementById('t').disabled="disabled";
   bbsfox.prefListener.unregister();
-  bbsfox.cleanupTempFiles();
   bbsfox.close();
   bbsfox=null;
   window.removeEventListener('load', startup, true);

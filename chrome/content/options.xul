@@ -206,6 +206,8 @@
                         </tabpanel>
                         <tabpanel>
                           <vbox>
+                            <label value="&options_colordisplaynote.label;" style="color:#0000FF;"/>
+                            <label value=""/>
                             <hbox align="center">
                               <html:input id="BBSColor01" type="color" value="#000000" bbsfoxDefaultValue="#000000"/>
                               <label value="&options_defaultColor01.label;"/>
@@ -418,7 +420,7 @@
                                   <menupopup>
                                     <menuitem label="&options_noproxyserver.label;" value="0"/>
                                     <menuitem label="&options_proxyhttp.label;" value="1"/>
-                                    <menuitem label="&options_proxyhttps.label;" value="5" id="TelnetHttpsProxy" hidden="true"/>
+                                    <menuitem label="&options_proxyhttps.label;" value="5"/>
                                     <menuitem label="&options_proxysocks4.label;" value="2"/>
                                     <menuitem label="&options_proxysocks5.label;" value="3"/>
                                     <menuitem label="&options_proxydirect.label;" value="4"/>
@@ -442,7 +444,7 @@
                                   <menupopup>
                                     <menuitem label="&options_noproxyserver.label;" value="0"/>
                                     <menuitem label="&options_proxyhttp.label;" value="1"/>
-                                    <menuitem label="&options_proxyhttps.label;" value="5" id="SshHttpsProxy" hidden="true"/>
+                                    <menuitem label="&options_proxyhttps.label;" value="5"/>
                                     <menuitem label="&options_proxysocks4.label;" value="2"/>
                                     <menuitem label="&options_proxysocks5.label;" value="3"/>
                                     <menuitem label="&options_proxydirect.label;" value="4"/>
@@ -469,7 +471,7 @@
                                   <label control="SshPassword" value="&options_sshpassword.label;"/>
                                   <textbox id="SshPassword" type="password" bbsfoxDefaultValue=""/>
                                 </hbox>
-                                <hbox align="center">
+                                <hbox align="center" hidden="true">
                                   <label value=""/><label value=""/>
                                   <label value="&options_sshprivatekey.label;"/>
                                   <button label="&options_browse.label;" style="min-width: 12px;" oncommand="onSelectPrivateKey();"/>
@@ -659,14 +661,17 @@
                           </menupopup>
                         </menulist>
                       </hbox>
-                      <checkbox id="HokeyOpenThreadUrl" label="&options_hokeyopenthreadurl.label;" bbsfoxDefaultValue="false" hidden="true"/>
+                      <hbox align="center" id="HokeyOpenThreadUrlOpt" hidden="true">
+                        <checkbox id="HokeyOpenThreadUrl" label="&options_hokeyopenthreadurl.label;" bbsfoxDefaultValue="false"/>
+                        <label value="&options_onlyforpttsite.label;"/>
+                      </hbox>
                       <checkbox id="HokeyChangeColorTable" label="&options_hokeychangecolortable.label;" bbsfoxDefaultValue="false"/>
                     </vbox>
                   </tabpanel>
 
                   <tabpanel>
                     <vbox>
-                      <checkbox id="UseHttpContextMenu" label="&options_usehttpcontextmenu.label;" bbsfoxDefaultValue="true"/>
+                      <checkbox id="UseHttpContextMenu" label="&options_usehttpcontextmenu.label;" hidden="true" bbsfoxDefaultValue="true"/>
                       <checkbox id="UseSubMenuForSearchEngine" label="&options_usesubmenuforsearchengine.label;" hidden="true" bbsfoxDefaultValue="false"/>
                       <tabbox>
                         <tabs>
@@ -685,19 +690,19 @@
                               <checkbox id="OpenAllLinkMenu" label="&options_openalllinkmenu.label;" bbsfoxDefaultValue="false"/>
                               <checkbox id="CopyHtmlMenu" label="&options_copyhtmlmenu.label;" disabled="true" hidden="true" bbsfoxDefaultValue="false"/>
                               <checkbox id="ScreenKeyboardMenu" label="&options_screenkeyboardmenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="KeyWordTrackMenu" label="&options_keywordtrackmenu.label;" bbsfoxDefaultValue="false"/>
+                              <checkbox id="KeyWordTrackMenu" label="&options_keywordtrackmenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
                               <checkbox id="DelayPasteMenu" label="&options_delaypastemenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
                               <checkbox id="EasyReadingMenu" label="&options_easyreadingmenu.label;" bbsfoxDefaultValue="false"/>
                               <checkbox id="DownloadPostMenu" label="&options_downloadpostmenu.label;" bbsfoxDefaultValue="false"/>
                               <checkbox id="FileIoMenu" label="&options_fileiomenu.label;" bbsfoxDefaultValue="false"/>
                               <checkbox id="ChangeColorTableMenu" label="&options_changecolortablemenu.label;" bbsfoxDefaultValue="false"/>
                               <checkbox id="BlacklistMenu" label="&options_blacklistemenu.label;" bbsfoxDefaultValue="false"/>
-                              <hbox align="center">
-                                <checkbox id="PushThreadMenu" label="&options_pushthreadmenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
+                              <hbox align="center" id="PushThreadMenuOpt" hidden="true">
+                                <checkbox id="PushThreadMenu" label="&options_pushthreadmenu.label;" bbsfoxDefaultValue="false"/>
                                 <label value="&options_onlyforpttsite.label;"/>
                               </hbox>
-                              <hbox align="center">
-                                <checkbox id="OpenThreadUrlMenu" label="&options_openthreadurlmenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
+                              <hbox align="center" id="OpenThreadUrlMenuOpt" hidden="true">
+                                <checkbox id="OpenThreadUrlMenu" label="&options_openthreadurlmenu.label;" bbsfoxDefaultValue="false"/>
                                 <label value="&options_onlyforpttsite.label;"/>
                               </hbox>
                             </vbox>
@@ -821,8 +826,8 @@
                         <checkbox id="EasyReadingWithImg" label="&options_easyreadingwithimg.label;" bbsfoxDefaultValue="false"/>
                         <checkbox id="EasyReadingWithVideo" label="&options_easyreadingwithvideo.label;" bbsfoxDefaultValue="false"/>
                       </hbox>
-                      <checkbox id="UseKeyWordTrack" label="&options_usekeywordtrack.label;" bbsfoxDefaultValue="false"/>
-                      <checkbox id="KeyWordTrackCaseSensitive" label="&options_keywordtrackcasesensitive.label;" bbsfoxDefaultValue="true"/>
+                      <checkbox id="UseKeyWordTrack" label="&options_usekeywordtrack.label;" bbsfoxDefaultValue="false" hidden="true"/>
+                      <checkbox id="KeyWordTrackCaseSensitive" label="&options_keywordtrackcasesensitive.label;" bbsfoxDefaultValue="true" hidden="true"/>
                       <checkbox id="DeleteSpaceWhenCopy" label="&options_deletespacewhencopy.label;" bbsfoxDefaultValue="true"/>
                       <checkbox id="PreventNewTongWenAutoConv" label="&options_preventnewtongwenautoconv.label;" bbsfoxDefaultValue="true"/>
                       <groupbox>
@@ -1044,39 +1049,38 @@
             </hbox>
             <label value=""/>
 
-            <hbox>
-              <label value="&options_aboutnote4.label;"/>
-              <label value="&options_aboutnote5.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://code.google.com/p/pcmanfx/');" />
-              <label value="&options_aboutnote6.label;"/>
-            </hbox>
-            <label value="&options_aboutnote7.label;"/>
+            <label value="&options_aboutnote4.label;"/>
+            <label value="&options_aboutnote5.label;"/>
             <label value=""/>
 
+            <label value="&options_aboutnote6.label;"/>
+            <label value="&options_aboutnote7.label;"/>
             <label value="&options_aboutnote8.label;"/>
             <label value="&options_aboutnote9.label;"/>
             <label value="&options_aboutnote10.label;"/>
             <label value="&options_aboutnote11.label;"/>
             <label value="&options_aboutnote12.label;"/>
             <label value="&options_aboutnote13.label;"/>
-            <label value="&options_aboutnote14.label;"/>
-            <label value="&options_aboutnote15.label;"/>
             <label value=""/>
             <hbox>
-              <label value="&options_aboutnote16.label;"/>
-              <label value="&options_aboutnote17.label;"/>
-              <label value="&options_aboutnote21.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/179388/');" />
-              <label value="&options_aboutnote22.label;" style="color:#0000FF;" class="text-link" onclick="onLineSupport();" />
+              <label value="&options_aboutnote14.label;"/>
+              <label value="&options_aboutnote15.label;"/>
+              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/179388/');" />
+              <label value="&options_aboutnote20.label;" style="color:#0000FF;" class="text-link" onclick="onLineSupport();" />
+              <label value="&options_aboutnote21.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://github.com/ettoolong/BBSFox');" />
+              <label value="&options_aboutnote22.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://github.com/ettoolong/BBSFox-E10S');" />
             </hbox>
 
-            <label value="&options_aboutnote18.label;"/>
+            <label value="&options_aboutnote16.label;"/>
             <hbox>
-              <label value="&options_aboutnote5.label;"/>
-              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://code.google.com/p/pcmanfx/');" />
+              <label value="&options_aboutnote26.label;"/>
+              <label value="&options_aboutnote17.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://code.google.com/p/pcmanfx/');" />
+              <label value="&options_aboutnote17.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://github.com/pcman-bbs/pcman-firefox');" />
             </hbox>
 
             <hbox>
               <label value="&options_aboutnote23.label;"/>
-              <label value="&options_aboutnote20.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://cid-2e6c8f3d9767a9d7.skydrive.live.com/browse.aspx/.Public/pcmanfx');" />
+              <label value="&options_aboutnote18.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://cid-2e6c8f3d9767a9d7.skydrive.live.com/browse.aspx/.Public/pcmanfx');" />
             </hbox>
 
             <label value="&options_aboutnote24.label;"/>

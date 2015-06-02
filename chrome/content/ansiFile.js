@@ -8,8 +8,8 @@ AnsiFile.prototype = {
         //TODO: remove clipboard operation, paste data directly
         //FIXME: load file with different charset
         var text = this.ansi.convertStringToUTF8(data);
-        this.ansi.ansiClipboard(text);
-        this.ansi.paste();        
+        //this.ansi.ansiClipboard(text);
+        this.ansi.paste(text);        
     },
     
     savePage: function(saveMode) {
@@ -43,12 +43,13 @@ AnsiFile.prototype = {
 
     openTab: function() {
     	//TODO: need modify for E10S
-            var downloadArticle = this.listener.robot.downloadArticle;
-            var _this = this;
-            downloadArticle.finishCallback(function(data) {
-                _this.openNewTab(data);
-            });
-            downloadArticle.startDownloadEx(2);
+      var downloadArticle = this.listener.robot.downloadArticle;
+      var _this = this;
+      downloadArticle.finishCallback(function(data) {
+        //_this.openNewTab(data);
+        bbsfox.sendCoreCommand({command: "openEasyReadingTab", htmlData: data});
+      });
+      downloadArticle.startDownloadEx(2);
     },
 
     loadFile: function() {
@@ -106,38 +107,10 @@ AnsiFile.prototype = {
       bbsfox.sendCoreCommand({command: "openFilepicker",
                               title: null,
                               mode: nsIFilePicker.modeSave,
-                              defaultExtension:"html",
-                              defaultString: "newhtml",
+                              defaultExtension:defaultExtension,
+                              defaultString: defaultString,
                               appendFilters: appendFilters,
                               saveData: data,
                               convertUTF8: convertUTF8});
-    },
-
-    openNewTab: function(data) {
-    	//TODO: need modify for E10S
-    	/*
-      var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-      var filetmp = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("TmpD", Components.interfaces.nsIFile);
-      filetmp.append('easyreading.htm');
-      filetmp.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0666);
-      var ostream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-      ostream.init(filetmp, -1, -1, 0);
-      var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
-      converter.init(ostream, "UTF-8", 0, 0);
-      converter.writeString(data);
-      converter.flush();
-      converter.close();
-      var tempURI = ios.newFileURI(filetmp).spec;
-      try{
-        var win = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator).getMostRecentWindow("navigator:browser");
-        if(win)
-          win.gBrowser.loadOneTab(tempURI, null, 'UTF-8', null, true, false);
-        else
-          window.open(tempURI);
-      }
-      catch(e){
-      }
-      this.listener.tempFiles.push(filetmp);
-      */
     }
 };

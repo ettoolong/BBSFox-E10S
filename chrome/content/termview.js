@@ -1368,7 +1368,7 @@ TermView.prototype={
       }
     },
 
-    ChangeColorTable: function(){
+    changeColorTable: function(){
       if(this.colorTable == 0) {
         this.colorTable = 1;
       } else {
