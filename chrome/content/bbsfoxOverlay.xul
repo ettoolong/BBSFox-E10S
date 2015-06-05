@@ -20,12 +20,13 @@
 
   <menupopup id="contentAreaContextMenu">
     <menuitem id="context-openlinkincurrent" label="&openLinkCmdInCurrent.label;" accesskey="&openLinkCmdInCurrent.accesskey;" oncommand="ETT_BBSFOX_Overlay.openLinkInCurrent();"/>
-    <menuitem id="context-viewimage" label="&viewImageCmd.label;" accesskey="&viewImageCmd.accesskey;" oncommand="ETT_BBSFOX_Overlay.viewimage(event);" onclick="checkForMiddleClick(this, event);"/>
+    <menuitem id="context-viewimage" label="&viewImageCmd.label;" accesskey="&viewImageCmd.accesskey;" oncommand="ETT_BBSFOX_Overlay.viewimage(event);"/>
     <menuitem id="context-savepage" label="&savePageCmd.label;" accesskey="&savePageCmd.accesskey2;" oncommand="ETT_BBSFOX_Overlay.savePageAs();"/>
     <menuitem id="bbsfox_menu-ansiCopy" label="&menu_ansiCopy.label;" insertafter="context-copy" oncommand="ETT_BBSFOX_Overlay.copyAnsi();"/>
     <menuitem id="bbsfox_menu-openAllLink" label="&menu_openalllink.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.openAllLink();"/>
     <menuitem id="bbsfox_menu-previewPicture" label="&menu_previewpicture.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.previewPicture();"/>
     <menuitem id="bbsfox_menu-embeddedPlayer" label="&menu_embeddedplayer.label;" accesskey="Y" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.embeddedPlayer();"/>
+    <menuitem id="bbsfox_menu-ansiColorTool" label="&menu_ansicolortool.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.ansiColorTool();"/>
     <menuitem id="bbsfox_menu-screenKeyboard" label="&menu_screenkeyboard.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.screenKeyboard();"/>
 
     <menuitem id="bbsfox_menu-delayPaste" label="&menu_delaypaste.label;" oncommand="ETT_BBSFOX_Overlay.delayPasteText();"/>

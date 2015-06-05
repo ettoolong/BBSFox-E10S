@@ -123,6 +123,9 @@ var ETT_BBSFOX_Overlay =
       case "openEasyReadingTab":
         this.openEasyReadingTab(data.htmlData, message.target);
         break;
+      case "sendHttpRequest":
+        this.sendHttpRequest(data, message.target);
+        break;
       case "setTabFocus":
         //var tab = gBrowser.getTabForBrowser( message.target );
         //TODO: set tab focus.
@@ -243,8 +246,7 @@ var ETT_BBSFOX_Overlay =
       this.setItemVisible("dwhelper-snmenu", false);//for DownloadHelper add-on
 
       //this.setItemVisible("tongwen-context-menu", false);//for new tong wen tang add-on
-
-      if(!prefs.isOnPicWindow)
+      if(!prefs.mouseOnPicWindow)
       {
         //bbsfox menu - start
         if(prefs.embeddedPlayerMenu)
@@ -328,9 +330,12 @@ var ETT_BBSFOX_Overlay =
 
         this.setItemVisible("bbsfox_menu-copyHtml", prefs.copyHtmlMenu);
         this.setItemVisible("bbsfox_menu-screenKeyboard", !contextMenuInfo.isTextSelected && prefs.screenKeyboardMenu && !prefs.screenKeyboardOpened );
+        this.setItemVisible("bbsfox_menu-ansiColorTool", !contextMenuInfo.isTextSelected && prefs.ansiColorToolMenu && !prefs.ansiColorToolOpened );
         this.setItemVisible("bbsfox_menu-openAllLink", !contextMenuInfo.isTextSelected && prefs.openAllLinkMenu && prefs.haveLink );
 
-        var isPicLink = !(contextMenuInfo.linkURL.search(/\.(bmp|gif|jpe?g|png)$/i) == -1);
+        var isPicLink = false;
+        if(contextMenuInfo.onLink)
+          isPicLink = !(contextMenuInfo.linkURL.search(/\.(bmp|gif|jpe?g|png)$/i) == -1);
         this.setItemVisible("bbsfox_menu-previewPicture", prefs.previewPictureMenu && isPicLink);
         eventStatus.pictureUrl = contextMenuInfo.linkURL;
 
@@ -429,7 +434,7 @@ var ETT_BBSFOX_Overlay =
                    "bbsfox_menu-openAllLink", "bbsfox_menu-easyRead", "bbsfox_menu-downloadPost",
                    "bbsfox_menu-fileIo", "bbsfox_menu-mouseBrowsing", "bbsfox_menu-BgDisplay",
                    "bbsfox_menu-pushThread", "bbsfox_menu-openThreadUrl", "bbsfox_menu-changeColorTable",
-                   "bbsfox_menu-addToBlacklist", "bbsfox_menu-removeFromBlacklist"];
+                   "bbsfox_menu-addToBlacklist", "bbsfox_menu-removeFromBlacklist", "bbsfox_menu-ansiColorTool"];
       let itemsLength = items.length;
       for(let i = 0;i<itemsLength;++i) {
         this.setItemVisible(items[i], false);
@@ -438,7 +443,7 @@ var ETT_BBSFOX_Overlay =
 
   viewimage: function(event) {
     if(this.isOnBBSPage()) {
-      //TODO: open image in new tab
+      this.openNewTabs([gContextMenu.mediaURL], null, null, event.button==1);
     } else {
       gContextMenu.viewMedia(event);
     }
@@ -629,8 +634,42 @@ var ETT_BBSFOX_Overlay =
         tab.tempFiles.push(filetmp);
   },
 
+  sendHttpRequest: function(data, target) {
+    //ONLY process ppt.cc and imgur.com !
+    var PPTRegEx = /^(http:\/\/ppt\.cc\/).{4,6}$/i;
+    var ImgurRegEx = /^(https?:\/\/imgur\.com\/)(\w{5,8})(\?tags)?/i;
+    if(!ImgurRegEx.test(data.url) && !PPTRegEx.test(data.url))
+      return;
+    var xmlhttp = new XMLHttpRequest();
+    var onPageResponse = function (xhr) {
+      try
+      {
+        if(this.readyState ==4)
+        {
+          var info = this.info;
+          info.status = this.status;
+          info.responseText = this.responseText;
+          console.log(info.responseText);
+          var browserMM = this.target.messageManager;
+          browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayResponse",{info:info});
+          this.info = null;
+        }
+      }
+      catch(e)
+      {
+      	//error ?
+      }
+    };
+    xmlhttp.onreadystatechange = onPageResponse.bind(xmlhttp);
+    xmlhttp.open("GET", data.url, true);
+    if(!data.redirection)
+      xmlhttp.channel.QueryInterface(Components.interfaces.nsIHttpChannel).redirectionLimit = 0;
+    xmlhttp.info = data.info;
+    xmlhttp.target = target;
+    xmlhttp.send(null);
+  },
+
   cleanupTempFiles: function(files) {
-    console.log('overlay cleanupTempFiles');
     for(var i=0;i<files.length;++i) {
       files[i].remove(true);
     }
@@ -822,6 +861,10 @@ var ETT_BBSFOX_Overlay =
 
   screenKeyboard: function() {
     this.setBBSCmd("openSymbolInput");
+  },
+
+  ansiColorTool: function() {
+    this.setBBSCmd("openAnsiColorTool");
   },
 
   savePage: function() {

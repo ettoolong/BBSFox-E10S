@@ -690,6 +690,7 @@
                               <checkbox id="OpenAllLinkMenu" label="&options_openalllinkmenu.label;" bbsfoxDefaultValue="false"/>
                               <checkbox id="CopyHtmlMenu" label="&options_copyhtmlmenu.label;" disabled="true" hidden="true" bbsfoxDefaultValue="false"/>
                               <checkbox id="ScreenKeyboardMenu" label="&options_screenkeyboardmenu.label;" bbsfoxDefaultValue="true"/>
+                              <checkbox id="AnsiColorToolMenu" label="&options_ansicolortoolmenu.label;" bbsfoxDefaultValue="true"/>
                               <checkbox id="KeyWordTrackMenu" label="&options_keywordtrackmenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
                               <checkbox id="DelayPasteMenu" label="&options_delaypastemenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
                               <checkbox id="EasyReadingMenu" label="&options_easyreadingmenu.label;" bbsfoxDefaultValue="false"/>
@@ -896,6 +897,7 @@
                   <menuitem value='ETT_BBSFOX_Overlay.downloadPost(2);' label='&DOWNLOADPOSTHTML;'/>
                   <menuitem value='ETT_BBSFOX_Overlay.loadFile();' label='&LOADFILE;'/>
                   <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("switchSymbolInput");' label='&OPENSYMBOLINPUT;'/>
+                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("switchAnsiColorTool");' label='&OPENANSICOLORTOOL;'/>
                   <menuitem value='OpenEmbeddedPlayer' label='&OPENEP;'/>
                   <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("minimizeEmbeddedPlayer");' label='&MINEP;'/>
                   <menuitem value='OpenPictureViewer' label='&OPENPV;'/>

@@ -120,6 +120,7 @@ function bbsfoxPrefHandler(listener) {
       delayPasteMenu: false,
       copyHtmlMenu: false,
       screenKeyboardMenu: false,
+      ansiColorToolMenu: false,
       openAllLinkMenu: false,
       previewPictureMenu: false,
       easyReadingMenu: false,
@@ -137,6 +138,7 @@ function bbsfoxPrefHandler(listener) {
       haveLink: false,
       mouseOnPicWindow: false,
       screenKeyboardOpened: false,
+      ansiColorToolOpened: false,
       enableBackground: false,
       addToBlacklist: false,
       removeFromBlacklist: false,
@@ -545,6 +547,9 @@ bbsfoxPrefHandler.prototype={
         case "ScreenKeyboardMenu":
           _this.updateOverlayPrefs([{key:'screenKeyboardMenu', value:branch.getBoolPref(name)}]);
           break;
+        case "AnsiColorToolMenu":
+          _this.updateOverlayPrefs([{key:'ansiColorToolMenu', value:branch.getBoolPref(name)}]);
+          break;
         case "OpenAllLinkMenu":
           _this.updateOverlayPrefs([{key:'openAllLinkMenu', value:branch.getBoolPref(name)}]);
           break;
@@ -871,7 +876,7 @@ bbsfoxPrefHandler.prototype={
           anyChange = true;
         }
         if(anyChange) {
-        	//console.log('prefHandler updateEventPrefs');
+          //console.log('prefHandler updateEventPrefs');
           this.listener.sendCoreCommand({command: "updateEventPrefs", eventPrefs: this.eventPrefs});
         }
       }
@@ -889,7 +894,7 @@ bbsfoxPrefHandler.prototype={
           anyChange = true;
         }
         if(anyChange) {
-        	//console.log('prefHandler updateOverlayPrefs');
+          //console.log('prefHandler updateOverlayPrefs');
           this.listener.sendCoreCommand({command: "updateOverlayPrefs", overlayPrefs: this.overlayPrefs});
         }
       }

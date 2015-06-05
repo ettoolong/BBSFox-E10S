@@ -7,7 +7,8 @@
 <!ENTITY menu_ansicopy.label "彩色複製">
 <!ENTITY menu_embeddedplayer.label "在浮動視窗中顯示影片">
 <!ENTITY menu_previewpicture.label "顯示縮圖">
-<!ENTITY menu_screenkeyboard.label "開啟標點符號輸入窗">
+<!ENTITY menu_screenkeyboard.label "開啟符號輸入窗">
+<!ENTITY menu_ansicolortool.label "開啟色彩輸入工具">
 <!ENTITY menu_openalllink.label "開啟畫面上所有鏈結">
 <!ENTITY menu_easyread.label "好讀模式">
 <!ENTITY menu_pushthread.label "推文工具">
@@ -263,7 +264,8 @@
 <!ENTITY options_switchbgdisplaymenu.label "啟用 [背景圖片顯示切換] 項目">
 <!ENTITY options_openalllinkmenu.label "啟用 [開啟畫面上所有鏈結] 項目">
 <!ENTITY options_copyhtmlmenu.label "啟用 [複製成網頁] 項目">
-<!ENTITY options_screenkeyboardmenu.label "啟用 [開啟標點符號輸入窗] 項目">
+<!ENTITY options_screenkeyboardmenu.label "啟用 [開啟符號輸入窗] 項目">
+<!ENTITY options_ansicolortoolmenu.label "啟用 [開啟色彩輸入工具] 項目">
 <!ENTITY options_keywordtrackmenu.label "啟用 [追蹤關鍵字] 相關項目">
 <!ENTITY options_delaypastemenu.label "啟用 [每秒貼上一個字元] 項目">
 <!ENTITY options_easyreadingmenu.label "啟用 [好讀模式] 項目">
@@ -383,6 +385,7 @@
 <!ENTITY DOWNLOADPOSTHTML "下載文章(HTML)">
 <!ENTITY LOADFILE "載入檔案">
 <!ENTITY OPENSYMBOLINPUT "開啟符號輸入視窗／關閉符號輸入視窗">
+<!ENTITY OPENANSICOLORTOOL "開啟色彩輸入工具">
 <!ENTITY OPENEP "在浮動視窗中顯示影片">
 <!ENTITY CLOSEEP "關閉影片浮動視窗">
 <!ENTITY MINEP "最小化影片浮動視窗／還原影片浮動視窗">

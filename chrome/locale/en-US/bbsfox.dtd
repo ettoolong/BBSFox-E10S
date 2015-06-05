@@ -8,6 +8,7 @@
 <!ENTITY menu_embeddedplayer.label "Enable Embedded Player">
 <!ENTITY menu_previewpicture.label "Show Preview Image">
 <!ENTITY menu_screenkeyboard.label "Enable Punctuation Window">
+<!ENTITY menu_ansicolortool.label "Open Ansi Color Tool Window">
 <!ENTITY menu_openalllink.label "Open All Links">
 <!ENTITY menu_easyread.label "Easy Reading Mode">
 <!ENTITY menu_pushthread.label "Push Thread Tool">
@@ -263,7 +264,8 @@
 <!ENTITY options_switchbgdisplaymenu.label "Enable item [Background Image Display On/Off]">
 <!ENTITY options_openalllinkmenu.label "Enable item [Open All Links]">
 <!ENTITY options_copyhtmlmenu.label "Enable item [Save As HTML]">
-<!ENTITY options_screenkeyboardmenu.label "Enable item [Enable punctuation window]">
+<!ENTITY options_screenkeyboardmenu.label "Enable item [Enable Punctuation Window]">
+<!ENTITY options_ansicolortoolmenu.label "Enable item [Open Ansi Color Tool Window]">
 <!ENTITY options_keywordtrackmenu.label "Enable item [Keyword Pool]">
 <!ENTITY options_delaypastemenu.label "Enable item [Paste One Char Per Second]">
 <!ENTITY options_easyreadingmenu.label "Enable item [Easy Reading Mode]">
@@ -382,7 +384,8 @@
 <!ENTITY DOWNLOADPOSTANSI "Download post(Ansi Color)">
 <!ENTITY DOWNLOADPOSTHTML "Download post(HTML)">
 <!ENTITY LOADFILE "Load File">
-<!ENTITY OPENSYMBOLINPUT "Open Punctuation Window/Close Punctuation Window">
+<!ENTITY OPENSYMBOLINPUT "Open/Close Punctuation Window">
+<!ENTITY OPENANSICOLORTOOL "Open/Close Ansi Color Tool Window">
 <!ENTITY OPENEP "Enable embedded player">
 <!ENTITY CLOSEEP "Close embedded player">
 <!ENTITY MINEP "Minimize embedded player/Restore embedded player">

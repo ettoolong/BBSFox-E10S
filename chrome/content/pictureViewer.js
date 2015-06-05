@@ -41,7 +41,7 @@ function PictureViewer(bbscore) {
     closeBtn.setAttribute('height','14px');
     closeBtn.classList.add('extUI');
     closeBtn.classList.add('buttonUI');
-    closeBtn.classList.add('closePP');
+    closeBtn.classList.add('closeWindowBtn');
     closeBtn.onclick = function(e){
       if(e.button==0)
         bbsfox.picViewerMgr.closePictureViewer(this);
@@ -130,7 +130,7 @@ PictureViewer.prototype={
         //this.CmdHandler.setAttribute("DragingWindow", '1');
 
         this.CmdHandler.setAttribute("MaxZIndex", maxzindex);
-        this.prefs.updateOverlayPrefs([{key:'mouseOnPicWindow', value:true}]);
+        this.bbscore.prefs.updateOverlayPrefs([{key:'mouseOnPicWindow', value:true}]);
       }
     }
   },
@@ -156,13 +156,16 @@ PictureViewer.prototype={
   }
 };
 
-function PicViewerMgr(pptPicLoader, imgurPicLoader) {
+function PicViewerMgr(bbscore, extPicLoader) {
+  this.bbscore = bbscore;
   this.BBSWin = document.getElementById('BBSWindow');
   this.dragingWindow = null;
   this.pviewers=[];
   this.previewCount = 0;
-  this.pptPicLoader = pptPicLoader;
-  this.imgurPicLoader = imgurPicLoader;
+  //this.pptPicLoader = pptPicLoader;
+  //this.imgurPicLoader = imgurPicLoader;
+  this.extPicLoader = extPicLoader;
+  this.extPicLoader.setCallback("show", this.setPictureUrl.bind(this) );
 }
 
 PicViewerMgr.prototype={
@@ -171,11 +174,11 @@ PicViewerMgr.prototype={
     if(aurl=='')
       return;
 
-    if(this.pptPicLoader && this.pptPicLoader.show(aurl, this, this.setPictureUrl))
+    if(this.extPicLoader && this.extPicLoader.show(aurl, this))
       return;
 
-    if(this.imgurPicLoader && this.imgurPicLoader.show(aurl, this, this.setPictureUrl))
-      return;
+    //if(this.imgurPicLoader && this.imgurPicLoader.show(aurl, this, this.setPictureUrl))
+    //  return;
 
     if(aurl.search(/\.(bmp|gif|jpe?g|png)$/i) == -1)
       return;
@@ -189,7 +192,7 @@ PicViewerMgr.prototype={
   },
 
   setPictureUrl: function(owner, aurl) {
-    var pictureViewer = new PictureViewer();
+    var pictureViewer = new PictureViewer(this.bbscore);
     this.pviewers.push(pictureViewer);
 
     pictureViewer.viewerDiv.display = 'none';

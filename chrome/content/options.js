@@ -270,7 +270,7 @@ function BBSFoxOptions() {
                    'EPHtml5','KeepFontAspectRatio','KeyWordTrackCaseSensitive',
                    'HokeyChangeColorTable','ChangeColorTableMenu','FixUnicodeDisplay',
                    'HokeyForAnsiCopy','AnsiCopyMenu','EnableBlacklist',
-                   'BlacklistMenu'];
+                   'BlacklistMenu','AnsiColorToolMenu'];
 
   this.valueInte = ['ScreenType','HighlightBG','bbsbox.width',
                    'bbsbox.height','EnterType','FontSize',

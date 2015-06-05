@@ -77,6 +77,18 @@ span{margin: 0px;}
   cursor: default;
   display: block;
 }
+.ansiColorTool{
+  z-index: 3;
+  left: 10px;
+  top: 10px;
+  color: #000000;
+  background-color: #ffff99;
+  padding: 3px;
+  border: 0px double #cccccc;
+  border-radius: 8px;
+  cursor: default;
+  display: block;
+}
 .embedPlayer{
   z-index: 5;
   left: 10px;
@@ -95,7 +107,8 @@ span{margin: 0px;}
   border: 1px double #00ff00;
   cursor: default;
 }
-.closeSI {
+
+.closeWindowBtn {
   float: right;
   margin-top:0px;
   margin-left:0px;
@@ -103,211 +116,62 @@ span{margin: 0px;}
   margin-bottom:0px;
   border: 0px;
   padding: 1px 1px;
-  background-color: #bbbbff;
   background-repeat: no-repeat;
   cursor: default;
   background-image: url("chrome://bbsfox/skin/window_icon/close.png");
 }
 
-.closeSI:hover {
-  float: right;
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #bbbbff;
-  background-repeat: no-repeat;
-  cursor: default;
+.closeWindowBtn:hover {
   background-image: url("chrome://bbsfox/skin/window_icon/close-h.png");
 }
 
-.closeSI:active {
-  float: right;
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #bbbbff;
-  background-repeat: no-repeat;
-  cursor: default;
+.closeWindowBtn:active {
   background-image: url("chrome://bbsfox/skin/window_icon/close-a.png");
 }
 
-.EPbtn-min {
+.minWindowBtn {
   margin-top:0px;
   margin-left:0px;
   margin-right:0px;
   margin-bottom:0px;
   border: 0px;
   padding: 1px 1px;
-  background-color: #ffbbbb;
   background-repeat: no-repeat;
   cursor: default;
   background-image: url("chrome://bbsfox/skin/window_icon/min.png");
 }
 
-.EPbtn-min:hover {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #ffbbbb;
-  background-repeat: no-repeat;
-  cursor: default;
+.minWindowBtn:hover {
   background-image: url("chrome://bbsfox/skin/window_icon/min-h.png");
 }
 
-.EPbtn-min:active {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #ffbbbb;
-  background-repeat: no-repeat;
-  cursor: default;
+.minWindowBtn:active {
   background-image: url("chrome://bbsfox/skin/window_icon/min-a.png");
 }
 
-.EPbtn-close {
+.restoreWindowBtn {
   margin-top:0px;
   margin-left:0px;
   margin-right:0px;
   margin-bottom:0px;
   border: 0px;
   padding: 1px 1px;
-  background-color: #ffbbbb;
-  background-repeat: no-repeat;
-  cursor: default;
-  background-image: url("chrome://bbsfox/skin/window_icon/close.png");
-}
-
-.EPbtn-close:hover {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #ffbbbb;
-  background-repeat: no-repeat;
-  cursor: default;
-  background-image: url("chrome://bbsfox/skin/window_icon/close-h.png");
-}
-
-.EPbtn-close:active {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #ffbbbb;
-  background-repeat: no-repeat;
-  cursor: default;
-  background-image: url("chrome://bbsfox/skin/window_icon/close-a.png");
-}
-
-.EPbtn-restore {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #ffbbbb;
   background-repeat: no-repeat;
   cursor: default;
   background-image: url("chrome://bbsfox/skin/window_icon/restore.png");
 }
 
-.EPbtn-restore:hover {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #ffbbbb;
-  background-repeat: no-repeat;
-  cursor: default;
+.restoreWindowBtn:hover {
   background-image: url("chrome://bbsfox/skin/window_icon/restore-h.png");
 }
 
-.EPbtn-restore:active {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #ffbbbb;
-  background-repeat: no-repeat;
-  cursor: default;
+.restoreWindowBtn:active {
   background-image: url("chrome://bbsfox/skin/window_icon/restore-a.png");
-}
-
-.closePP {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #bbffbb;
-  background-repeat: no-repeat;
-  cursor: default;
-  background-image: url("chrome://bbsfox/skin/window_icon/close.png");
-}
-
-.closePP:hover {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #bbffbb;
-  background-repeat: no-repeat;
-  cursor: default;
-  background-image: url("chrome://bbsfox/skin/window_icon/close-h.png");
-}
-
-.closePP:active {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-color: #bbffbb;
-  background-repeat: no-repeat;
-  cursor: default;
-  background-image: url("chrome://bbsfox/skin/window_icon/close-a.png");
 }
 
 #PicturePreviewInfo{
   color : #fff;
   text-shadow: 0 0 1px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #0000ff,0 0 7px #0000ff,0 0 8px #0000ff,0 0 10px #0000ff,0 0 15px #0000ff;
-}
-
-#SymbolInput {
-  left: 10px;
-  top: 10px;
-  z-index: 3;
-  background-color: #bbbbff;
-  opacity: 0.75;
-  padding: 3px 3px 3px 3px;
-  border:0px double #cccccc;
-  border-radius:8px;
-  cursor: default;
 }
 
 #YoutubeWindow, #YoutubeWindow2 {

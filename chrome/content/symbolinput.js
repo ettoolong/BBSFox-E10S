@@ -113,15 +113,14 @@ SymbolInput.prototype={
     return newHbox;
   },
 
-  createBtn: function(btnParent, str)
+  createBtn: function(btnParent, cb)
   {
     var newBtn = document.createElementNS(XUL_NS, 'button');
     btnParent.appendChild(newBtn);
-    newBtn.addEventListener('click', this.btnSymClick.bind(this), false);
+    newBtn.addEventListener('click', cb, false);
     newBtn.classList.add('extUI');
     newBtn.classList.add('buttonUI');
     newBtn.classList.add('sBtn');
-    newBtn.label = str;
     newBtn.width = '10px';
     return newBtn;
   },
@@ -206,7 +205,7 @@ SymbolInput.prototype={
       closeBtn.setAttribute('height','14px');
       closeBtn.classList.add('extUI');
       closeBtn.classList.add('buttonUI');
-      closeBtn.classList.add('closeSI');
+      closeBtn.classList.add('closeWindowBtn');
       closeBtn.addEventListener('click', this.btnCloseClick.bind(this), false);
 
       var box3 = document.createElementNS(XUL_NS, 'hbox');
@@ -272,6 +271,7 @@ SymbolInput.prototype={
       this.buttonDiv = this.createPageDiv(clientDiv, 'buttonDiv', true);
       var vbox = this.createVbox(this.buttonDiv);
       var hbox;
+      var btnCb = this.btnSymClick.bind(this);
       for(var i=0;i<71;++i)
       {
         if(i%10==0)
@@ -281,7 +281,7 @@ SymbolInput.prototype={
           hbox.classList.add('dragUI');
           hbox.classList.add('nonspan');
         }
-        var newbtn = this.createBtn(hbox);
+        var newbtn = this.createBtn(hbox, btnCb);
         this.btns.push(newbtn);
         if(i<this.symbles[0].length)
           newbtn.label = this.symbles[0][i];

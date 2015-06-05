@@ -74,6 +74,7 @@ pref("extensions.bbsfox2.host_default.SwitchBgDisplayMenu", false);
 pref("extensions.bbsfox2.host_default.OpenAllLinkMenu", false);
 pref("extensions.bbsfox2.host_default.CopyHtmlMenu", false);
 pref("extensions.bbsfox2.host_default.ScreenKeyboardMenu", true);
+pref("extensions.bbsfox2.host_default.AnsiColorToolMenu", true);
 pref("extensions.bbsfox2.host_default.KeyWordTrackMenu", false);
 pref("extensions.bbsfox2.host_default.DelayPasteMenu", false);
 pref("extensions.bbsfox2.host_default.EasyReadingMenu", false);

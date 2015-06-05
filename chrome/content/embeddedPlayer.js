@@ -36,7 +36,7 @@ function EmbeddedPlayer(playerURL, showbtn, playerSize) {
     minBtn.setAttribute('height','14px');
     minBtn.classList.add('extUI');
     minBtn.classList.add('buttonUI');
-    minBtn.classList.add('EPbtn-min');
+    minBtn.classList.add('minWindowBtn');
     minBtn.onclick = function(e){
       if(e.button==0)
         bbsfox.playerMgr.minimizeEmbededPlayer(this);
@@ -53,7 +53,7 @@ function EmbeddedPlayer(playerURL, showbtn, playerSize) {
     closeBtn.setAttribute('height','14px');
     closeBtn.classList.add('extUI');
     closeBtn.classList.add('buttonUI');
-    closeBtn.classList.add('EPbtn-close');
+    closeBtn.classList.add('closeWindowBtn');
     closeBtn.onclick = function(e){
       if(e.button==0)
         bbsfox.playerMgr.closeEmbededPlayer(this);
@@ -175,7 +175,7 @@ function EmbeddedPlayer(playerURL, showbtn, playerSize) {
     restoreBtn.setAttribute('height','14px');
     restoreBtn.classList.add('extUI');
     restoreBtn.classList.add('buttonUI');
-    restoreBtn.classList.add('EPbtn-restore');
+    restoreBtn.classList.add('restoreWindowBtn');
 
     restoreBtn.onclick = function(e){
       if(e.button==0)
@@ -193,7 +193,7 @@ function EmbeddedPlayer(playerURL, showbtn, playerSize) {
     closeBtn2.setAttribute('height','14px');
     closeBtn2.classList.add('extUI');
     closeBtn2.classList.add('buttonUI');
-    closeBtn2.classList.add('EPbtn-close');
+    closeBtn2.classList.add('closeWindowBtn');
     closeBtn2.onclick = function(e){
       if(e.button==0)
         bbsfox.playerMgr.closeEmbededPlayer(this);

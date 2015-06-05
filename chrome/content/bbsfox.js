@@ -19,11 +19,15 @@ function BBSFox() {
     this.view = new TermView(80, 24);
     this.buf = new TermBuf(80, 24);
     this.playerMgr = new PlayerMgr();
-    this.pptPicLoader = new BBSPPTPicLoader(this);
-    this.imgurPicLoader = new BBSImgurPicLoader(this);
-    this.picViewerMgr = new PicViewerMgr(this.pptPicLoader, this.imgurPicLoader);
+    //this.pptPicLoader = new BBSPPTPicLoader(this);
+    //this.imgurPicLoader = new BBSImgurPicLoader(this);
+    this.extPicLoader = new ExtPicLoader(this);
+    this.extPicLoader.setCallback("load", this.showPicPreview.bind(this) );
+    this.extPicLoader.setCallback("locate", this.setPicLocation.bind(this) );
+    this.picViewerMgr = new PicViewerMgr(this, this.extPicLoader);
     this.bbsbg = new BBSBackground(this);
     this.symbolinput = new SymbolInput(this);
+    this.ansiColorTool = new AnsiColorTool(this);
     this.overlaycmd = new BBSOverlayCmdListener(this);
     this.buf.setView(this.view, this.prefs);
     this.buf.severNotifyStr=this.getLM('messageNotify');
@@ -1221,9 +1225,7 @@ BBSFox.prototype={
     mouse_down_init: function(event) {
       if(event.button == 2) {//right button
         this.lastEventTarget = event.originalTarget;
-        if(this.prefs.overlayPrefs.mouseOnPicWindow) {
-          this.prefs.updateOverlayPrefs([{key:'mouseOnPicWindow', value:false}]);
-        }
+        this.prefs.updateOverlayPrefs([{key:'mouseOnPicWindow', value:false}]);
       }
     },
 
@@ -1386,6 +1388,16 @@ BBSFox.prototype={
           return;
         }
       }
+      else if(this.ansiColorTool && this.ansiColorTool.dragingWindow)
+      {
+        dW = this.ansiColorTool.dragingWindow;
+        if(this.CmdHandler.getAttribute("DragingWindow")=='4') {
+          dW.mainDiv.style.left = dW.tempCurX + (event.pageX - dW.offX) + 'px';
+          dW.mainDiv.style.top = dW.tempCurY + (event.pageY - dW.offY) + 'px';
+          event.preventDefault();
+          return;
+        }
+      }
       //
       if(event.target.className)
       {
@@ -1421,8 +1433,7 @@ BBSFox.prototype={
             }
             else if(url)
             {
-              //check ppt url here!
-              if(!this.pptPicLoader.load(url) && !this.imgurPicLoader.load(url))
+              if(!this.extPicLoader.load(url))
                 this.view.pictureWindow.style.display = "none";
             }
           }
@@ -1447,7 +1458,7 @@ BBSFox.prototype={
       }
     },
 
-    showPicPreview:function(linkUrl, picUrl) {
+    showPicPreview: function(linkUrl, picUrl) {
       if(!this.view.hoverUrl)
         return;
       if(this.view.tempUrl != linkUrl)

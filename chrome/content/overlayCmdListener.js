@@ -91,6 +91,14 @@ BBSOverlayCmdListener.prototype={
             if(bbscore.symbolinput)
               bbscore.symbolinput.switchWindow();
             break;
+          case "openAnsiColorTool":
+            if(bbscore.ansiColorTool)
+              bbscore.ansiColorTool.displayWindow();
+            break;
+          case "switchAnsiColorTool":
+            if(bbscore.ansiColorTool)
+              bbscore.ansiColorTool.switchWindow();
+            break;
           case "doSavePage":
             bbscore.doSavePage();
             break;
