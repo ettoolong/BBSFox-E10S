@@ -114,7 +114,7 @@ AnsiColorTool.prototype={
     if(this.previewStr=='')
       this.previewStr = this.bbscore.getLM('preview');
 
-    var str = ''
+    var str = '';
     str +='<span class="extUI dragUI nonspan previewText q' + this.fg + ' b' + this.bg + '">'+ (this.blink?'<x s="q'+ this.fg + ' b'+ this.bg + '" h="qq'+ this.bg + '"></x>':'');
     str += this.previewStr;
     str += '</span>';
@@ -256,11 +256,6 @@ AnsiColorTool.prototype={
       this.checkbox.addEventListener('CheckboxStateChange', this.checkboxClick.bind(this), false);
       box3.appendChild(this.checkbox);
 
-      var colorTable=['#000000','#800000','#008000','#808000',
-                      '#000080','#800080','#008080','#c0c0c0',
-                      '#808080','#ff0000','#00ff00','#ffff00',
-                      '#0000ff','#ff00ff','#00ffff','#ffffff'];
-
       var clientDiv = document.createElementNS(XUL_NS, 'div');
       box1.appendChild(clientDiv);
 
@@ -282,7 +277,7 @@ AnsiColorTool.prototype={
         newbtn.label = '\u2588';
         newbtn.width = '10px';
         newbtn.setAttribute('colorIndex', i);
-        newbtn.style.color = colorTable[i];
+        newbtn.classList.add('q'+i);
       }
 
       var box4 = document.createElementNS(XUL_NS, 'hbox');
@@ -318,7 +313,7 @@ AnsiColorTool.prototype={
         newbtn.label = '\u2588';
         newbtn.width = '10px';
         newbtn.setAttribute('colorIndex', i);
-        newbtn.style.color = colorTable[i];
+        newbtn.classList.add('q'+i);
       }
       var previewDiv = document.createElementNS(XUL_NS, 'div');
       this.previewDiv = previewDiv;

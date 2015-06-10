@@ -201,8 +201,9 @@ BBSOverlayCmdListener.prototype={
             bbscore.removeFromBlacklist();
             break;
           case "loginInfoReady":
+            // Check AutoLogin Stage
             bbscore.robot.initialAutoLogin(data.result);
-            bbscore.connect();
+            bbscore.connect(data.result.ssh, data.hostkeys);
             break;
           case "sendCodeStr":
             bbscore.sendCodeStr(data.codeStr, 0);

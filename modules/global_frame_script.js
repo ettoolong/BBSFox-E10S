@@ -64,9 +64,16 @@ if(regSsh || regTelnet) {
   }
   
   {
+    //TODO: need fix, if bbsfoxBg directory not exists!
     Components.utils.import("resource://gre/modules/osfile.jsm");
-    let ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService)
+    let ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
     let resource = ios.getProtocolHandler("resource").QueryInterface(Components.interfaces.nsIResProtocolHandler);
+    let dir = OS.Path.join(OS.Constants.Path.profileDir, 'bbsfoxBg');
+    try{
+      OS.File.makeDir(dir);
+    } catch(ex) {
+      
+    }
     let alias = ios.newURI( OS.Path.toFileURI( OS.Path.join(OS.Constants.Path.profileDir, 'bbsfoxBg', 'bbsfox') ), null, null);
     resource.setSubstitution("bbsfox2", alias);
   }

@@ -157,8 +157,8 @@ BBSFox.prototype={
       onEvent: function(e){ }
     },
 
-    connect: function() {
-        this.conn.connect(document.location.hostname, document.location.port ? document.location.port : BBSFOX_DEFAULT_PORT);
+    connect: function(extData, hostkeys) {
+        this.conn.connect(document.location.hostname, document.location.port ? document.location.port : BBSFOX_DEFAULT_PORT, extData, hostkeys);
     },
 
     symbtnclick: function(e){

@@ -15,7 +15,8 @@ var ETT_BBSFOX_Overlay =
   ellipsis : "\u2026",
   consoleService: Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
   ioService : Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService),
-
+  os: Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS,
+  //WINNT, Linux, Darwin
   init: function() {
     //var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
     //this.FXVersion = parseFloat(appInfo.version);
@@ -125,6 +126,9 @@ var ETT_BBSFOX_Overlay =
         break;
       case "sendHttpRequest":
         this.sendHttpRequest(data, message.target);
+        break;
+      case "saveHostkey":
+        this.saveHostkey(data);
         break;
       case "setTabFocus":
         //var tab = gBrowser.getTabForBrowser( message.target );
@@ -515,6 +519,16 @@ var ETT_BBSFOX_Overlay =
     browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
   },
 
+  initLocalFile: function(path) {
+    try {
+      var file = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+      file.initWithPath(path);
+      return file;
+    } catch (ex) {
+      return null;
+    }
+  },
+
   writePrefs: function(branchName, name, vtype, value) {
     var prefs = Components.classes["@mozilla.org/preferences-service;1"]
                .getService(Components.interfaces.nsIPrefService)
@@ -533,7 +547,6 @@ var ETT_BBSFOX_Overlay =
   },
 
   loadAutoLoginInfo: function(querys, target) {
-    //TODO: load auto login info, send a message to tab(set ready status to start connection)
     var result = {};
     for(var i=0;i<querys.length;++i){
       try{
@@ -547,7 +560,95 @@ var ETT_BBSFOX_Overlay =
         result[querys[i].protocol] = { userName: '', password: '' };
       }
     }
-    this.setBBSCmdEx({command: "loginInfoReady", result: result}, target);
+    if(result.ssh) {
+      var file;
+      var host_keys = '';
+      var key_entries = [];
+      if(this.os == 'WINNT') {
+        file = Components.classes["@mozilla.org/file/directory_service;1"].createInstance(Components.interfaces.nsIProperties)
+                                     .get("ProfD", Components.interfaces.nsILocalFile);
+        file.append("known_hosts");
+        host_keys = file.path;
+      } else {
+        if(!this.initLocalFile('~/.ssh').exists()){
+          var dir  = this.initLocalFile('~/.ssh');
+          try {
+            dir.create(Components.interfaces.nsILocalFile.DIRECTORY_TYPE, 0700);
+            //overrideOSXQuarantine - start
+            if (this.os == 'Darwin') {// since when is mac so vista-like?
+              //  For reviewer:
+              //  Question: Why we need these code using 'Components.interfaces.nsIProcess' ?
+              //    we save ssh-rsa fingerprint in ~/.ssh/known_hosts
+              //    and we need bypassing Gatekeeper on the Mac OS
+              //    by execute xattr -d com.apple.quarantine ~/.ssh/known_hosts
+              //
+              //  See reference: http://www.bu.edu/infosec/howtos/bypass-gatekeeper-safely/
+              //  These code from another Firefox Add-on: FireSSH
+              //  See: https://addons.mozilla.org/zh-tw/firefox/addon/firessh/
+              //  source code: firessh/chrome/firessh.jar/content/js/etc/localfile.js
+              var command = this.init("/bin/sh");
+              var args = ["-c", "/usr/bin/xattr -d com.apple.quarantine " + dir.path];
+              var process = Components.classes['@mozilla.org/process/util;1'].createInstance(Components.interfaces.nsIProcess);
+              process.init(command);
+              process.run(true, args, args.length, {});
+              //overrideOSXQuarantine - end
+            }
+          } catch(ex) {
+          }
+        }
+        host_keys = '~/.ssh/known_hosts';
+      }
+      file = this.initLocalFile(host_keys);
+      if (!file.exists()) {
+        key_entries = [];
+        //return;
+      } else {
+        var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+        fstream.init(file, -1, 0, 0);
+
+        var charset = "UTF-8";
+        var is = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
+        is.init(fstream, charset, 1024, 0xFFFD);
+        is.QueryInterface(Components.interfaces.nsIUnicharLineInputStream);
+        var line = {};
+        var cont;
+        do {
+          line = {};
+          cont = is.readLine(line);
+          line = line.value.trim();
+          if (!line.length || line[0] == '#') {
+            continue;
+          }
+          key_entries.push(line);
+          // Now you can do something with line.value
+        } while (cont);
+        if (Components) {
+          is.close();
+        }
+      }
+
+    }
+    this.setBBSCmdEx({command: "loginInfoReady", result: result, hostkeys: key_entries}, target);
+  },
+  
+  saveHostkey: function(data) {
+    var file;
+    var host_keys = '';
+    if(this.os == 'WINNT') {
+      file = Components.classes["@mozilla.org/file/directory_service;1"].createInstance(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsILocalFile);
+      file.append("known_hosts");
+      host_keys = file.path;
+    } else {
+      host_keys = '~/.ssh/known_hosts';
+    }
+    file = this.initLocalFile(host_keys);
+    var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+    foStream.init(file, 0x02 | 0x08 | 0x20, 0644, 0);
+    var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+    converter.init(foStream, "UTF-8", 0, 0);
+
+    converter.writeString(data.saveData);
+    converter.close();
   },
 
   openFilepicker: function(data, target) {
@@ -657,7 +758,7 @@ var ETT_BBSFOX_Overlay =
       }
       catch(e)
       {
-      	//error ?
+        //error ?
       }
     };
     xmlhttp.onreadystatechange = onPageResponse.bind(xmlhttp);

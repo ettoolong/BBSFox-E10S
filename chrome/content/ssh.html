@@ -15,12 +15,84 @@
     <link rel="stylesheet" type="text/css" id="ColorCSS" href="chrome://bbsfox/skin/color.css"/>
     <link rel="stylesheet" type="text/css" id="ColorFix" href="chrome://bbsfox/skin/color-normal.css"/>
     <title></title>
-    <script type="text/javascript" src="chrome://bbsfox/content/mainpage.js"></script>
+    <!--SSH script start-->
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/common.js"></script>
+
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/kryptos.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Cipher/AES.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Cipher/Blowfish.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Cipher/DES3.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Cipher/ARC4.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Hash/baseHash.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Hash/SHA.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Hash/SHA256.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Hash/MD5.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Hash/HMAC.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/PublicKey/RSA.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/PublicKey/DSA.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Random/_UserFriendlyRNG.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Random/Fortuna/SHAd256.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Random/Fortuna/FortunaAccumulator.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Random/Fortuna/FortunaGenerator.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kryptos/Random/OSRNG/browser.js"></script>
+
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/python_shim.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/BigInteger.js"></script>
+
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/agent.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/auth_handler.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/ber.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/channel.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/client.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/compress.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/dsskey.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/file.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/hostkeys.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kex_gex.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kex_group1.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/kex_group14.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/message.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/packet.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/pkey.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/rsakey.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/sftp_attr.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/sftp_client.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/sftp_file.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/sftp.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/ssh_exception.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/transport.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/unknown_key.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/util.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/paramikojs/win_pageant.js"></script>
+    <!--SSH script end-->
+
+    <script type="text/javascript" src="chrome://bbsfox/content/mainpage2.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/stringutil.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/aidhandler.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/symbolTable.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/asciiTable.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ctrlTable.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ssh.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/alertService.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/termview.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/termbuf.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ansiparser.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ansiColor.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ansiFile.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/robot.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/symbolinput.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/ansiColorTool.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/embeddedPlayer.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/pictureViewer.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/browserutils.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/bbsbackground.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/prefhandler.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/overlayCmdListener.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/extPicLoader.js"></script>
     <script type="text/javascript" src="chrome://bbsfox/content/bbsfox.js"></script>
   </head>
   <body id='topwin'>
-    SSH
-<!--    <div id='BBSBackgroundImage' style="z-index:0;position:absolute;left:0px;top:0px;"></div>
+    <div id='BBSBackgroundImage' style="z-index:0;position:absolute;left:0px;top:0px;"></div>
     <div id='BBSWindow'>
       <input id="t" type="text" style="border: none; width: 200px; height: 24px; position:absolute; left:-10000px; top:0px; z-index:2;resize: none;" autofocus/>
       <div id='cursorDiv' class='main' style='z-index:1;'>
@@ -38,11 +110,11 @@
         <span id="PicturePreviewInfo" style="position: absolute;left:5px;top:5px;z-index:5;display:none;"></span>
       </div>
 
-    </div>
+    </div> <!--BBSWindow end-->
     <div id="BBSFoxFontTest" style="left:-10000px; top:-10000px;position: absolute;overflow: hidden;"></div>
     <div id="hideobj" style="display: none;">
       <span id="cmdHandler"></span>
       <div id="TrackKeyWordList"></div>
-    </div>-->
+    </div>
   </body>
 </html>
