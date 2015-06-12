@@ -212,12 +212,14 @@ BBSOverlayCmdListener.prototype={
             bbscore.sendCodeStr(data.codeStr, 0);
             bbscore.sendCodeStr(data.codeStr2, 0);
             break;
+          case "skipMouseClick":
+            bbscore.CmdHandler.setAttribute('SkipMouseClick','1');
+            break;
           case "setAlert":
             //bbscore.view.showAlertMessageEx(false, true, false, data.alertMessage);
             //alert(param);
             break;
           case "contextmenu":
-            console.log("contextmenu");
             var evt = document.createEvent("MouseEvents");//fire event !
                 evt.initMouseEvent("contextmenu", true, true, document.defaultView, 0,
                                     data.screenX, data.screenY, data.clientX, data.clientY,

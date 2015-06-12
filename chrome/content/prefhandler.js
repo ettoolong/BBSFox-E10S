@@ -105,6 +105,7 @@ function bbsfoxPrefHandler(listener) {
       hokeyForPaste : false,
       hokeyForMouseBrowsing: false,
       useHttpContextMenu: true,
+      useMouseBrowsing: true,
       result: true
     };
     this.overlayPrefs = {
@@ -165,16 +166,7 @@ bbsfoxPrefHandler.prototype={
           _this.updateEventPrefs([{key:'mouseWheelFunc3', value:branch.getIntPref(name)}]);
           break;
         case "UseMouseBrowsing":
-          if(branch.getBoolPref(name))
-          {
-            bbsCore.CmdHandler.setAttribute('useMouseBrowsing', '1');
-            _this.useMouseBrowsing=true;
-          }
-          else
-          {
-            bbsCore.CmdHandler.setAttribute('useMouseBrowsing', '0');
-            _this.useMouseBrowsing=false;
-          }
+          _this.useMouseBrowsing=branch.getBoolPref(name);
           if(!_this.useMouseBrowsing) {
             bbsCore.buf.BBSWin.style.cursor = 'auto';
             bbsCore.buf.clearHighlight();
@@ -187,6 +179,7 @@ bbsfoxPrefHandler.prototype={
           bbsCore.buf.resetMousePos();
           bbsCore.view.update(true);
           bbsCore.view.updateCursorPos();
+          _this.updateEventPrefs([{key:'useMouseBrowsing', value:_this.useMouseBrowsing}]);
           break;
         case "MouseBrowsingHighlight":
           _this.highlightCursor=branch.getBoolPref(name);

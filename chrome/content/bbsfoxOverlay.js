@@ -750,7 +750,6 @@ var ETT_BBSFOX_Overlay =
           var info = this.info;
           info.status = this.status;
           info.responseText = this.responseText;
-          console.log(info.responseText);
           var browserMM = this.target.messageManager;
           browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayResponse",{info:info});
           this.info = null;
@@ -1076,20 +1075,16 @@ var ETT_BBSFOX_Overlay =
     //oldReduce: null,
     os: Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS,
 
-    /*
-    //TODO: call frame-script to do this.
-    loadpptPic: function(doc) {
-    },
-
-    insertPicLine: function(anode, imageurl) {
-    },
-    */
-
     mouse_down: function(event) {
-      if(event.button==2)
+      if(event.button==2) {
         this.MouseRBtnDown = true;
-      else if(event.button==0)
+        var eventStatus = this.owner.getEventStatus();
+        if(eventStatus) {
+          eventStatus.doDOMMouseScroll = false;
+        }
+      } else if(event.button==0) {
         this.MouseLBtnDown = true;
+      }
     },
 
     mouse_up: function(event) {
@@ -1147,7 +1142,7 @@ var ETT_BBSFOX_Overlay =
         if(!prefs || !prefs.result)
           return;
 
-        var linkedBrowser;
+        //var linkedBrowser;
         var eventStatus = this.owner.getEventStatus();
         var mouseWheelFunc2 = (prefs.mouseWheelFunc2!=0);
         if(mouseWheelFunc2) {
@@ -1155,7 +1150,7 @@ var ETT_BBSFOX_Overlay =
           if(eventStatus.doDOMMouseScroll) {
             event.stopPropagation();
             event.preventDefault();
-            eventStatus.doDOMMouseScroll = false;
+            //eventStatus.doDOMMouseScroll = false;
           } else {
             if(this.os == 'WINNT') {
               //do nothing...
@@ -1302,9 +1297,9 @@ var ETT_BBSFOX_Overlay =
             eventStatus.doDOMMouseScroll = true;
           if(this.MouseLBtnDown && useMouseWheelFunc3) {
             //TODO: fix this, tell content page skip this mouse click.
-            //if(cmdhandler.getAttribute('useMouseBrowsing')=='1') {
-            //  cmdhandler.setAttribute('SkipMouseClick','1');
-            //}
+            if(prefs.useMouseBrowsing) {
+              owner.setBBSCmd("skipMouseClick");
+            }
           }
 
         }
@@ -1357,17 +1352,8 @@ var ETT_BBSFOX_Overlay =
         }
     },
 
-    /*
-    TODO: handle read easy-reading Html file, try load ppt and imgur image.
-    doc_load: function(event) {
-    },
-    */
-
     init: function(owner) {
       this.owner = owner;
-
-      //this.pptPicLoader = new BBSPPTPicLoader(null);
-      //this.imgurPicLoader = new BBSImgurPicLoader(null);
 
       var eventMap = this.owner.eventMap;
       eventMap.set('DOMMouseScroll', this.mouse_scroll.bind(this));
@@ -1375,8 +1361,6 @@ var ETT_BBSFOX_Overlay =
       eventMap.set('mousedown', this.mouse_down.bind(this));
       eventMap.set('mouseup', this.mouse_up.bind(this));
       eventMap.set('keypress', this.key_press.bind(this));
-      //eventMap.set('input', this.text_input.bind(this));
-      //eventMap.set('load', this.doc_load.bind(this));
 
       window.addEventListener('DOMMouseScroll', eventMap.get('DOMMouseScroll'), true);
       gBrowser.addEventListener("contextmenu", eventMap.get('contextmenu'), true);
@@ -1384,8 +1368,6 @@ var ETT_BBSFOX_Overlay =
       gBrowser.addEventListener("mousedown", eventMap.get('mousedown'), true);
       gBrowser.addEventListener('mouseup', eventMap.get('mouseup'), true);
       gBrowser.addEventListener("keypress", eventMap.get('keypress'), true);
-      //gBrowser.addEventListener("input", eventMap.get('input'), true);
-      //gBrowser.addEventListener("load", eventMap.get('load'), true);
     },
 
     release: function() {
@@ -1397,8 +1379,6 @@ var ETT_BBSFOX_Overlay =
       gBrowser.removeEventListener("mousedown", eventMap.get('mousedown'), true);
       gBrowser.removeEventListener('mouseup', eventMap.get('mouseup'), true);
       gBrowser.removeEventListener('keypress', eventMap.get('keypress'), true);
-      //gBrowser.removeEventListener('input', eventMap.get('input'), true);
-      //gBrowser.removeEventListener('load', eventMap.get('load'), true);
     }
   }
 };

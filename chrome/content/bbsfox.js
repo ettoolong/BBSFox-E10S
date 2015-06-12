@@ -744,14 +744,9 @@ BBSFox.prototype={
     },
 
     switchMouseBrowsing: function() {
-      if(this.CmdHandler.getAttribute("useMouseBrowsing")=='1')
-      {
-        this.CmdHandler.setAttribute("useMouseBrowsing", '0');
+      if(this.prefs.useMouseBrowsing) {
         this.prefs.useMouseBrowsing=false;
-      }
-      else
-      {
-        this.CmdHandler.setAttribute("useMouseBrowsing", '1');
+      } else {
         this.prefs.useMouseBrowsing=true;
       }
 
@@ -772,6 +767,7 @@ BBSFox.prototype={
         this.view.updateCursorPos();
       }
       this.view.showAlertMessageEx(false, true, false, this.prefs.useMouseBrowsing?this.getLM('mouseBrowseOn'):this.getLM('mouseBrowseOff'));
+      this.prefs.updateEventPrefs([{key:'useMouseBrowsing', value:this.prefs.useMouseBrowsing}]);
     },
 
     switchBgDisplay: function() {
@@ -869,6 +865,9 @@ BBSFox.prototype={
         }
       } else {
         this.FrameScriptCb = cb;
+        this.prefs.updateEventPrefs(); //force update
+        this.prefs.updateOverlayPrefs(); //force update
+        this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.overlayPrefs.tabIcon});
       }
     },
 
