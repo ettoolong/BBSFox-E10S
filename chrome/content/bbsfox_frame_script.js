@@ -13,12 +13,14 @@ addMessageListener("bbsfox@ettoolong:bbsfox-overlayEvent",
   function(message) {
     var bbscore = content.bbsfox;
     if(bbscore) {
-      bbscore.setFrameScript( function(command, async){
+      var init = bbscore.setFrameScript( function(command, async){
         if(!async)
           return sendSyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", command);
         else
           return sendAsyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", command);
       }.bind(this));
+      if(init)
+        bbscore.setSelectStatus(message.data.selected);
     } else {
       sendSyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", {command:"removePrefs"});
     }

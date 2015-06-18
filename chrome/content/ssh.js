@@ -244,9 +244,7 @@ ConnectCore.prototype={
         {
           this.listener.resetUnusedTime();
           if(!s.length) return;
-          //this.outputStream.write(s, s.length);
-          //this.outputStream.flush();
-          this.send(str);
+          this.shell.send(s);
         }
     },
 
@@ -254,6 +252,7 @@ ConnectCore.prototype={
         if(!this.inputStream || this.blockSend) return;
         if(this.listener)
         {
+          this.listener.resetUnusedTime();
           this.shell.send(str);
         }
     },

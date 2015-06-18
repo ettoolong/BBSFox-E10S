@@ -107,7 +107,7 @@ TermChar.prototype={
     getAidc: function() {
         return this.aidc;
     }
-}
+};
 
 function TermHtml() {
     this.html='';
@@ -135,7 +135,7 @@ TermHtml.prototype={
     //getHtml: function() {
     //    return this.html.join('');
     //}
-}
+};
 
 function TermBuf(cols, rows) {
     this.cols=cols;
@@ -206,7 +206,7 @@ TermBuf.prototype={
     aidWithBoardNameRegEx2: /\u203B\u0020\u005B\u672C\u6587\u8F49\u9304\u81EA\u0020(\w{2,12})\u0020\u770B\u677F\u0020(#[\w\-]{8})/,
     //aidWithBoardNameRegEx2: /\u203B\u0020\u005B\u672C\u6587\u8F49\u9304\u81EA\u0020(\w{2,11})\u0020\u770B\u677F\u0020(#[a-zA-Z0-9]{8})\u0020\u005D/,
     //uriRegEx: /http:\/\/www\.youtube\.com\/watch\?v=([A-Za-z0-9._%-]*)/ig,
-    pttThreadRegEx: /^http:\/\/www\.ptt\.cc\/bbs\/([A-Za-z0-9\._%-]*)\/([A-Za-z0-9\._%-]*)\.html/ig,
+    pttThreadRegEx: /^https?:\/\/www\.ptt\.cc\/bbs\/([A-Za-z0-9\._%-]*)\/([A-Za-z0-9\._%-]*)\.html/ig,
 
     onResize: function(newcols, newrows) {
         if(newcols>=65535) newcols=65535;
@@ -345,14 +345,7 @@ TermBuf.prototype={
             var ch=str[i];
             switch(ch) {
             case '\x07':
-                // FIXME: beep (1)Sound (2)AlertNotification (3)change icon
-
-                var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                   .getService(Components.interfaces.nsIWindowMediator);
-                var recentWindow = wm.getMostRecentWindow("navigator:browser");
-                if(!recentWindow)
-                  continue;
-                if(recentWindow.content.document==document && this.prefs.notifyWhenBackground)
+                if(bbsfox.selectStatus && this.prefs.notifyWhenBackground)
                   continue;
                 if(this.prefs.notifyShowContent)
                   this.view.showAlertMessageEx(false, this.prefs.notifyByMessage, this.prefs.notifyBySound, "");
@@ -595,7 +588,7 @@ TermBuf.prototype={
                             line[uri[0]].fullurl=u;
                             this.openThreadUrl = 2;
                             this.view.conn.backgroundSend(' ');
-                            bbsfox.gBrowser.loadOneTab(u, null, document.characterSet, null, true, false);
+                            bbsfox.sendCoreCommand({command: "openNewTabs", charset: this.prefs.charset, ref: null, loadInBg: true, urls:[u]});
                         }
                         else
                         {
@@ -1640,4 +1633,4 @@ TermBuf.prototype={
       tmp = '\xa5\xbb\xac\xdd\xaa\x4f\xa5\xd8\xab\x65\xa4\xa3\xb4\xa3\xa8\xd1\xa4\xe5\xb3\xb9\xba\xf4\xa7\x7d';
       this.PTTZSTR0=this.conv.convertStringToUTF8(tmp, this.prefs.charset, true, true);
     }
-}
+};

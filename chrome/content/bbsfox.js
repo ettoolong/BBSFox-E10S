@@ -853,6 +853,10 @@ BBSFox.prototype={
       this.sendCoreCommand({command: "updateTabIcon", icon: icon});
     },
 
+    setSelectStatus: function(selectStatus) {
+      this.selectStatus = selectStatus;
+    },
+
     setFrameScript: function(cb) {
       if(!this.FrameScriptCb) {
         //Update Overlay Prefs and Event Prefs
@@ -863,11 +867,13 @@ BBSFox.prototype={
           this.loadLoginData();
         } else {
         }
+        return true;
       } else {
         this.FrameScriptCb = cb;
         this.prefs.updateEventPrefs(); //force update
         this.prefs.updateOverlayPrefs(); //force update
         this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.overlayPrefs.tabIcon});
+        return false;
       }
     },
 

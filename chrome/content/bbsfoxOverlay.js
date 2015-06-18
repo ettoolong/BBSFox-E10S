@@ -20,6 +20,14 @@ var ETT_BBSFOX_Overlay =
   init: function() {
     //var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
     //this.FXVersion = parseFloat(appInfo.version);
+    var as = Components.classes["@mozilla.org/alerts-service;1"];
+    try {
+      this.alertsService = as.getService(Components.interfaces.nsIAlertsService);
+    } catch(error) {
+      this.alertsService = null;
+    }
+    this.soundService = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+    
     var eventMap = new Map();
     this.eventMap = eventMap;
     //add event to map - start
@@ -99,9 +107,9 @@ var ETT_BBSFOX_Overlay =
           delete gBrowser.getTabForBrowser( message.target ).eventPrefs;
         if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
           delete gBrowser.getTabForBrowser( message.target ).overlayPrefs;
-        gBrowser.getTabForBrowser( message.target ).eventStatus = {
-          doDOMMouseScroll: false
-        };
+          gBrowser.getTabForBrowser( message.target ).eventStatus = {
+            doDOMMouseScroll: false
+          };
         break;
       case "updateTabIcon":
         gBrowser.getTabForBrowser( message.target ).image = message.data.icon;
@@ -131,8 +139,13 @@ var ETT_BBSFOX_Overlay =
         this.saveHostkey(data);
         break;
       case "setTabFocus":
-        //var tab = gBrowser.getTabForBrowser( message.target );
-        //TODO: set tab focus.
+        this.setTabFocus(message.target);
+        break;
+      case "showNotifyMessage":
+        this.showNotifyMessage(data, message.target);
+        break;
+      case "fireNotifySound":
+        this.fireNotifySound();
         break;
       default:
         break;
@@ -151,6 +164,9 @@ var ETT_BBSFOX_Overlay =
 
   getEventStatus: function() {
     //status
+    if(!gBrowser.mCurrentTab.eventStatus){
+      gBrowser.mCurrentTab.eventStatus = {doDOMMouseScroll: false};
+    }
     return gBrowser.mCurrentTab.eventStatus;
   },
 
@@ -486,18 +502,25 @@ var ETT_BBSFOX_Overlay =
 
   tabClose : function (event) {
     if(event.target.tempFiles) {
-      this.cleanupTempFiles(event.target.tempFiles);
+      try{
+        this.cleanupTempFiles(event.target.tempFiles);
+      } catch (ex) {}
     }
   },
 
   tabSelect : function (event) {
     if(event.target.overlayPrefs)
-      this.setBBSCmd("setInputAreaFocus");
+      this.setBBSCmd("setTabSelect");
+    for(var i=0;i<gBrowser.tabs.length;++i) {
+      if(gBrowser.tabs[i].overlayPrefs && !gBrowser.tabs[i].selected) {
+        this.setBBSCmdEx({command:'setTabUnselect'}, gBrowser.getBrowserForTab( gBrowser.tabs[i] ) );
+      }
+    }
   },
 
   tabAttrModified : function (event) {
     document.defaultView.gBrowser.selectedBrowser.messageManager
-    .sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayEvent", {event:"tabAttrModified"});
+    .sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayEvent", {event:"tabAttrModified", selected: event.target.selected});
 
     if(event.target.overlayPrefs)
       event.target.image = event.target.overlayPrefs.tabIcon;
@@ -517,6 +540,22 @@ var ETT_BBSFOX_Overlay =
       browserMM = document.defaultView.gBrowser.selectedBrowser.messageManager;
     }
     browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
+  },
+  
+  setTabFocus: function(target) {
+    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+    var browserEnumerator = wm.getEnumerator("navigator:browser");
+
+    while (browserEnumerator.hasMoreElements()) {
+      var browserWin = browserEnumerator.getNext();
+      var tabbrowser = browserWin.gBrowser;
+      if(tabbrowser == gBrowser)
+      {
+        browserWin.focus();
+        tabbrowser.selectedTab = gBrowser.getTabForBrowser(target);
+        break;
+      }
+    }
   },
 
   initLocalFile: function(path) {
@@ -774,6 +813,35 @@ var ETT_BBSFOX_Overlay =
       files[i].remove(true);
     }
   },
+  
+  showNotifyMessage: function(data, target){
+    if(this.alertsService) {
+      var listener = null;
+      if(data.textClickable) {
+        listener = {
+          owner: this,
+          target: target,
+          replyString: data.replyString,
+          observe: function(subject, topic, data) {
+            if(topic == 'alertclickcallback')
+            {
+              this.owner.setTabFocus(this.target);
+              if(this.replyString) {
+                this.owner.setBBSCmdEx({command:'sendText', text: this.replyString}, this.target);
+              }
+            }
+          }
+        };
+      }
+      this.alertsService.showAlertNotification(data.imageUrl , data.title, data.text, data.textClickable, '', listener);
+    }
+  },
+  
+  fireNotifySound: function(){
+    if(this.soundService) {
+      this.soundService.beep();
+    }
+  },
 
   getPrefs: function() {
     var prefs = Components.classes["@mozilla.org/preferences-service;1"]
@@ -813,6 +881,7 @@ var ETT_BBSFOX_Overlay =
       this.cleanupOldPref();
     }
   },
+
   checkReplyRobotActive: function(addon) {
     if(addon)
       this.ReplyRobotActive = addon.isActive;

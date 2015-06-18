@@ -71,6 +71,13 @@ BBSOverlayCmdListener.prototype={
               bbscore.conn.send(']');
             }
             break;
+          case "setTabSelect":
+            bbscore.setInputAreaFocus();
+            bbscore.setSelectStatus(true);
+            break;
+          case "setTabUnselect":
+            bbscore.setSelectStatus(false);
+            break;
           case "setInputAreaFocus":
             bbscore.setInputAreaFocus();
             break;
@@ -199,6 +206,9 @@ BBSOverlayCmdListener.prototype={
             break;
           case "removeFromBlacklist":
             bbscore.removeFromBlacklist();
+            break;
+          case "sendText":
+            bbscore.conn.send(data.text);
             break;
           case "loginInfoReady":
             // Check AutoLogin Stage

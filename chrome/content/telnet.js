@@ -261,7 +261,7 @@ ConnectCore.prototype={
     },
 
     backgroundSend: function(s){
-      this.delaySendStr = s;
+        this.delaySendStr = s;
         if(!this.outputStream) return;
         if(this.listener)
         {

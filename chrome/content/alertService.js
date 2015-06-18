@@ -7,20 +7,9 @@ function AlertService(core, view, buf, conn) {
     this.tempX = 0;
     this.tempY = 0;
     this.checkCur = 0;//0 = unknow, 1 = check, 2 = don't check.
-    var as = Components.classes["@mozilla.org/alerts-service;1"];
-    try
-    {
-      this.service = as.getService(Components.interfaces.nsIAlertsService);
-    }
-    catch(error)
-    {
-      this.service = null;
-    }
 }
 
 AlertService.prototype={
-    //service : Components.classes["@mozilla.org/alerts-service;1"].getService(Components.interfaces.nsIAlertsService),
-    service : null,
     alertTimer : null,
     lastMsgTime : 0,
     alert: function(blockByTime, showMsg, playSound, msg, clickAlertAction) {
@@ -92,43 +81,17 @@ AlertService.prototype={
         var text = this.buf.getRowText(row, 0, this.buf.cols);
         return text.replace(/ +$/,"");
     },
-
     beep: function(msg) {
-      var sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
-      //if(msg) {
-      //    sound.playEventSound(sound.EVENT_NEW_MAIL_RECEIVED);
-      //} else {
-            sound.beep();
-      //}
+      this.core.sendCoreCommand({command: "fireNotifySound"}, true);
       //FIXME: support custum sound:
       //https://developer.mozilla.org/en/nsISound#play()
     },
-
     showPopups: function(caption, message, clickAlertAction) {
-      //FIXME: PopupNotifications.jsm is an alternative but works only in FX4+
-      // nsIPromptService is more flexible but more coding is needed
-      this.listener = {
-        observe: function(subject, topic, data) {
-          if(topic == 'alertclickcallback')
-          {
-          	//TODO: set window and tab to focus. send a message to do this.
-          	//this.sendCoreCommand({command: "setTabFocus"});
-            //bbsfox.GetBrowser(true, true);
-            if(bbsfox.prefs.clickAlertAction==2)
-              bbsfox.conn.send(bbsfox.prefs.alertReplyString);
-          }
-        }
-      };
-
-      if(this.service)
-      {
-        if(clickAlertAction==1 || clickAlertAction==2)
-          this.service.showAlertNotification("chrome://bbsfox/skin/logo/logo.png", caption, message, true, '', this.listener);
-        else
-          this.service.showAlertNotification("chrome://bbsfox/skin/logo/logo.png", caption, message, flase, '', null);
-      }
-      //this.service.showAlertNotification("chrome://bbsfox/skin/logo/logo.png", caption, message, true, '', this.core);
-      //FIXME: Should we set the active tab as this page?
-      //https://developer.mozilla.org/En/NsIAlertsService
+      this.core.sendCoreCommand({command: "showNotifyMessage",
+                                 imageUrl: "chrome://bbsfox/skin/logo/logo.png",
+                                 title: caption,
+                                 text: message,
+                                 replyString: clickAlertAction==2 ? this.prefs.alertReplyString : null,
+                                 textClickable: (clickAlertAction==1 || clickAlertAction==2) });
     }
 };
