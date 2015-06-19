@@ -1266,17 +1266,17 @@ var ETT_BBSFOX_Overlay =
     },
 
     mouse_scroll: function(event) {
-      if(event.target.tagName!='tabbrowser' || event.target.getAttribute('id') != 'content')
-        return;
+      if(gBrowser.contentWindow === null) {
+        if(event.target.tagName!='tabbrowser' || event.target.getAttribute('id') != 'content')
+          return;
+      }
       if (gBrowser && gBrowser.currentURI){
         var scheme = gBrowser.currentURI.scheme;
         if(scheme!='telnet' && scheme!='ssh')
           return;
-
         var prefs = this.owner.getEventPrefs();
         if(!prefs || !prefs.result)
           return;
-
         var mouseWheelFunc1 = prefs.mouseWheelFunc1;
         var mouseWheelFunc2 = prefs.mouseWheelFunc2;
         var mouseWheelFunc3 = prefs.mouseWheelFunc3;
@@ -1304,9 +1304,9 @@ var ETT_BBSFOX_Overlay =
               }
             } else if(this.MouseLBtnDown) { //press mouse left button and scroll up
               if(useMouseWheelFunc3) {
-                if(mouseWheelFunc3==1)
+                if(mouseWheelFunc3==1){
                   owner.setBBSCmd("doArrowUp");
-                else if(mouseWheelFunc3==2)
+                } else if(mouseWheelFunc3==2)
                   owner.setBBSCmd("doPageUp");
                 else if(mouseWheelFunc3==3)
                   owner.setBBSCmd("prevousThread");
@@ -1438,7 +1438,11 @@ var ETT_BBSFOX_Overlay =
       eventMap.set('mouseup', this.mouse_up.bind(this));
       eventMap.set('keypress', this.key_press.bind(this));
 
-      window.addEventListener('DOMMouseScroll', eventMap.get('DOMMouseScroll'), true);
+      if(gBrowser.contentWindow === null) {
+        window.addEventListener('DOMMouseScroll', eventMap.get('DOMMouseScroll'), true);
+      } else {
+        gBrowser.addEventListener('DOMMouseScroll', eventMap.get('DOMMouseScroll'), true);
+      }
       gBrowser.addEventListener("contextmenu", eventMap.get('contextmenu'), true);
       //document.getElementById('contentAreaContextMenu').addEventListener('popupshowing', eventMap.get('contextmenu'), true);
       gBrowser.addEventListener("mousedown", eventMap.get('mousedown'), true);
@@ -1449,7 +1453,11 @@ var ETT_BBSFOX_Overlay =
     release: function() {
       var eventMap = this.owner.eventMap;
 
-      window.removeEventListener("DOMMouseScroll", eventMap.get('DOMMouseScroll'), true);
+      if(gBrowser.contentWindow === null) {
+        window.removeEventListener("DOMMouseScroll", eventMap.get('DOMMouseScroll'), true);
+      } else {
+        gBrowser.removeEventListener("DOMMouseScroll", eventMap.get('DOMMouseScroll'), true);
+      }
       gBrowser.removeEventListener("contextmenu", eventMap.get('contextmenu'), true);
       //document.getElementById('contentAreaContextMenu').removeEventListener('popupshowing', eventMap.get('contextmenu'), true);
       gBrowser.removeEventListener("mousedown", eventMap.get('mousedown'), true);
