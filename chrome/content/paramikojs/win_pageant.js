@@ -1,6 +1,12 @@
+//  For reviewer:
+//  These code from another Firefox Add-on: FireSSH
+//  See: https://addons.mozilla.org/zh-tw/firefox/addon/firessh/
+//  source code: firessh/chrome/firessh.jar/content/js/connection/paramikojs/win_pageant.js
+//
+//  about paramikojs: https://github.com/mimecuvalo/paramikojs
 paramikojs.win_pageant = function() {
   
-}
+};
 
 paramikojs.win_pageant.prototype = {
   _AGENT_COPYDATA_ID : 0x804e50ba,

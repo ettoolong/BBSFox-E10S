@@ -210,6 +210,12 @@ BBSOverlayCmdListener.prototype={
           case "sendText":
             bbscore.conn.send(data.text);
             break;
+          case "disableKeyEvent":
+            bbscore.disableKeyEvent();
+            break;
+          case "enableKeyEvent":
+            bbscore.enableKeyEvent();
+            break;
           case "loginInfoReady":
             // Check AutoLogin Stage
             bbscore.robot.initialAutoLogin(data.result);

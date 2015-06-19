@@ -36,6 +36,7 @@ function BBSFox() {
     this.parser = new AnsiParser(this.buf);
     this.ansiColor = new AnsiColor(this);
     this.robot=new Robot(this);
+    this.keyEventStatus = true;
 
     this.prefListener=null;
     this.isDefaultPref=true;
@@ -1593,6 +1594,8 @@ BBSFox.prototype={
     },
 
     key_press: function(event) {
+      if(!this.keyEventStatus)
+        return;
       if(this.cancelDownloadAndPaste())
       {
         event.preventDefault();
@@ -1923,6 +1926,17 @@ BBSFox.prototype={
       } else {
         //do nothing...
       }
+    },
+    
+    disableKeyEvent: function(){
+      this.keyEventStatus = false;
+      this.prefs.updateEventPrefs([{key:'keyEventStatus', value:false}]);
+    },
+
+    enableKeyEvent: function(){
+      this.view.input.value='';
+      this.keyEventStatus = true;
+      this.prefs.updateEventPrefs([{key:'keyEventStatus', value:true}]);
     },
 
     fixUnicode: function(fix, change){

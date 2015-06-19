@@ -232,7 +232,7 @@ paramikojs.PKey.prototype = {
     @raise SSHException: if the key file is invalid.
   */
   _read_private_key_file : function(tag, filename, password) {
-    console.log('localFile.init('+filename+')');
+    //console.log('localFile.init('+filename+')');
     var file = !Components ? filename : localFile.init(filename);
     var data = this._read_private_key(tag, file, password);
     return data;
@@ -495,7 +495,7 @@ paramikojs.PKey.prototype = {
     @raise IOError: if there was an error writing the file.
   */
   _write_private_key_file : function(tag, filename, data, password) {
-    console.log('localFile.init('+filename+')');
+    //console.log('localFile.init('+filename+')');
     var file = localFile.init(filename);
     this._write_private_key(tag, file, data, password);
   },

@@ -589,6 +589,8 @@ BBSFoxOptions.prototype = {
   },
 
   backup: function() {
+    //  For reviewer:
+    //  backup function - save all bbsfox preferences to sqlite file
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, null, nsIFilePicker.modeSave);
@@ -738,14 +740,15 @@ BBSFoxOptions.prototype = {
           params.addParams(row_params);
         }
         else {
-          console.log('NOT found file _bg.'+site2);
+          //console.log('NOT found file _bg.'+site2);
         }
       }
     }
   },
 
   recover: function() {
-  //load setting from file
+    //  For reviewer:
+    //  recover function - load all bbsfox preferences from sqlite file
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, null, nsIFilePicker.modeOpen);

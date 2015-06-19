@@ -200,7 +200,7 @@ ConnectCore.prototype={
                 this.sshTransport.fullBuffer += s;  // read data
                 this.sshTransport.run();
               } catch(ex) {
-                console.log(ex);
+                //console.log(ex);
                 if (ex instanceof paramikojs.ssh_exception.AuthenticationException) {
                   this.client.legitClose = true;
                   return;

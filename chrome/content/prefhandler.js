@@ -106,6 +106,7 @@ function bbsfoxPrefHandler(listener) {
       hokeyForMouseBrowsing: false,
       useHttpContextMenu: true,
       useMouseBrowsing: true,
+      keyEventStatus: true,
       result: true
     };
     this.overlayPrefs = {

@@ -67,7 +67,9 @@ var ETT_BBSFOX_Overlay =
 
     try {
       this.ellipsis = gPrefService.getComplexValue("intl.ellipsis", Components.interfaces.nsIPrefLocalizedString).data;
-    } catch (e) { }
+    } catch (e) {}
+    var timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+    timer.initWithCallback({ notify: function(timer) { ETT_BBSFOX_Overlay.checkVerion.bind(ETT_BBSFOX_Overlay)(); } }, 2000, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
   },
 
   release: function() {
@@ -107,45 +109,51 @@ var ETT_BBSFOX_Overlay =
           delete gBrowser.getTabForBrowser( message.target ).eventPrefs;
         if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
           delete gBrowser.getTabForBrowser( message.target ).overlayPrefs;
-          gBrowser.getTabForBrowser( message.target ).eventStatus = {
-            doDOMMouseScroll: false
-          };
+        gBrowser.getTabForBrowser( message.target ).eventStatus = {
+          doDOMMouseScroll: false
+        };
         break;
       case "updateTabIcon":
         gBrowser.getTabForBrowser( message.target ).image = message.data.icon;
         break;
       case "openNewTabs":
-        this.openNewTabs(data.urls, data.ref, data.charset, data.loadInBg);
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          this.openNewTabs(data.urls, data.ref, data.charset, data.loadInBg);
         break;
       case "resetStatusBar":
-        XULBrowserWindow.setOverLink("");
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          XULBrowserWindow.setOverLink("");
         break;
       case "writePrefs":
-        this.writePrefs(data.branchName, data.name, data.vtype, data.value);
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          this.writePrefs(data.branchName, data.name, data.vtype, data.value);
         break;
       case "openFilepicker":
-        this.openFilepicker(data, message.target);
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          this.openFilepicker(data, message.target);
         break;
       case "loadAutoLoginInfo":
-        this.loadAutoLoginInfo(data.querys, message.target);
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          this.loadAutoLoginInfo(data.querys, message.target);
         break;
       case "openEasyReadingTab":
-        this.openEasyReadingTab(data.htmlData, message.target);
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          this.openEasyReadingTab(data.htmlData, message.target);
         break;
       case "sendHttpRequest":
         this.sendHttpRequest(data, message.target);
         break;
       case "saveHostkey":
-        this.saveHostkey(data);
-        break;
-      case "setTabFocus":
-        this.setTabFocus(message.target);
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          this.saveHostkey(data);
         break;
       case "showNotifyMessage":
-        this.showNotifyMessage(data, message.target);
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          this.showNotifyMessage(data, message.target);
         break;
       case "fireNotifySound":
-        this.fireNotifySound();
+        if(gBrowser.getTabForBrowser( message.target ).overlayPrefs)
+          this.fireNotifySound();
         break;
       default:
         break;
@@ -174,7 +182,6 @@ var ETT_BBSFOX_Overlay =
     if(gBrowser.mCurrentTab.overlayPrefs)
       return gBrowser.mCurrentTab.overlayPrefs.result;
     return false;
-    //return gBrowser.selectedBrowser.contentDocumentAsCPOW.defaultView.bbsfox;
   },
 
   setItemVisible: function(id, visible, checkHidden) {
@@ -904,6 +911,7 @@ var ETT_BBSFOX_Overlay =
         AddonManager.getAddonByID("ReplyRobot@ettoolong", this.checkReplyRobotActive.bind(this));
     } catch(ex){}
   },
+
   cleanupOldPref: function() {
     //we remove preferences that only use in old version BBSFox (BBSFox 1.0.0 ~ BBSFox 1.0.80).
     var globalPrefs = [];
@@ -1378,9 +1386,8 @@ var ETT_BBSFOX_Overlay =
     key_press: function(event) {
         var owner = this.owner;
         var prefs = owner.getEventPrefs();
-        if(!prefs || !prefs.result)
+        if(!prefs || !prefs.result || !prefs.keyEventStatus)
           return;
-
         if (!event.ctrlKey && !event.altKey && !event.shiftKey) {
           switch(event.keyCode) {
             case 33: //Page Up

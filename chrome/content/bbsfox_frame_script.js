@@ -11,7 +11,8 @@ addMessageListener("bbsfox@ettoolong:bbsfox-overlayCommand",
 //fire event from bbsfox overlay tabAttrModified
 addMessageListener("bbsfox@ettoolong:bbsfox-overlayEvent",
   function(message) {
-    var bbscore = content.bbsfox;
+    var bbscore;
+    if(content) bbscore = content.bbsfox;
     if(bbscore) {
       var init = bbscore.setFrameScript( function(command, async){
         if(!async)

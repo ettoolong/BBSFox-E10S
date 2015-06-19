@@ -789,7 +789,9 @@ TermView.prototype={
     },
 
     text_input: function(event) {
-    	if(!this.compositionStart) {
+      if(!this.bbscore.keyEventStatus)
+        return;
+      if(!this.compositionStart) {
         event.stopPropagation();
         event.preventDefault();
         var text = event.target.value;
@@ -801,6 +803,8 @@ TermView.prototype={
     },
 
     key_press: function(e) {
+        if(!this.bbscore.keyEventStatus)
+          return;
         if(this.bbscore.DelayPasteBuffer != '' || this.bbscore.DelayPasteIndex != -1)
         {
           this.bbscore.DelayPasteBuffer = '';

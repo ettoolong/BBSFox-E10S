@@ -16,7 +16,6 @@ BBSBackground.prototype={
       if(this.bbscore.isDefaultPref) {
         fileName =  "_bg.default";
       } else {
-        console.log('ResetBackground - 4');
         var url = this.bbscore.siteAuthInfo;2
         url = url.replace(/:/g, '~');
         fileName = "_bg."+url;

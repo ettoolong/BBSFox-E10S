@@ -124,7 +124,7 @@ paramikojs.HostKeys.prototype = {
   */
   load : function(filename) {
     if ((Components && Components.classes)) { // Mozilla
-      console.log('localFile.init('+filename+')');
+      //console.log('localFile.init('+filename+')');
       var file = localFile.init(filename);
       if (!file.exists()) {
         this._entries = [];
