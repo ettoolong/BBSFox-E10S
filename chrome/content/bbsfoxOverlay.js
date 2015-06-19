@@ -12,6 +12,7 @@ var ETT_BBSFOX_Overlay =
 //  BBSFoxVersion : "2.0.0",
 //  FXVersion: 3.6,
   ReplyRobotActive: false,
+  initEhStatus: false,
   ellipsis : "\u2026",
   consoleService: Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
   ioService : Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService),
@@ -61,10 +62,8 @@ var ETT_BBSFOX_Overlay =
     document.getElementById('cmd_paste').addEventListener('command', eventMap.get('cmd_paste'), true);
     document.getElementById('cmd_copy').addEventListener('command', eventMap.get('cmd_copy'), true);
     document.getElementById('cmd_selectAll').addEventListener('command', eventMap.get('cmd_selectAll'), true);
+    //document.getElementById("cmd_close").doCommand();
     //add event listener - end
-
-    this.EventHandler.init(this);
-
     try {
       this.ellipsis = gPrefService.getComplexValue("intl.ellipsis", Components.interfaces.nsIPrefLocalizedString).data;
     } catch (e) {}
@@ -73,7 +72,8 @@ var ETT_BBSFOX_Overlay =
   },
 
   release: function() {
-    this.EventHandler.release();
+    if(this.initEhStatus)
+      this.EventHandler.release();
 
     //remove event listener - start
     var eventMap = this.eventMap;
@@ -100,6 +100,10 @@ var ETT_BBSFOX_Overlay =
     switch (data.command) {
       case "updateOverlayPrefs":
         gBrowser.getTabForBrowser( message.target ).overlayPrefs = data.overlayPrefs;
+        if(!this.initEhStatus) {
+          this.initEhStatus = true;
+          this.EventHandler.init(this, message.target.isRemoteBrowser);
+        }
         break;
       case "updateEventPrefs":
         gBrowser.getTabForBrowser( message.target ).eventPrefs = data.eventPrefs;
@@ -1148,6 +1152,7 @@ var ETT_BBSFOX_Overlay =
     MouseRBtnDown: false,
     MouseLBtnDown: false,
     owner: null,
+    e10s: false,
     //oldEnlarge: null,
     //oldReduce: null,
     os: Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS,
@@ -1266,7 +1271,7 @@ var ETT_BBSFOX_Overlay =
     },
 
     mouse_scroll: function(event) {
-      if(gBrowser.contentWindow === null) {
+      if(this.e10s) {
         if(event.target.tagName!='tabbrowser' || event.target.getAttribute('id') != 'content')
           return;
       }
@@ -1428,17 +1433,16 @@ var ETT_BBSFOX_Overlay =
         }
     },
 
-    init: function(owner) {
+    init: function(owner, e10s) {
       this.owner = owner;
-
+      this.e10s = e10s;
       var eventMap = this.owner.eventMap;
       eventMap.set('DOMMouseScroll', this.mouse_scroll.bind(this));
       eventMap.set('contextmenu', this.mouse_menu.bind(this));
       eventMap.set('mousedown', this.mouse_down.bind(this));
       eventMap.set('mouseup', this.mouse_up.bind(this));
       eventMap.set('keypress', this.key_press.bind(this));
-
-      if(gBrowser.contentWindow === null) {
+      if(this.e10s) {
         window.addEventListener('DOMMouseScroll', eventMap.get('DOMMouseScroll'), true);
       } else {
         gBrowser.addEventListener('DOMMouseScroll', eventMap.get('DOMMouseScroll'), true);
@@ -1452,8 +1456,7 @@ var ETT_BBSFOX_Overlay =
 
     release: function() {
       var eventMap = this.owner.eventMap;
-
-      if(gBrowser.contentWindow === null) {
+      if(this.e10s) {
         window.removeEventListener("DOMMouseScroll", eventMap.get('DOMMouseScroll'), true);
       } else {
         gBrowser.removeEventListener("DOMMouseScroll", eventMap.get('DOMMouseScroll'), true);
