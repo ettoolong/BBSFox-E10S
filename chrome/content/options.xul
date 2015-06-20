@@ -1088,8 +1088,8 @@
             <label value="&options_aboutnote24.label;"/>
             <hbox>
               <label value="&options_aboutnote25.label;"/>
-              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://hedgehog-hosted.appspot.com/firebbs.l-hedgehog');" />
-              <label value="&options_aboutnote21.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/93617');" />
+              <label value="&options_aboutnote17.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://hedgehog-hosted.appspot.com/firebbs.l-hedgehog');" />
+              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/93617');" />
             </hbox>
           </vbox>
         </tabpanel>
