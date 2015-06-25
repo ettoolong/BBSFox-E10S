@@ -28,7 +28,7 @@ var ETT_BBSFOX_Overlay =
       this.alertsService = null;
     }
     this.soundService = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
-    
+
     var eventMap = new Map();
     this.eventMap = eventMap;
     //add event to map - start
@@ -104,6 +104,8 @@ var ETT_BBSFOX_Overlay =
           this.initEhStatus = true;
           this.EventHandler.init(this, message.target.isRemoteBrowser);
         }
+        if(typeof data.overlayPrefs.remoteBrowser == 'undefined')
+          this.setBBSCmdEx({command: 'setRemoteBrowserStatus', remoteBrowser: message.target.isRemoteBrowser}, message.target);
         break;
       case "updateEventPrefs":
         gBrowser.getTabForBrowser( message.target ).eventPrefs = data.eventPrefs;
@@ -552,7 +554,7 @@ var ETT_BBSFOX_Overlay =
     }
     browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
   },
-  
+
   setTabFocus: function(target) {
     var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
     var browserEnumerator = wm.getEnumerator("navigator:browser");
@@ -680,7 +682,7 @@ var ETT_BBSFOX_Overlay =
     }
     this.setBBSCmdEx({command: "loginInfoReady", result: result, hostkeys: key_entries}, target);
   },
-  
+
   saveHostkey: function(data) {
     var file;
     var host_keys = '';
@@ -824,7 +826,7 @@ var ETT_BBSFOX_Overlay =
       files[i].remove(true);
     }
   },
-  
+
   showNotifyMessage: function(data, target){
     if(this.alertsService) {
       var listener = null;
@@ -847,7 +849,7 @@ var ETT_BBSFOX_Overlay =
       this.alertsService.showAlertNotification(data.imageUrl , data.title, data.text, data.textClickable, '', listener);
     }
   },
-  
+
   fireNotifySound: function(){
     if(this.soundService) {
       this.soundService.beep();
@@ -919,7 +921,7 @@ var ETT_BBSFOX_Overlay =
   cleanupOldPref: function() {
     //we remove preferences that only use in old version BBSFox (BBSFox 1.0.0 ~ BBSFox 1.0.80).
     var globalPrefs = [];
-    var sitePrefs   = ['UseMouseSwitchPage','UseMouseUpDown','UseMouseReadThread','MiddleButtonSendEnter','LoadUrlInBackGround','Login','Passwd','NotifyWhenBackbround','SaveAfterDownload','bbsbox.fontFitWindowWidth'];
+    var sitePrefs   = ['UseMouseSwitchPage','UseMouseUpDown','UseMouseReadThread','MiddleButtonSendEnter','LoadUrlInBackGround','Login','Passwd','NotifyWhenBackbround','SaveAfterDownload','bbsbox.fontFitWindowWidth','EPHtml5'];
     var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
     try{prefs.getBranch('extensions.bbsfox.').deleteBranch('');}catch(ex){}
 

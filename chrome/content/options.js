@@ -267,7 +267,7 @@ function BBSFoxOptions() {
                    'NotifyShowContent','PreventNewTongWenAutoConv','DownloadFullPost',
                    'HideInspectMenu','NotifyBlockByTime','UseSubMenuForSearchEngine',
                    'PicturePreviewClose','OpenThreadUrlMenu','HokeyOpenThreadUrl',
-                   'EPHtml5','KeepFontAspectRatio','KeyWordTrackCaseSensitive',
+                   'KeepFontAspectRatio','KeyWordTrackCaseSensitive',
                    'HokeyChangeColorTable','ChangeColorTableMenu','FixUnicodeDisplay',
                    'HokeyForAnsiCopy','AnsiCopyMenu','EnableBlacklist',
                    'BlacklistMenu','AnsiColorToolMenu'];
@@ -1041,8 +1041,8 @@ function load() {
     var devItems =['DelayPasteGesture','PushThreadGesture','OpenThreadUrlGesture',
                  'DelayPasteMenu','LoadUrlInBG','PushThreadMenuOpt',
                  'OpenThreadUrlMenuOpt','PushThreadLineLengthSet','NotifyShowContent',
-                 'HokeyOpenThreadUrlOpt','EPHtml5',
-                 'FixUnicodeDisplay','resolution','DetectAid','blacklistid','ColorDefine'];
+                 'HokeyOpenThreadUrlOpt','FixUnicodeDisplay','resolution',
+                 'DetectAid','blacklistid','ColorDefine'];
 
     for(var i=0;i<devItems.length;++i) {
       document.getElementById(devItems[i]).hidden=false;

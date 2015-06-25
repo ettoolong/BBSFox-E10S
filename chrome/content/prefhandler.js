@@ -622,10 +622,6 @@ bbsfoxPrefHandler.prototype={
           if(bbsCore.playerMgr)
             bbsCore.playerMgr.epLoop = branch.getBoolPref(name);
           break;
-        case "EPHtml5":
-          if(bbsCore.playerMgr)
-            bbsCore.playerMgr.epHtml5 = branch.getBoolPref(name);
-          break;
         case "EPAutoUseHQ":
           if(bbsCore.playerMgr)
             bbsCore.playerMgr.epAutoUseHQ = branch.getBoolPref(name);

@@ -189,6 +189,7 @@
 <!ENTITY options_middlebuttonnone.label "No action">
 <!ENTITY options_middlebuttonsendenter.label "Send [Enter]">
 <!ENTITY options_middlebuttonend.label "Send [End]">
+<!ENTITY options_middlebuttonupdate.label "Send [Left],[Enter],[End]">
 <!ENTITY options_middlebuttonspace.label "Send [Space]">
 <!ENTITY options_middlebuttonback.label "Back to prevous page">
 <!ENTITY options_middlebuttoncopy.label "Copy(if some text be selected)">
@@ -224,7 +225,6 @@
 <!ENTITY options_embeddedplayeroption.label "Embedded player options">
 <!ENTITY options_epautoplay.label "Auto play">
 <!ENTITY options_eploop.label "Loop">
-<!ENTITY options_ephtml5.label "Use Html5 Player(Only for Youtube)">
 <!ENTITY options_epautousehq.label "Higher priority for HQ video">
 <!ENTITY options_epcopyurlbutton.label "Display [Copy URL] button">
 <!ENTITY options_epwhendroplink.label "Open embedded player when drop a video URL on BBS view">

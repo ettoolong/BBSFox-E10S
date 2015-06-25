@@ -214,56 +214,53 @@ SymbolInput.prototype={
       box3.classList.add('dragUI');
       box3.classList.add('nonspan');
 
-      /*
       // XUL <menulist> not working in E10S (Firefox bug ?)
       // Modify: Use html tag <select>
-      var pageSelect = document.createElementNS(XUL_NS, 'menulist');
-      box3.appendChild(pageSelect);
-      pageSelect.style.fontSize='12px';
-      pageSelect.setAttribute('editable','false');
-      pageSelect.classList.add('extUI');
-      pageSelect.classList.add('buttonUI');
-      pageSelect.classList.add('WinBtn');
-      pageSelect.setAttribute('id','sympageselect');
-      pageSelect.setAttribute('sizetopopup','always');
+      var pageSelect;
+      if(this.bbscore.prefs.overlayPrefs.remoteBrowser) {
+        pageSelect = document.createElement('select');
+        box3.appendChild(pageSelect);
+        pageSelect.style.fontSize='12px';
+        pageSelect.style.margin='4px 2px';
+        pageSelect.setAttribute('editable','false');
+        pageSelect.classList.add('extUI');
+        pageSelect.classList.add('buttonUI');
+        pageSelect.classList.add('WinBtn');
+        pageSelect.setAttribute('id','sympageselect');
+        pageSelect.setAttribute('sizetopopup','always');
 
-      for(var i=0;i<this.symbolPageCount;++i)
-      {
-        var str = this.bbscore.getLM('symbolList'+i);
-        pageSelect.appendItem(str, i);
+        for(var i=0;i<this.symbolPageCount;++i)
+        {
+          var str = this.bbscore.getLM('symbolList'+i);
+          var option = document.createElement('option');
+          option.text = str;
+          option.value = i;
+          option.classList.add('extUI');
+          pageSelect.appendChild(option);
+        }
+        pageSelect.selectedIndex = 0;
+        this.pageSelect = pageSelect;
+        pageSelect.addEventListener('change', this.selectitem.bind(this), false);
+      } else {
+        pageSelect = document.createElementNS(XUL_NS, 'menulist');
+        box3.appendChild(pageSelect);
+        pageSelect.style.fontSize='12px';
+        pageSelect.setAttribute('editable','false');
+        pageSelect.classList.add('extUI');
+        pageSelect.classList.add('buttonUI');
+        pageSelect.classList.add('WinBtn');
+        pageSelect.setAttribute('id','sympageselect');
+        pageSelect.setAttribute('sizetopopup','always');
+
+        for(var i=0;i<this.symbolPageCount;++i)
+        {
+          var str = this.bbscore.getLM('symbolList'+i);
+          pageSelect.appendItem(str, i);
+        }
+        pageSelect.selectedIndex = 0;
+        this.pageSelect = pageSelect;
+        pageSelect.addEventListener('command', this.selectitem.bind(this), false);
       }
-      pageSelect.selectedIndex = 0;
-      this.pageSelect = pageSelect;
-      pageSelect.addEventListener('command', this.selectitem.bind(this), false);
-      */
-
-      // XUL <menulist> not working in E10S (Firefox bug ?)
-      // Modify: Use html tag <select>
-      //create select tag - start
-      var pageSelect = document.createElement('select');
-      box3.appendChild(pageSelect);
-      pageSelect.style.fontSize='12px';
-      pageSelect.style.margin='4px 2px';
-      pageSelect.setAttribute('editable','false');
-      pageSelect.classList.add('extUI');
-      pageSelect.classList.add('buttonUI');
-      pageSelect.classList.add('WinBtn');
-      pageSelect.setAttribute('id','sympageselect');
-      pageSelect.setAttribute('sizetopopup','always');
-
-      for(var i=0;i<this.symbolPageCount;++i)
-      {
-        var str = this.bbscore.getLM('symbolList'+i);
-        var option = document.createElement('option');
-        option.text = str;
-        option.value = i;
-        option.classList.add('extUI');
-        pageSelect.appendChild(option);
-      }
-      pageSelect.selectedIndex = 0;
-      this.pageSelect = pageSelect;
-      pageSelect.addEventListener('change', this.selectitem.bind(this), false);
-      //create select tag - end
 
       var clientDiv = document.createElementNS(XUL_NS, 'div');
       box1.appendChild(clientDiv);

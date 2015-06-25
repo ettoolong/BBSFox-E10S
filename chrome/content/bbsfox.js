@@ -18,7 +18,7 @@ function BBSFox() {
     this.conn = new ConnectCore(this);
     this.view = new TermView(80, 24);
     this.buf = new TermBuf(80, 24);
-    this.playerMgr = new PlayerMgr();
+    this.playerMgr = new EmbeddedPlayerMgr(this);
     //this.pptPicLoader = new BBSPPTPicLoader(this);
     //this.imgurPicLoader = new BBSImgurPicLoader(this);
     this.extPicLoader = new ExtPicLoader(this);
@@ -1106,6 +1106,47 @@ BBSFox.prototype={
       return rtn;
     },
 
+    execExtMouseFunction: function(func) {
+        if(func==1)
+          this.conn.send('\r');
+        else if(func==2)
+        {
+          this.buf.SetPageState();
+          if(this.buf.PageState==2 || this.buf.PageState==3 || this.buf.PageState==4)
+            this.conn.send('\x1b[D');
+        }
+        else if(func==6)
+        {
+          this.conn.send('\x1b[4~');//end
+        }
+        else if(func==8)
+        {
+          this.conn.send('\x1b[D\r\x1b[4~');//space
+        }
+        else if(func==7)
+        {
+          this.conn.send(' ');//space
+        }
+        else if(func==3) //copy
+        {
+          if(!window.getSelection().isCollapsed)
+            this.doCopySelect();
+          this.setInputAreaFocus();
+        }
+        else if(func==4) //paste
+        {
+          this.doPaste();
+        }
+        else if(func==5) //copy/paste
+        {
+          if(window.getSelection().isCollapsed)
+            this.doPaste();
+          else
+            this.doCopySelect();
+          this.setInputAreaFocus();
+        }
+    },
+
     mouse_click: function(event) {
       var skipMouseClick = (this.CmdHandler.getAttribute('SkipMouseClick')=='1');
       this.CmdHandler.setAttribute('SkipMouseClick','0');
@@ -1188,40 +1229,7 @@ BBSFox.prototype={
           if(event.target.getAttribute("link")=='true')
             return;
         }
-        if(this.prefs.middleButtonFunction==1)
-          this.conn.send('\r');
-        else if(this.prefs.middleButtonFunction==2)
-        {
-          this.buf.SetPageState();
-          if(this.buf.PageState==2 || this.buf.PageState==3 || this.buf.PageState==4)
-            this.conn.send('\x1b[D');
-        }
-        else if(this.prefs.middleButtonFunction==6)
-        {
-          this.conn.send('\x1b[4~');//end
-        }
-        else if(this.prefs.middleButtonFunction==7)
-        {
-          this.conn.send(' ');//space
-        }
-        else if(this.prefs.middleButtonFunction==3) //copy
-        {
-          if(!window.getSelection().isCollapsed)
-            this.doCopySelect();
-          this.setInputAreaFocus();
-        }
-        else if(this.prefs.middleButtonFunction==4) //paste
-        {
-          this.doPaste();
-        }
-        else if(this.prefs.middleButtonFunction==5) //copy/paste
-        {
-          if(window.getSelection().isCollapsed)
-            this.doPaste();
-          else
-            this.doCopySelect();
-          this.setInputAreaFocus();
-        }
+        this.execExtMouseFunction(this.prefs.middleButtonFunction);
       }
       else
       {
@@ -1927,7 +1935,7 @@ BBSFox.prototype={
         //do nothing...
       }
     },
-    
+
     disableKeyEvent: function(){
       this.keyEventStatus = false;
       this.prefs.updateEventPrefs([{key:'keyEventStatus', value:false}]);

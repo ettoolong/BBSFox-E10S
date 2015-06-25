@@ -574,6 +574,7 @@
                                   <menuitem label="&options_middlebuttonnone.label;" value="0"/>
                                   <menuitem label="&options_middlebuttonsendenter.label;" value="1"/>
                                   <menuitem label="&options_middlebuttonend.label;" value="6"/>
+                                  <menuitem label="&options_middlebuttonupdate.label;" value="8"/>
                                   <menuitem label="&options_middlebuttonspace.label;" value="7"/>
                                   <menuitem label="&options_middlebuttonback.label;" value="2"/>
                                   <menuitem label="&options_middlebuttoncopy.label;" value="3"/>
@@ -754,7 +755,6 @@
                         <caption label="&options_embeddedplayeroption.label;"/>
                         <checkbox id="EPAutoPlay" label="&options_epautoplay.label;" bbsfoxDefaultValue="false"/>
                         <checkbox id="EPLoop" label="&options_eploop.label;" bbsfoxDefaultValue="false"/>
-                        <checkbox id="EPHtml5" label="&options_ephtml5.label;" hidden="true" bbsfoxDefaultValue="false"/>
                         <checkbox id="EPAutoUseHQ" label="&options_epautousehq.label;" bbsfoxDefaultValue="false"/>
                         <checkbox id="EPCopyUrlButton" label="&options_epcopyurlbutton.label;" bbsfoxDefaultValue="false"/>
                         <checkbox id="EPWhenDropLink" label="&options_epwhendroplink.label;" bbsfoxDefaultValue="true"/>

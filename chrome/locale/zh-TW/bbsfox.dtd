@@ -189,6 +189,7 @@
 <!ENTITY options_middlebuttonnone.label "無動作">
 <!ENTITY options_middlebuttonsendenter.label "送出Enter">
 <!ENTITY options_middlebuttonend.label "送出End">
+<!ENTITY options_middlebuttonupdate.label "連續送出左,Enter,End">
 <!ENTITY options_middlebuttonspace.label "送出空白鍵">
 <!ENTITY options_middlebuttonback.label "回到上一頁">
 <!ENTITY options_middlebuttoncopy.label "複製(如果有選取文字)">
@@ -224,7 +225,6 @@
 <!ENTITY options_embeddedplayeroption.label "影片視窗設定">
 <!ENTITY options_epautoplay.label "自動開始播放影片">
 <!ENTITY options_eploop.label "自動重複播放影片">
-<!ENTITY options_ephtml5.label "使用Html5播放器(只適用於Youtube)">
 <!ENTITY options_epautousehq.label "優先使用高畫質播放">
 <!ENTITY options_epcopyurlbutton.label "顯示[複製網址]按鈕">
 <!ENTITY options_epwhendroplink.label "當拖放一個影片網址到BBS視窗時開啟播放窗">

@@ -44,7 +44,6 @@ pref("extensions.bbsfox2.host_default.PostLogin", '');
 pref("extensions.bbsfox2.host_default.EmbeddedPlayerSize", 0);
 pref("extensions.bbsfox2.host_default.EPAutoPlay", false);
 pref("extensions.bbsfox2.host_default.EPLoop", false);
-pref("extensions.bbsfox2.host_default.EPHtml5", false);
 pref("extensions.bbsfox2.host_default.EPAutoUseHQ", false);
 pref("extensions.bbsfox2.host_default.EPCopyUrlButton", false);
 pref("extensions.bbsfox2.host_default.EPWhenDropLink", true);

@@ -1,4 +1,4 @@
-function EmbeddedPlayer(playerURL, showbtn, playerSize) {
+function EmbeddedPlayer(bbscore, playerURL, showbtn, playerSize) {
     this.CmdHandler = document.getElementById('cmdHandler');
     //this.opt = new Array(8);
 
@@ -70,55 +70,53 @@ function EmbeddedPlayer(playerURL, showbtn, playerSize) {
     box3.classList.add('dragUI');
     box3.classList.add('nonspan');
 
-    /*
     // XUL <menulist> not working in E10S (Firefox bug ?)
     // Modify: Use html tag <select>
-    var sizeSelect = document.createElementNS(XUL_NS, 'menulist');
-    box3.appendChild(sizeSelect);
-    sizeSelect.style.fontSize='12px';
-    sizeSelect.setAttribute('editable','false');
-    sizeSelect.classList.add('extUI');
-    sizeSelect.classList.add('buttonUI');
-    sizeSelect.classList.add('WinBtn');
-    sizeSelect.setAttribute('sizetopopup','always');
-    sizeSelect.insertItemAt(0, '1280 x 745 (16:9)', 7);
-    sizeSelect.insertItemAt(0, '853 x 505 (16:9)', 6);
-    sizeSelect.insertItemAt(0, '640 x 385 (16:9)', 5);
-    sizeSelect.insertItemAt(0, '560 x 340 (16:9)', 4);
-    sizeSelect.insertItemAt(0, '960 x 745 (4:3)', 3);
-    sizeSelect.insertItemAt(0, '640 x 505 (4:3)', 2);
-    sizeSelect.insertItemAt(0, '480 x 385 (4:3)', 1);
-    sizeSelect.insertItemAt(0, '425 x 344 (4:3)', 0);
-    sizeSelect.selectedIndex = playerSize;
-    sizeSelect.addEventListener('command', this.selectitem.bind(this), false);
-    */
-    // XUL <menulist> not working in E10S (Firefox bug ?)
-    // Modify: Use html tag <select>
-    //create select tag - start
-    var sizeSelect = document.createElement('select');
-    box3.appendChild(sizeSelect);
-    sizeSelect.style.fontSize='12px';
-    sizeSelect.style.margin='4px 2px';
-    sizeSelect.setAttribute('editable','false');
-    sizeSelect.classList.add('extUI');
-    sizeSelect.classList.add('buttonUI');
-    sizeSelect.classList.add('WinBtn');
-    sizeSelect.setAttribute('sizetopopup','always');
-    //
-    var resArr = ['425 x 344 (4:3)', '480 x 385 (4:3)', '640 x 505 (4:3)', '960 x 745 (4:3)',
-                  '560 x 340 (16:9)', '640 x 385 (16:9)', '853 x 505 (16:9)', '1280 x 745 (16:9)'];
-    for(var i=0;i<resArr.length;++i)
-    {
-      var option = document.createElement('option');
-      option.text = resArr[i];
-      option.value = i;
-      option.classList.add('extUI');
-      sizeSelect.appendChild(option);
+    var sizeSelect;
+    if(bbscore.prefs.overlayPrefs.remoteBrowser) {
+      sizeSelect = document.createElement('select');
+      box3.appendChild(sizeSelect);
+      sizeSelect.style.fontSize='12px';
+      sizeSelect.style.margin='4px 2px';
+      sizeSelect.setAttribute('editable','false');
+      sizeSelect.classList.add('extUI');
+      sizeSelect.classList.add('buttonUI');
+      sizeSelect.classList.add('WinBtn');
+      sizeSelect.setAttribute('sizetopopup','always');
+      //
+      var resArr = ['425 x 344 (4:3)', '480 x 385 (4:3)', '640 x 505 (4:3)', '960 x 745 (4:3)',
+                    '560 x 340 (16:9)', '640 x 385 (16:9)', '853 x 505 (16:9)', '1280 x 745 (16:9)'];
+      for(var i=0;i<resArr.length;++i)
+      {
+        var option = document.createElement('option');
+        option.text = resArr[i];
+        option.value = i;
+        option.classList.add('extUI');
+        sizeSelect.appendChild(option);
+      }
+      //
+      sizeSelect.selectedIndex = playerSize;
+      sizeSelect.addEventListener('change', this.selectitem.bind(this), false);
+    } else {
+      sizeSelect = document.createElementNS(XUL_NS, 'menulist');
+      box3.appendChild(sizeSelect);
+      sizeSelect.style.fontSize='12px';
+      sizeSelect.setAttribute('editable','false');
+      sizeSelect.classList.add('extUI');
+      sizeSelect.classList.add('buttonUI');
+      sizeSelect.classList.add('WinBtn');
+      sizeSelect.setAttribute('sizetopopup','always');
+      sizeSelect.insertItemAt(0, '1280 x 745 (16:9)', 7);
+      sizeSelect.insertItemAt(0, '853 x 505 (16:9)', 6);
+      sizeSelect.insertItemAt(0, '640 x 385 (16:9)', 5);
+      sizeSelect.insertItemAt(0, '560 x 340 (16:9)', 4);
+      sizeSelect.insertItemAt(0, '960 x 745 (4:3)', 3);
+      sizeSelect.insertItemAt(0, '640 x 505 (4:3)', 2);
+      sizeSelect.insertItemAt(0, '480 x 385 (4:3)', 1);
+      sizeSelect.insertItemAt(0, '425 x 344 (4:3)', 0);
+      sizeSelect.selectedIndex = playerSize;
+      sizeSelect.addEventListener('command', this.selectitem.bind(this), false);
     }
-    //
-    sizeSelect.selectedIndex = playerSize;
-    sizeSelect.addEventListener('change', this.selectitem.bind(this), false);
-    //create select tag - end
 
     var copyUrlBtn = document.createElementNS(XUL_NS, 'button');
     box3.appendChild(copyUrlBtn);
@@ -266,7 +264,7 @@ EmbeddedPlayer.prototype={
     else
       return;
     this.playerDiv.style.display = 'block';
-    this.openPlayerWindow(this.ptype ,code, w, h, this.epLoop, this.epAutoPlay, this.epAutoUseHQ, this.epHtml5);
+    this.openPlayerWindow(this.ptype ,code, w, h, this.epLoop, this.epAutoPlay, this.epAutoUseHQ);
   },
 
   mousedown: function(event) {
@@ -332,7 +330,7 @@ EmbeddedPlayer.prototype={
         autoplaystr = '1';
       if(autoUseHighQuality)
         highqualitystr = '1';
-      return '<html:iframe class="extUI youtube-player" type="text/html" width="'+w+'" height="'+h+'" src="http://www.youtube.com/embed/'+code+'?hl=zh_TW&fs=1&rel=0&loop='+loopstr+'&autoplay='+autoplaystr+'&hd='+highqualitystr+'" frameborder="0"></html:iframe>';
+      return '<html:iframe class="extUI youtube-player" allowfullscreen="1" type="text/html" width="'+w+'" height="'+h+'" src="http://www.youtube.com/embed/'+code+'?hl=zh_TW&fs=1&rel=0&loop='+loopstr+'&autoplay='+autoplaystr+'&hd='+highqualitystr+'&enablejsapi=1" frameborder="0"></html:iframe>';
     }
     else if(pt=='U')
     {
@@ -360,7 +358,7 @@ EmbeddedPlayer.prototype={
     this.xmlhttp.send(null);
   },
 
-  openPlayerWindow: function(pt, code, w, h, loop, autoPlay, autoUseHighQuality, useHtml5Player)
+  openPlayerWindow: function(pt, code, w, h, loop, autoPlay, autoUseHighQuality)
   {
     this.ptype = pt;
     if(pt=='Y')
@@ -375,25 +373,24 @@ EmbeddedPlayer.prototype={
         this.iframe = null;
       }
       if(this.iframe==null){
-        this.iframe = document.createElementNS(XUL_NS, 'iframe');
+        this.iframe = document.createElement('iframe');
         this.movieDiv.appendChild(this.iframe);
         this.iframe.classList.add('extUI');
         this.iframe.classList.add('youtube-player');
         this.iframe.setAttribute('type','text/html');
         this.iframe.setAttribute('frameborder',0);
+        this.iframe.setAttribute('allowfullscreen', '1');
       }
       var autoplaystr = '0';
       if(autoPlay)
         autoplaystr = '1';
-      var scrstr = 'http://www.youtube.com/embed/'+code+'?hl=zh_TW&fs=1&rel=0&autoplay='+autoplaystr;
+      var scrstr = 'http://www.youtube.com/embed/'+code+'?enablejsapi=1&hl=zh_TW&autoplay='+autoplaystr;
       if(loop)
         scrstr+=("&loop=1&playlist=" + code);
       else
         scrstr+="&loop=0";
       if(autoUseHighQuality)
         scrstr+="&vq=highres";
-      if(useHtml5Player)
-        scrstr+="&html5=1";
       this.iframe.setAttribute('width',w);
       this.iframe.setAttribute('height',h);
       this.iframe.setAttribute('src',scrstr);
@@ -566,7 +563,8 @@ EmbeddedPlayer.prototype={
   }
 };
 
-function PlayerMgr() {
+function EmbeddedPlayerMgr(bbscore) {
+  this.bbscore = bbscore;
   this.BBSWin = document.getElementById('BBSWindow');
   this.dragingWindow = null;
   this.embeddedPlayerSize = 0;
@@ -579,7 +577,7 @@ function PlayerMgr() {
   this.eplayers=[];
 }
 
-PlayerMgr.prototype={
+EmbeddedPlayerMgr.prototype={
   timerMinWindow: Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer),
   youtubeRegEx: /((https?:\/\/www\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*))|(https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))|(https?:\/\/m\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*)))/i,
   youtubeRegEx1: /(https?:\/\/www\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*))/i,
@@ -600,7 +598,7 @@ PlayerMgr.prototype={
       aurl = aurl.substr(i+1,aurl.length);
     //i = aurl.indexOf('=');
     //aurl = aurl.substring(i+1, aurl.length);
-    var embeddedPlayer = new EmbeddedPlayer(tempurl, this.epCopyUrlButton, this.embeddedPlayerSize);
+    var embeddedPlayer = new EmbeddedPlayer(this.bbscore, tempurl, this.epCopyUrlButton, this.embeddedPlayerSize);
     this.eplayers.push(embeddedPlayer);
     embeddedPlayer.playerDiv.display = 'none';
     embeddedPlayer.playerDiv.style.left = '10px';
@@ -610,7 +608,7 @@ PlayerMgr.prototype={
     embeddedPlayer.sizeSelect.setAttribute('YoutubeCode','');
     embeddedPlayer.sizeSelect.setAttribute('UrecordCode',aurl);
     //embeddedPlayer.opt[this.embeddedPlayerSize].selected = true;
-    embeddedPlayer.openPlayerWindow('R', aurl, this.epWindowWidth, this.epWindowHeight, this.epLoop, this.epAutoPlay, this.epAutoUseHQ, this.epHtml5);
+    embeddedPlayer.openPlayerWindow('R', aurl, this.epWindowWidth, this.epWindowHeight, this.epLoop, this.epAutoPlay, this.epAutoUseHQ);
   },
 
   testURL: function(aurl) {
@@ -633,7 +631,7 @@ PlayerMgr.prototype={
     if(!this.ustreamRegEx.test(aurl))
       return;
 
-    var embeddedPlayer = new EmbeddedPlayer(tempurl, this.epCopyUrlButton, this.embeddedPlayerSize);
+    var embeddedPlayer = new EmbeddedPlayer(this.bbscore, tempurl, this.epCopyUrlButton, this.embeddedPlayerSize);
     this.eplayers.push(embeddedPlayer);
     embeddedPlayer.playerDiv.display = 'none';
     embeddedPlayer.playerDiv2.display = 'none';
@@ -695,7 +693,7 @@ PlayerMgr.prototype={
     if(youtubeURLType==1 || youtubeURLType==2 || youtubeURLType==3)
     {
       tempurl = 'http://www.youtube.com/watch?v='+aurl;
-      var embeddedPlayer = new EmbeddedPlayer(tempurl, this.epCopyUrlButton, this.embeddedPlayerSize);
+      var embeddedPlayer = new EmbeddedPlayer(this.bbscore, tempurl, this.epCopyUrlButton, this.embeddedPlayerSize);
       this.eplayers.push(embeddedPlayer);
       embeddedPlayer.playerDiv.display = 'none';
       embeddedPlayer.playerDiv.style.left = '10px';
@@ -705,7 +703,7 @@ PlayerMgr.prototype={
       embeddedPlayer.sizeSelect.setAttribute('UstreamCode','');
       embeddedPlayer.sizeSelect.setAttribute('UrecordCode','');
       //embeddedPlayer.opt[this.embeddedPlayerSize].selected = true;
-      embeddedPlayer.openPlayerWindow('Y', aurl, this.epWindowWidth, this.epWindowHeight, this.epLoop, this.epAutoPlay, this.epAutoUseHQ, this.epHtml5);
+      embeddedPlayer.openPlayerWindow('Y', aurl, this.epWindowWidth, this.epWindowHeight, this.epLoop, this.epAutoPlay, this.epAutoUseHQ);
     }
   },
 
@@ -740,7 +738,7 @@ PlayerMgr.prototype={
             if(this.eplayers[i].xmlhttp == xmlhttp)
             {
               this.eplayers[i].sizeSelect.setAttribute('UstreamCode',contentText);
-              this.eplayers[i].openPlayerWindow(this.eplayers[i].ptype ,contentText, this.epWindowWidth, this.epWindowHeight, this.epLoop, this.epAutoPlay, this.epAutoUseHQ, this.epHtml5);
+              this.eplayers[i].openPlayerWindow(this.eplayers[i].ptype ,contentText, this.epWindowWidth, this.epWindowHeight, this.epLoop, this.epAutoPlay, this.epAutoUseHQ);
               xmlhttp.abort();
               break;
             }
@@ -764,7 +762,7 @@ PlayerMgr.prototype={
       if(this.eplayers[i].sizeSelect == sel)
       {
         this.eplayers[i].playerDiv.style.display = 'block';
-        this.eplayers[i].openPlayerWindow(this.eplayers[i].ptype ,code, w, h, this.epLoop, this.epAutoPlay, this.epAutoUseHQ, this.epHtml5);
+        this.eplayers[i].openPlayerWindow(this.eplayers[i].ptype ,code, w, h, this.epLoop, this.epAutoPlay, this.epAutoUseHQ);
         break;
       }
     }

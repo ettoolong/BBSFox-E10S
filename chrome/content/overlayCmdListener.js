@@ -210,6 +210,9 @@ BBSOverlayCmdListener.prototype={
           case "sendText":
             bbscore.conn.send(data.text);
             break;
+          case "setRemoteBrowserStatus":
+            bbscore.prefs.updateOverlayPrefs([{key:'remoteBrowser', value:data.remoteBrowser}]);
+            break;
           case "disableKeyEvent":
             bbscore.disableKeyEvent();
             break;
