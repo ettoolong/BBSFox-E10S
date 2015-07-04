@@ -15,7 +15,7 @@
   <stringbundleset id="bbsfoxoptions-stringbundleset">
     <stringbundle id="bbsfoxoptions-string-bundle" src="chrome://bbsfox/locale/bbsfox.properties"/>
   </stringbundleset>
-  <vbox>
+  <vbox flex="1" style="overflow:auto">
     <tabbox>
       <tabs>
         <tab label="&options_setting.label;"/>
@@ -1067,7 +1067,7 @@
             <hbox>
               <label value="&options_aboutnote14.label;"/>
               <label value="&options_aboutnote15.label;"/>
-              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/179388/');" />
+              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/bbsfox/');" />
               <label value="&options_aboutnote20.label;" style="color:#0000FF;" class="text-link" onclick="onLineSupport();" />
               <label value="&options_aboutnote21.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://github.com/ettoolong/BBSFox');" />
               <label value="&options_aboutnote22.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://github.com/ettoolong/BBSFox-E10S');" />
@@ -1076,6 +1076,7 @@
             <label value="&options_aboutnote16.label;"/>
             <hbox>
               <label value="&options_aboutnote26.label;"/>
+              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/pcman-bbs-extension/');" />
               <label value="&options_aboutnote17.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://code.google.com/p/pcmanfx/');" />
               <label value="&options_aboutnote17.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://github.com/pcman-bbs/pcman-firefox');" />
             </hbox>
@@ -1088,8 +1089,9 @@
             <label value="&options_aboutnote24.label;"/>
             <hbox>
               <label value="&options_aboutnote25.label;"/>
+              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/firebbsl-hedgehog/');" />
               <label value="&options_aboutnote17.label;" style="color:#0000FF;" class="text-link" onclick="openURL('http://hedgehog-hosted.appspot.com/firebbs.l-hedgehog');" />
-              <label value="&options_aboutnote19.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://addons.mozilla.org/zh-TW/firefox/addon/93617');" />
+              <label value="&options_aboutnote21.label;" style="color:#0000FF;" class="text-link" onclick="openURL('https://github.com/l-hedgehog/firebbs.l-hedgehog');" />
             </hbox>
           </vbox>
         </tabpanel>

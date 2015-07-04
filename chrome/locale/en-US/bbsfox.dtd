@@ -350,7 +350,7 @@
 <!ENTITY options_aboutnote18.label "web site">
 <!ENTITY options_aboutnote19.label "Mozilla Add-on">
 <!ENTITY options_aboutnote20.label "technical support">
-<!ENTITY options_aboutnote21.label "Source Code-3.0.50">
+<!ENTITY options_aboutnote21.label "Source Code">
 <!ENTITY options_aboutnote22.label "Source Code-E10S">
 <!ENTITY options_aboutnote23.label "pcmanfx-0.1.8_r40+_alpha_1.xpi">
 <!ENTITY options_aboutnote24.label "FireBBS v0.3.0">

@@ -1038,11 +1038,12 @@ function load() {
   var isDevVersion = prefs.getBoolPref('DevVersion');
   if(isDevVersion)
   {
-    var devItems =['DelayPasteGesture','PushThreadGesture','OpenThreadUrlGesture',
-                 'DelayPasteMenu','LoadUrlInBG','PushThreadMenuOpt',
-                 'OpenThreadUrlMenuOpt','PushThreadLineLengthSet','NotifyShowContent',
-                 'HokeyOpenThreadUrlOpt','FixUnicodeDisplay','resolution',
-                 'DetectAid','blacklistid','ColorDefine'];
+    var devItems =['PushThreadGesture','OpenThreadUrlGesture',
+                   'LoadUrlInBG','PushThreadMenuOpt',
+                   'OpenThreadUrlMenuOpt','PushThreadLineLengthSet','NotifyShowContent',
+                   'HokeyOpenThreadUrlOpt','FixUnicodeDisplay','resolution',
+                   'DetectAid','blacklistid','ColorDefine'];
+                   //'DelayPasteGesture','DelayPasteMenu'
 
     for(var i=0;i<devItems.length;++i) {
       document.getElementById(devItems[i]).hidden=false;
