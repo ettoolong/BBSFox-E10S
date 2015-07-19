@@ -11,7 +11,5 @@ resource bbsfox modules/
 
 component {4B85A989-79D6-4f96-887A-BA479D3B2890} components/bbsfox_observer.js
 contract @mozilla.org/bbsfox;1 {4B85A989-79D6-4f96-887A-BA479D3B2890}
-component {be8771f0-2dbb-11e5-a2cb-0800200c9a66} components/bbsfox_about.js
-contract @mozilla.org/network/protocol/about;1?what=bbsfox {be8771f0-2dbb-11e5-a2cb-0800200c9a66}
 
 category profile-after-change @mozilla.org/bbsfox;1 @mozilla.org/bbsfox;1

@@ -1,8 +1,8 @@
-function BBSFoxObserver() {}
+function bbsfoxObserver() {}
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
-BBSFoxObserver.prototype = {
+bbsfoxObserver.prototype = {
 
   dump: function dump(aMessage)
   {
@@ -125,9 +125,21 @@ BBSFoxObserver.prototype = {
 };
 
 try {
-  let NSGetFactory = XPCOMUtils.generateNSGetFactory([BBSFoxObserver]);
-}
-catch (ex) {
+  Components.utils["import"]("resource://gre/modules/XPCOMUtils.jsm");
+
+  if (XPCOMUtils.generateNSGetFactory) {
+    // moz-2.0+
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([bbsfoxObserver]);
+  }
+  else {
+    // moz-1.9
+    if (!XPCOMUtils.defineLazyGetter) {
+      // moz < 1.9.2; no profile-after-change category, needs service:true
+      bbsfoxObserver.prototype._xpcom_categories = [{category: 'app-startup', service: true}];
+    }
+    function NSGetModule() { return XPCOMUtils.generateModule([bbsfoxObserver]); }
+  }
+} catch (ex) {
 }
 
 Components.classes["@mozilla.org/globalmessagemanager;1"]

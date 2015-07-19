@@ -6,6 +6,10 @@ var regTelnet = Components.manager.QueryInterface(Components.interfaces.nsICompo
 
 var regSsh = Components.manager.QueryInterface(Components.interfaces.nsIComponentRegistrar)
              .isContractIDRegistered('@mozilla.org/network/protocol;1?name=ssh') ? false : true;
+
+var regAbout = Components.manager.QueryInterface(Components.interfaces.nsIComponentRegistrar)
+             .isContractIDRegistered('@mozilla.org/network/protocol/about;1?what=bbsfox') ? false : true;
+
 if(regSsh || regTelnet) {
   let createFactory = function () {
       // Register/unregister a constructor as a component.
@@ -63,6 +67,11 @@ if(regSsh || regTelnet) {
     createFactory().register(SshProtocol);
   }
   
+  if(regAbout) {
+    Components.utils.import("resource://bbsfox/install_about_page.js");
+    createFactory().register(BBSFoxAboutPage);    
+  }
+
   {
     //TODO: need fix, if bbsfoxBg directory not exists!
     Components.utils.import("resource://gre/modules/osfile.jsm");
