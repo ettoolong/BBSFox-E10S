@@ -81,6 +81,10 @@ BBSOverlayCmdListener.prototype={
           case "setInputAreaFocus":
             bbscore.setInputAreaFocus();
             break;
+          case "sendCharCode":
+            console.log(' data.charCode = ' + data.charCode);
+            bbscore.conn.send(String.fromCharCode(data.charCode));
+            break;          
           case "doAddTrack":
             bbscore.doAddTrack();
             break;

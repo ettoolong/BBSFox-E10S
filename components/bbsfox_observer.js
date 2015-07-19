@@ -1,8 +1,8 @@
-function bbsfoxObserver() {}
+function BBSFoxObserver() {}
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
-bbsfoxObserver.prototype = {
+BBSFoxObserver.prototype = {
 
   dump: function dump(aMessage)
   {
@@ -92,12 +92,26 @@ bbsfoxObserver.prototype = {
     }
   },
 
+	newChannel: function(aURI) {
+		if (! (aURI.spec == 'about:bbsfox') )
+			return;
+
+		var channel = Services.io.newChannel('chrome://bbsfox/content/options.xul', null, null);
+		channel.originalURI = aURI;
+		return channel;
+	},
+
+	getURIFlags: function(aURI) {
+		return Components.interfaces.nsIAboutModule.ALLOW_SCRIPT;
+	},
+  
   // Implement nsISupports
   QueryInterface: function(iid)
   {
     if (iid.equals(Components.interfaces.nsISupports) ||
       iid.equals(Components.interfaces.nsIObserver) ||
-      iid.equals(Components.interfaces.nsISupportsWeakReference)) {
+      iid.equals(Components.interfaces.nsISupportsWeakReference)||
+      iid.equals(Components.interfaces.nsIAboutModule) ) {
 
       return this;
     }
@@ -111,20 +125,7 @@ bbsfoxObserver.prototype = {
 };
 
 try {
-  Components.utils["import"]("resource://gre/modules/XPCOMUtils.jsm");
-
-  if (XPCOMUtils.generateNSGetFactory) {
-    // moz-2.0+
-    var NSGetFactory = XPCOMUtils.generateNSGetFactory([bbsfoxObserver]);
-  }
-  else {
-    // moz-1.9
-    if (!XPCOMUtils.defineLazyGetter) {
-      // moz < 1.9.2; no profile-after-change category, needs service:true
-      bbsfoxObserver.prototype._xpcom_categories = [{category: 'app-startup', service: true}];
-    }
-    function NSGetModule() { return XPCOMUtils.generateModule([bbsfoxObserver]); }
-  }
+  let NSGetFactory = XPCOMUtils.generateNSGetFactory([BBSFoxObserver]);
 }
 catch (ex) {
 }

@@ -1104,6 +1104,10 @@ var ETT_BBSFOX_Overlay =
     this.setBBSCmd("switchMouseBrowsing");
   },
 
+  sendCharCode: function(code) {
+    this.setBBSCmdEx({command:"sendCharCode", charCode:code});
+  },
+
   switchBgDisplay: function() {
     this.setBBSCmd("switchBgDisplay");
   },
@@ -1427,10 +1431,20 @@ var ETT_BBSFOX_Overlay =
             event.preventDefault();
             event.stopPropagation();
           }
-          else if (event.ctrlKey && !event.altKey && !event.shiftKey && (event.charCode==109 || event.charCode==77) && prefs.hokeyForMouseBrowsing) {
-            owner.switchMouseBrowse();
-            event.stopPropagation();
-            event.preventDefault();
+          else if (event.ctrlKey && !event.altKey && !event.shiftKey) {
+            if((event.charCode==109 || event.charCode==77) && prefs.hokeyForMouseBrowsing) {
+              owner.switchMouseBrowse();
+              event.stopPropagation();
+              event.preventDefault();
+            } else if((event.charCode==119 || event.charCode==87) && prefs.hotkeyCtrlW == 1) {
+              owner.sendCharCode(23);
+              event.stopPropagation();
+              event.preventDefault();
+            } else if((event.charCode==116 || event.charCode==84) && prefs.hotkeyCtrlT == 1) {
+              owner.sendCharCode(20);
+              event.stopPropagation();
+              event.preventDefault();
+            }
           }
         }
     },

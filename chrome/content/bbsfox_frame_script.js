@@ -1,9 +1,11 @@
 //fire event from bbsfox overlay
 addMessageListener("bbsfox@ettoolong:bbsfox-overlayCommand",
   function(message) {
-    var bbscore = content.bbsfox;
-    if(bbscore) {
-      bbscore.overlaycmd.exec(message.data);
+    if(content) {
+      var bbscore = content.bbsfox;
+      if(bbscore) {
+        bbscore.overlaycmd.exec(message.data);
+      }
     }
   }
 );

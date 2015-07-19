@@ -104,6 +104,8 @@ function bbsfoxPrefHandler(listener) {
       mouseWheelFunc3 : 0,
       hokeyForPaste : false,
       hokeyForMouseBrowsing: false,
+      hotkeyCtrlW: false,
+      hotkeyCtrlT: false,
       useHttpContextMenu: true,
       useMouseBrowsing: true,
       keyEventStatus: true,
@@ -484,6 +486,7 @@ bbsfoxPrefHandler.prototype={
           break;
         case "HotkeyCtrlW":
           _this.hotkeyCtrlW = branch.getIntPref(name);
+          _this.updateEventPrefs([{key:'hotkeyCtrlW', value:_this.hotkeyCtrlW}]);
           break;
         case "HotkeyCtrlB":
           _this.hotkeyCtrlB = branch.getIntPref(name);
@@ -493,6 +496,7 @@ bbsfoxPrefHandler.prototype={
           break;
         case "HotkeyCtrlT":
           _this.hotkeyCtrlT = branch.getIntPref(name);
+          _this.updateEventPrefs([{key:'hotkeyCtrlT', value:_this.hotkeyCtrlT}]);
           break;
         case "HokeyForCopy":
           _this.hokeyForCopy = branch.getBoolPref(name);
