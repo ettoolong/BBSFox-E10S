@@ -76,11 +76,11 @@ ConnectCore.prototype={
         };
 
         this.client = new paramikojs.SSHClient();
-        //this.client.set_missing_host_key_policy(new paramikojs.AutoAddPolicy()); //always save new key
+        this.client.set_missing_host_key_policy(new paramikojs.AutoAddPolicy()); //always save new key
         //this.client.set_missing_host_key_policy(new paramikojs.AskPolicy());     //always ask use
         //this.client.set_missing_host_key_policy(new paramikojs.RejectPolicy());  //always reject different key
         //this.client.set_missing_host_key_policy(new paramikojs.WarningPolicy()); //always warning for different key
-        this.client.set_missing_host_key_policy(new paramikojs.AskPolicy(this.onSftpCache.bind(this))); //TODO: add a pref for this.
+        //this.client.set_missing_host_key_policy(new paramikojs.AskPolicy(this.onSftpCache.bind(this))); //TODO: add a pref for this.
         //this.client.load_host_keys('known_hosts');
         this.client.load_host_keys_lines(hostkeys);
 

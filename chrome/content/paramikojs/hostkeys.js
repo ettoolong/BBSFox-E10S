@@ -211,7 +211,7 @@ paramikojs.HostKeys.prototype = {
         data += line;
       }
     }
-    bbsfox.sendCoreCommand({command: "saveHostkey", saveData: data});
+    //bbsfox.sendCoreCommand({command: "saveHostkey", saveData: data});
   },
 
   /*

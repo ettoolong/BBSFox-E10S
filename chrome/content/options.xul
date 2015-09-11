@@ -15,7 +15,7 @@
   <stringbundleset id="bbsfoxoptions-stringbundleset">
     <stringbundle id="bbsfoxoptions-string-bundle" src="chrome://bbsfox/locale/bbsfox.properties"/>
   </stringbundleset>
-  <vbox flex="1" style="overflow:auto">
+  <vbox flex="1" id="mainbox">
     <tabbox>
       <tabs>
         <tab label="&options_setting.label;"/>

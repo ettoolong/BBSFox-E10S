@@ -997,6 +997,9 @@ BBSFoxOptions.prototype = {
 };
 //
 function load() {
+  if(document.location.href == "about:bbsfox") {
+    document.getElementById('mainbox').style.overflow="auto";
+  }
   options = new BBSFoxOptions();
   options.load();
 
