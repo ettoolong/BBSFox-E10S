@@ -1139,7 +1139,22 @@ TermView.prototype={
     composition_end: function(e) {
       //this.input.disabled="";
       //this.input.setAttribute('bshow', '0');
-      this.compositionStart = false;
+      //this.compositionStart = false;
+
+      //workaround for FX41 - start
+      //For FX41:
+      //if we change 'event.target.value' in 'compositionend' or 'input' event, we got someting wrong.
+      if(this.compositionStart) {
+        setTimer(false, function(){
+          var text = e.target.value;
+          if(text) {
+            this.conn.convSend(text, this.prefs.charset);
+          }
+          this.input.value='';
+          this.compositionStart = false;
+        }.bind(this), 1);
+      }
+      //workaround for FX41 - end
 
       this.input.style.border = 'none';
       this.input.style.width =  '0px';
