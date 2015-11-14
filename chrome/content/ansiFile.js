@@ -9,9 +9,9 @@ AnsiFile.prototype = {
         //FIXME: load file with different charset
         var text = this.ansi.convertStringToUTF8(data);
         //this.ansi.ansiClipboard(text);
-        this.ansi.paste(text);        
+        this.ansi.paste(text);
     },
-    
+
     savePage: function(saveMode) {
         //FIXME: save file with different charset
         /*

@@ -29,6 +29,9 @@
     <menuitem id="bbsfox_menu-ansiColorTool" label="&menu_ansicolortool.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.ansiColorTool();"/>
     <menuitem id="bbsfox_menu-screenKeyboard" label="&menu_screenkeyboard.label;" insertafter="context-selectall" oncommand="ETT_BBSFOX_Overlay.screenKeyboard();"/>
 
+    <menuitem id="bbsfox_menu-addTrack" label="&menu_addtrack.label;" oncommand="ETT_BBSFOX_Overlay.addTrack();"/>
+    <menuitem id="bbsfox_menu-delTrack" label="&menu_deltrack.label;" oncommand="ETT_BBSFOX_Overlay.delTrack();"/>
+    <menuitem id="bbsfox_menu-clearTrack" label="&menu_cleartrack.label;" oncommand="ETT_BBSFOX_Overlay.clearTrack();"/>
     <menuitem id="bbsfox_menu-delayPaste" label="&menu_delaypaste.label;" oncommand="ETT_BBSFOX_Overlay.delayPasteText();"/>
     <menuitem id="bbsfox_menu-copyHtml" label="&menu_copyhtml.label;" oncommand="ETT_BBSFOX_Overlay.copyHtml();"/>
     <menuitem id="bbsfox_menu-mouseBrowsing" label="&menu_mousebrowsing.label;" oncommand="ETT_BBSFOX_Overlay.switchMouseBrowse();"/>

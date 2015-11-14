@@ -265,7 +265,6 @@ ConnectCore.prototype={
         var s;
         // when converting unicode to big5, use UAO.
         if(charset.toLowerCase() == 'big5') {
-            this.listener.buf.loaduao();
             s = uaoConv.u2b(unicode_str);
         }
         else

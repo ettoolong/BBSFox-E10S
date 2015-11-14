@@ -5,6 +5,8 @@ function BBSFox() {
     var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
     this.FXVersion = parseFloat(appInfo.version);
 
+    Components.utils.import("resource://bbsfox/uao.js");
+
     this.CmdHandler = document.getElementById('cmdHandler');
     this.CmdHandler.setAttribute('bbsfox', true);
     this.CmdHandler.setAttribute('UpdateIcon', 'chrome://bbsfox/skin/logo/logo.png');
@@ -94,8 +96,6 @@ function BBSFox() {
 }
 
 BBSFox.prototype={
-    conv: Components.classes["@mozilla.org/intl/utf8converterservice;1"].getService(Components.interfaces.nsIUTF8ConverterService),
-
     _bundle: Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService)
             .createBundle("chrome://bbsfox/locale/bbsfox.properties"),
 
@@ -682,57 +682,59 @@ BBSFox.prototype={
       return selstr;
     },
 
-    doClearTrack: function() {
-      /*
-      var keywords = this.view.trackKeyWordList;
-      while (keywords.firstChild) {
-        keywords.removeChild(keywords.firstChild);
+    getIndexOf: function(arr, str) {
+      str = str.toLowerCase();
+      for(var i=0;i<arr.length;++i) {
+        if(arr[i].toLowerCase() == str)
+          return i;
       }
+      return -1;
+    },
+
+    doClearTrack: function() {
+      this.prefs.highlightWords_local = [];
       this.redraw();
-      */
+      this.prefs.updateOverlayPrefs([{key:'highlightWords', value:''}]);
     },
 
     doAddTrack: function() {
-      /*
-      var selstr = window.getSelection().toString();
-      var strArray = selstr.split('\r\n');
+      var selstr = window.getSelection().toString().replace('\r\n','\n');
+      var strArray = selstr.split('\n');
 
-      selstr = this.trim_right(strArray[0]);
-      var findflag = false;
-      var keywords = this.view.trackKeyWordList;
-      for (var i = 0; i < keywords.childNodes.length; i++) {
-        if (keywords.childNodes[i].nodeValue == selstr){
-          findflag = true;
-          break;
-        }
+      selstr = this.trim_both(strArray[0]);
+      var highlightWords_local = this.prefs.highlightWords_local;
+      if(selstr != '') {
+        highlightWords_local.push(selstr);
+        this.redraw();
+        this.prefs.updateOverlayPrefs([{key:'highlightWords', value:this.prefs.highlightWords_local.join('\n')}]);
       }
-      if(findflag) // select text already in track list
-      {
-      }
-      else
-      {
-        var txt = document.createTextNode(selstr);
-        keywords.appendChild(txt);
-      }
-      this.redraw();
-      */
     },
 
     doDelTrack: function() {
-      /*
-      var selstr = window.getSelection().toString();
-      var strArray = selstr.split('\r\n');
+      var selstr = window.getSelection().toString().replace('\r\n','\n');
+      var strArray = selstr.split('\n');
 
-      selstr = this.trim_right(strArray[0]);
-      var keywords = this.view.trackKeyWordList;
-      for (var i = keywords.childNodes.length - 1; i >=0 ; --i) {
-        if (keywords.childNodes[i].nodeValue == selstr){
-          keywords.removeChild(keywords.childNodes[i]);
-          break;
+      selstr = this.trim_both(strArray[0]);
+      var highlightWords_local = this.prefs.highlightWords_local;
+
+      if(selstr != '') {
+        var idx;
+        if(this.prefs.keyWordTrackCaseSensitive) {
+          idx = highlightWords_local.indexOf(selstr);
+          while( idx != -1) {
+            highlightWords_local.splice(idx, 1);
+            idx = highlightWords_local.indexOf(selstr);
+          }
+        } else {
+          idx = this.getIndexOf(highlightWords_local, selstr);
+          while( idx != -1) {
+            highlightWords_local.splice(idx, 1);
+            idx = this.getIndexOf(highlightWords_local, selstr);
+          }
         }
+        this.redraw();
+        this.prefs.updateOverlayPrefs([{key:'highlightWords', value:this.prefs.highlightWords_local.join('\n')}]);
       }
-      this.redraw();
-      */
     },
 
     doOpenAllLink: function() {
@@ -1612,6 +1614,15 @@ BBSFox.prototype={
       }
       if(event.charCode){
         // Control characters
+        if(this.os=='Darwin') {
+          if(event.metaKey && !event.altKey && !event.shiftKey && (event.charCode == 99 || event.charCode == 67) && !window.getSelection().isCollapsed && this.prefs.hokeyForCopy) { //^C , do copy
+            this.doCopySelect();
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+        }
+
         if(event.ctrlKey && !event.altKey && !event.shiftKey && (event.charCode == 99 || event.charCode == 67) && !window.getSelection().isCollapsed && this.prefs.hokeyForCopy) { //^C , do copy
           this.doCopySelect();
           event.preventDefault();

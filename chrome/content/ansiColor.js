@@ -5,7 +5,7 @@ function AnsiColor(listener) {
 }
 
 AnsiColor.prototype = {
-	  /*
+    /*
     copy: function() {
         var sel = this.listener.view.selection;
         if(!sel.hasSelection())
@@ -104,21 +104,20 @@ AnsiColor.prototype = {
             }
             str = tmp.replace(/([^\x00-\x7f])(\x1b\[[0-9;]*;50m)/g, "$2$1");
         }
-        var conv = this.listener.view.conv;
         if(!Encoding)
             Encoding = this.listener.prefs.charset;
-        return conv.convertStringToUTF8(str, Encoding, true, true);
+        return uaoConv.b2u(str, Encoding);
     },
 
     convertFromUnicode: function(str, Encoding) {
         if(!Encoding)
             Encoding = this.listener.prefs.charset;
+        var text;
         if(Encoding.toLowerCase() == 'big5') {
-            this.listener.buf.loaduao();
-            var text = uaoConv.u2b(str);
+            text = uaoConv.u2b(str);
         } else {
             this.listener.conn.oconv.charset = Encoding;
-            var text = this.listener.conn.oconv.ConvertFromUnicode(str);
+            text = this.listener.conn.oconv.ConvertFromUnicode(str);
         }
         return text.replace(/(\x1b\[[0-9;]*);50m([^\x00-\x7f])/g, "$2$1m");
     },

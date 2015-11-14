@@ -60,7 +60,7 @@ function TermView(colCount, rowCount) {
     this.compositionStart = false;
     this.dp = new DOMParser();
 
-    this.OS = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
+    this.os = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
     var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
     this.FXVersion = parseFloat(appInfo.version);
 
@@ -79,14 +79,14 @@ function TermView(colCount, rowCount) {
     this.input.addEventListener('compositionend', this.composition_end.bind(this), false);
     window.addEventListener('keypress', this.key_press.bind(this), false);
     this.input.addEventListener("input", this.text_input.bind(this), true);
-    
+
     this.anchorClickHandler = {
         view: this,
         handleEvent: function(e) {
           this.view.bbscore.bgtab(e);
         }
     };
-    
+
     //init view - start
     var tmp = [];
     tmp[0] = '<spen class="s">';
@@ -109,12 +109,12 @@ function TermView(colCount, rowCount) {
     this.blinkTimeout = setTimer(true, function(){_this.onBlink();}, 500); //500
 
     this.highlightTimeout = null;
+    this.highlighter = new Highlighter(this);
 }
 
 
 TermView.prototype={
-    conv: Components.classes["@mozilla.org/intl/utf8converterservice;1"].getService(Components.interfaces.nsIUTF8ConverterService),
-    timerTrackKeyWord: Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer),
+    timerTrackKeyWord: null,
     termColors: [
       // dark
       '#000000', // black
@@ -517,9 +517,9 @@ TermView.prototype={
                                 var b5=ch.ch + ch2.ch; // convert char to UTF-8 before drawing
                                 var u='';
                                 if(this.prefs.charset == 'UTF-8' || b5.length == 1)
-                                  u=b5;
+                                  u = b5;
                                 else
-                                  u=this.conv.convertStringToUTF8(b5, this.prefs.charset, true, true);
+                                  u = uaoConv.b2u(b5, this.prefs.charset);
 
                                 if(u) // can be converted to valid UTF-8
                                 {
@@ -568,11 +568,11 @@ TermView.prototype={
                               else //maybe normal ...
                               {
                                 var b5=ch.ch + ch2.ch; // convert char to UTF-8 before drawing
-                                var u='';
+                                var u = '';
                                 if(this.prefs.charset == 'UTF-8' || b5.length == 1)
-                                  u=b5;
+                                  u = b5;
                                 else
-                                  u=this.conv.convertStringToUTF8(b5, this.prefs.charset, true, true);
+                                  u = uaoConv.b2u(b5, this.prefs.charset);
 
                                 if(u) { // can be converted to valid UTF-8
                                   if(u.length==1) //normal chinese word
@@ -723,6 +723,7 @@ TermView.prototype={
                 */
                 this.bbscore.resetStatusBar();
               }
+              //highlight words
               anylineUpdate = true;
               lineChangeds[row] = false;
             }
@@ -732,60 +733,22 @@ TermView.prototype={
           var haveLink = (allLinks.length > 0);
           this.prefs.updateOverlayPrefs([{key:'haveLink', value:haveLink}]);
         }
-        /*
-        //TODO: re-impl by termbuf
-        if(anylineUpdate && this.prefs.useKeyWordTrack && this.trackKeyWordList.childNodes.length>0)
+
+        if(anylineUpdate && this.prefs.enableHighlightWords && this.prefs.highlightWords.length>0)
         {
-          this.timerTrackKeyWord.cancel();
-          this.timerTrackKeyWord.initWithCallback(this, 1, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-          //for higher performance, we can implement this function by ourselves(reference f i n d b a r . x m l).
-          //By that, we can search key words ONLY changed lines(not search key words in full documents)
+          if(this.timerTrackKeyWord)
+            this.timerTrackKeyWord.cancel();
+          this.timerTrackKeyWord = setTimer(false, function(){
+            var highlightWords = this.prefs.highlightWords;
+            var highlightWords_local = this.prefs.highlightWords_local;
+            for(var i=0;i<highlightWords.length;++i){
+              this.highlighter.highlight(highlightWords[i], this.prefs.keyWordTrackCaseSensitive);
+            }
+            for(var i=0;i<highlightWords_local.length;++i){
+              this.highlighter.highlight(highlightWords_local[i], this.prefs.keyWordTrackCaseSensitive);
+            }
+          }.bind(this), 1);
         }
-        */
-    },
-    /*
-    notify: function(timer) {
-      //TODO: re-impl by termbuf
-      var keywords = this.trackKeyWordList;
-      for (var i = 0; i < keywords.childNodes.length; i++) {
-        var kw = keywords.childNodes[i].nodeValue;
-        if(this.findBar)
-        {
-          this.findBar._typeAheadCaseSensitive = this.prefs.keyWordTrackCaseSensitive;
-          this.findBar._highlightDoc(true, kw, window);
-        }
-        else
-          this._highlightDoc(kw);
-      }
-    },
-    */
-
-    _highlightDoc: function(aWord){
-      var doc = document;
-
-      var body = (doc instanceof HTMLDocument && doc.body) ? doc.body : doc.documentElement;
-      var searchRange = doc.createRange();
-      searchRange.selectNodeContents(body);
-
-      var startPt = searchRange.cloneRange();
-      startPt.collapse(true);
-
-      var endPt = searchRange.cloneRange();
-      endPt.collapse(false);
-
-      var retRange = null;
-      var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"].createInstance().QueryInterface(Components.interfaces.nsIFind);
-      finder.caseSensitive = this.prefs.keyWordTrackCaseSensitive;
-
-      var docShell = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIWebNavigation).QueryInterface(Components.interfaces.nsIDocShell);
-      var controller = docShell.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsISelectionDisplay).QueryInterface(Components.interfaces.nsISelectionController);
-
-      while ((retRange = finder.Find(aWord, searchRange, startPt, endPt)))
-      {
-        controller.getSelection(Components.interfaces.nsISelectionController.SELECTION_FIND).addRange(retRange);
-        startPt = retRange.cloneRange();
-        startPt.collapse(false);
-      }
     },
 
     text_input: function(event) {
@@ -796,7 +759,7 @@ TermView.prototype={
         event.preventDefault();
         var text = event.target.value;
         if(text) {
-          this.conn.convSend(text, this.prefs.charset);  
+          this.conn.convSend(text, this.prefs.charset);
         }
         event.target.value='';
       }
@@ -816,7 +779,7 @@ TermView.prototype={
         var conn = this.conn;
         if(e.charCode){
             // Control characters
-            if(this.OS=='Darwin')
+            if(this.os=='Darwin')
             {
               if(e.metaKey && !e.altKey && !e.shiftKey && (e.charCode == 61 || e.charCode == 45)) {
                 e.preventDefault();
@@ -1139,23 +1102,24 @@ TermView.prototype={
     composition_end: function(e) {
       //this.input.disabled="";
       //this.input.setAttribute('bshow', '0');
-      //this.compositionStart = false;
-
-      //workaround for FX41 - start
-      //For FX41:
-      //if we change 'event.target.value' in 'compositionend' or 'input' event, we got someting wrong.
-      if(this.compositionStart) {
-        setTimer(false, function(){
-          var text = e.target.value;
-          if(text) {
-            this.conn.convSend(text, this.prefs.charset);
-          }
-          this.input.value='';
-          this.compositionStart = false;
-        }.bind(this), 1);
+      if(this.os == 'WINNT'){
+        //workaround for FX41 - start
+        //For FX41:
+        //if we change 'event.target.value' in 'compositionend' or 'input' event, we got someting wrong.
+        if(this.compositionStart) {
+          setTimer(false, function(){
+            var text = e.target.value;
+            if(text) {
+              this.conn.convSend(text, this.prefs.charset);
+            }
+            this.input.value='';
+            this.compositionStart = false;
+          }.bind(this), 1);
+        }
+        //workaround for FX41 - end
+      } else {
+        this.compositionStart = false;
       }
-      //workaround for FX41 - end
-
       this.input.style.border = 'none';
       this.input.style.width =  '0px';
       this.input.style.height = '0px';
@@ -1248,7 +1212,6 @@ TermView.prototype={
     },
 
     getSelectionColRow: function(){
-      this.buf.loaduao();
       var r = window.getSelection().getRangeAt(0);
       var tmpstr = r.toString();
       tmpstr = tmpstr.replace(/\r\n/g, '\r');
@@ -1347,7 +1310,7 @@ TermView.prototype={
         getInvertColorValue = this.invertColor;
       if(this.colorTable == 1)
         getColorValue = this.invertColor;
-        
+
       var prefs = this.prefs;
       var cssDefine = 'body {';
       cssDefine+='--bbscolor-'+index+':'+ getColorValue(prefs.bbsColor[index]) +';';
@@ -1364,7 +1327,7 @@ TermView.prototype={
         else
           node.appendChild(tn);
       };
-    
+
       var getColorDefineElem = function(id) {
         var elem = document.getElementById(id);
         if(!elem) {
@@ -1393,7 +1356,7 @@ TermView.prototype={
       } else {
          this.colorTable = 0;
       }
-      this.setColorDefine();  
+      this.setColorDefine();
     },
 
     cancelHighlightTimeout: function() {

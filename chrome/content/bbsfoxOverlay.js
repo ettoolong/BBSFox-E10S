@@ -99,6 +99,13 @@ var ETT_BBSFOX_Overlay =
     var data = message.data;
     switch (data.command) {
       case "updateOverlayPrefs":
+        if(data.overlayPrefs.highlightWords != '') {
+          data.overlayPrefs.highlightWords_raw = data.overlayPrefs.highlightWords.split('\n');
+          data.overlayPrefs.highlightWords_lowCase = data.overlayPrefs.highlightWords.toLowerCase().split('\n');
+        } else {
+          data.overlayPrefs.highlightWords_raw = [];
+          data.overlayPrefs.highlightWords_lowCase = [];
+        }
         gBrowser.getTabForBrowser( message.target ).overlayPrefs = data.overlayPrefs;
         if(!this.initEhStatus) {
           this.initEhStatus = true;
@@ -310,7 +317,7 @@ var ETT_BBSFOX_Overlay =
         }
         else // have select something
         {
-          if(prefs.useKeyWordTrack && prefs.keyWordTrackMenu)
+          if(prefs.enableHighlightWords && prefs.keyWordTrackMenu)
           {
             var selstr = contextMenuInfo.selectedText;
             var strArray = selstr.split('\r\n');
@@ -321,14 +328,12 @@ var ETT_BBSFOX_Overlay =
             }
             else
             {
-              selstr = this.trim_right(strArray[0]);
               var findflag = false;
-
-              for (var i = 0; prefs.keywords && i < prefs.keywords.length; i++) {
-                if (prefs.keywords[i] == selstr){
-                  findflag = true;
-                  break;
-                }
+              selstr = this.trim_both(strArray[0]);
+              if(prefs.keyWordTrackCaseSensitive) {
+                findflag = (prefs.highlightWords_raw.indexOf(selstr) !== -1);
+              } else {
+                findflag = (prefs.highlightWords_lowCase.indexOf(selstr.toLowerCase()) !== -1);
               }
               if(findflag) // select text already in track list
               {
@@ -341,7 +346,7 @@ var ETT_BBSFOX_Overlay =
                 this.setItemVisible("bbsfox_menu-delTrack", false);
               }
             }
-          }//if(useKeyWordTrack)
+          }//if(enableHighlightWords)
           else
           {
             this.setItemVisible("bbsfox_menu-addTrack", false);
@@ -349,7 +354,7 @@ var ETT_BBSFOX_Overlay =
           }
         }
         this.setItemVisible("bbsfox_menu-ansiCopy", contextMenuInfo.isTextSelected && prefs.ansiCopyMenu);
-        this.setItemVisible("bbsfox_menu-clearTrack", prefs.useKeyWordTrack && prefs.keyWordTrackMenu && prefs.keywords && prefs.keywords.kength);
+        this.setItemVisible("bbsfox_menu-clearTrack", prefs.enableHighlightWords && prefs.keyWordTrackMenu && prefs.highlightWords_raw && prefs.highlightWords_raw.length);
 
         this.setItemVisible("context-paste", true);
         //this.setItemVisible("context-selectall", false);

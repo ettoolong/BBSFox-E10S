@@ -194,7 +194,6 @@ function TermBuf(cols, rows) {
 }
 
 TermBuf.prototype={
-    conv: Components.classes["@mozilla.org/intl/utf8converterservice;1"].getService(Components.interfaces.nsIUTF8ConverterService),
     timerUpdate: Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer),
 
     // From: http://snippets.dzone.com/posts/show/452
@@ -542,9 +541,9 @@ TermBuf.prototype={
                         lineStrAfterLink = lineStrAfterLink.replace(/\s/g,'');
                         lineStrBeforeLink = this.getText(row, 0, uri[1], false); //urlTemp;
                         var u;
-                        if(this.prefs.charset.toLowerCase() != 'utf-8')
-                          u = this.conv.convertStringToUTF8(urlTemp, this.prefs.charset, true, true);
-                        else {
+                        if(this.prefs.charset.toLowerCase() != 'utf-8') {
+                          u = uaoConv.b2u(urlTemp, this.prefs.charset);
+                        } else {
                           var str='';
                           for(var i=0; i<urlTemp.length; ++i) {
                             str+=urlTemp.charAt(i);
@@ -961,13 +960,6 @@ TermBuf.prototype={
       //}
     },
 
-    loaduao: function() {
-      if(!this.uaoConvLoaded) {
-        Components.utils.import("resource://bbsfox/uao.js");
-        this.uaoConvLoaded = true;
-      }
-    },
-
     getText: function(row, colStart, colEnd, color, isutf8, reset) {
       var text = this.lines[row];
       // always start from leadByte, and end at second-byte of DBCS.
@@ -985,7 +977,6 @@ TermBuf.prototype={
 
       if(!this.view) return;
       var charset = this.prefs.charset;
-      var conv = this.view.conv;
 
       // generate texts with ansi color
       if(color) {
@@ -997,7 +988,7 @@ TermBuf.prototype={
             output += text[col].ch + this.ansiCmp(text[col], text[col+1]);
         }
         output += text[colEnd-1].ch + this.ansiCmp(text[colEnd-1], this.newChar);
-        return (isutf8 && charset != 'UTF-8' ? conv.convertStringToUTF8(output, charset, true, true) : output);
+        return (isutf8 && charset.toLowerCase() != 'utf-8' ? uaoConv.b2u(output, charset) : output);
       }
 
       text = text.slice(colStart, colEnd);
@@ -1006,10 +997,10 @@ TermBuf.prototype={
           if(col >=1 && line[col-1].isLeadByte) { // second byte of DBCS char
             var prevC = line[col-1];
             var b5 = prevC.ch + c.ch;
-            if((this.view && this.prefs.charset == 'UTF-8') || b5.length == 1)
+            if((this.view && this.prefs.charset.toLowerCase() == 'utf-8') || b5.length == 1)
               return b5;
             else
-              return conv.convertStringToUTF8(b5, charset, true, true);
+              return uaoConv.b2u(b5, charset);
           }
           else
             return c.ch;
@@ -1047,7 +1038,6 @@ TermBuf.prototype={
       else colEnd = this.cols;
 
       text = text.slice(colStart, colEnd);
-      var conv = this.view.conv;
       var charset = this.prefs.charset;
       return text.map( function(c, col, line){
         if(!c.isLeadByte) {
@@ -1057,7 +1047,7 @@ TermBuf.prototype={
             if((this.view && this.prefs.charset == 'UTF-8') || b5.length == 1)
               return b5;
             else
-              return conv.convertStringToUTF8(b5, charset, true, true);
+              return uaoConv.b2u(b5, charset);
           }
           else
             return c.ch;
@@ -1620,17 +1610,18 @@ TermBuf.prototype={
     },
 
     initPttStr: function(){
+      var charset = this.prefs.charset;
       var tmp = '\xa1\x69\xba\xeb\xb5\xd8\xa4\xe5\xb3\xb9\xa1\x6a';
-      this.PTTZSTR1=this.conv.convertStringToUTF8(tmp, this.prefs.charset, true, true);
+      this.PTTZSTR1 = uaoConv.b2u(tmp, charset);
       tmp = '\xa1\x69\xa5\x5c\xaf\xe0\xc1\xe4\xa1\x6a';
-      this.PTTZSTR2=this.conv.convertStringToUTF8(tmp, this.prefs.charset, true, true);
+      this.PTTZSTR2 = uaoConv.b2u(tmp, charset);
       tmp = '\x5b\xa1\xf6\x5d\xc2\xf7\xb6\x7d\x20\x5b\xa1\xf7\x5d\xbe\x5c\xc5\xaa';
-      this.PTTZSTR3=this.conv.convertStringToUTF8(tmp, this.prefs.charset, true, true);
+      this.PTTZSTR3 = uaoConv.b2u(tmp, charset);
       tmp = '\xa4\xe5\xb3\xb9\xbf\xef\xc5\xaa';
-      this.PTTZSTR4=this.conv.convertStringToUTF8(tmp, this.prefs.charset, true, true);
+      this.PTTZSTR4 = uaoConv.b2u(tmp, charset);
       tmp = '\xc2\x73\xc4\xfd';
-      this.PTTZSTR5=this.conv.convertStringToUTF8(tmp, this.prefs.charset, true, true);
+      this.PTTZSTR5 = uaoConv.b2u(tmp, charset);
       tmp = '\xa5\xbb\xac\xdd\xaa\x4f\xa5\xd8\xab\x65\xa4\xa3\xb4\xa3\xa8\xd1\xa4\xe5\xb3\xb9\xba\xf4\xa7\x7d';
-      this.PTTZSTR0=this.conv.convertStringToUTF8(tmp, this.prefs.charset, true, true);
+      this.PTTZSTR0 = uaoConv.b2u(tmp, charset);
     }
 };

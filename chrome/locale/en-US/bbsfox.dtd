@@ -300,6 +300,8 @@
 <!ENTITY options_deletespacewhencopy.label "Discard trailing space characters when copied">
 <!ENTITY options_preventnewtongwenautoconv.label "Prevent add-on NewTongWenTang auto convert BBS page">
 <!ENTITY options_servernotify.label "Notification">
+<!ENTITY options_enablehighlightwrods.label "Enable Hightlight Words">
+<!ENTITY options_highlight.label "Highlight">
 <!ENTITY options_blacklistid.label "Blacklist">
 <!ENTITY options_enableblacklist.label "Enable Blacklist">
 <!ENTITY options_needGrowl1.label "To use this function, You need install">

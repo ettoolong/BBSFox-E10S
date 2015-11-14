@@ -251,7 +251,7 @@ function BBSFoxOptions() {
                    'EPAutoPlay','EPLoop','EPAutoUseHQ',
                    'EPCopyUrlButton','EPWhenDropLink','HokeyForCopy',
                    'HokeyForPaste','HokeyForSelectAll','HokeyForMouseBrowsing',
-                   'HokeyForDownloadPost','UseKeyWordTrack','DeleteSpaceWhenCopy',
+                   'HokeyForDownloadPost','EnableHighlightWords','DeleteSpaceWhenCopy',
                    'EmbeddedPlayerMenu','MouseBrowseMenu','OpenAllLinkMenu',
                    'CopyHtmlMenu','ScreenKeyboardMenu','SavePageMenu',
                    'KeyWordTrackMenu','HideBookMarkLinkMenu','HideSendLinkMenu',
@@ -298,7 +298,7 @@ function BBSFoxOptions() {
                    'BBSColor07','BBSColor08','BBSColor09',
                    'BBSColor10','BBSColor11','BBSColor12',
                    'BBSColor13','BBSColor14','BBSColor15',
-                   'BBSColor16'];
+                   'BBSColor16','HighlightWords'];
 
   this.valueAccount = ['Login','Passwd','SshUserName','SshPassword'];
 

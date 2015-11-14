@@ -300,6 +300,8 @@
 <!ENTITY options_deletespacewhencopy.label "複製時去除行尾空白">
 <!ENTITY options_preventnewtongwenautoconv.label "避免新同文堂對BBS頁面作自動轉換">
 <!ENTITY options_servernotify.label "來訊通知">
+<!ENTITY options_enablehighlightwrods.label "啟用追蹤關鍵字">
+<!ENTITY options_highlight.label "關鍵字">
 <!ENTITY options_blacklistid.label "黑名單">
 <!ENTITY options_enableblacklist.label "啟用黑名單">
 <!ENTITY options_needGrowl1.label "您可能需要安裝">
@@ -481,7 +483,7 @@
 <!ENTITY ERRORCONSOLE "錯誤主控台">
 <!ENTITY WEBCONSOLE "網頁主控台">
 <!ENTITY SCRATCHPAD "程式碼速記本">
-<!ENTITY STYLEEDITOR "樣式編輯器">  
+<!ENTITY STYLEEDITOR "樣式編輯器">
 <!ENTITY BOOKMARKSIDEBAR "於側邊欄顯示書籤">
 <!ENTITY HISTORYSIDEBAR "於側邊欄顯示瀏覽記錄">
 <!ENTITY FINDBAR "開啟／關閉搜尋列">

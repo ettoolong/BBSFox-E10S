@@ -3,6 +3,11 @@ function bbsfoxPrefHandler(listener) {
     this.branch=null;
     this.blacklistedUserIds=[];
     this.enableBlacklist=false;
+    this.highlightWords=[];
+    this.highlightWords_local=[];
+    this.enableHighlightWords=false;
+    this.keyWordTrackCaseSensitive=true;
+    this.keyWordTrackMenu=false;
     this.useMouseBrowsing = false;
     this.useMouseBrowsingEx = false;
     this.highlightCursor = false;
@@ -74,8 +79,6 @@ function bbsfoxPrefHandler(listener) {
     this.inputBufferSizeType=0;
     this.defineInputBufferSize=12;
     this.viewBufferTimer = 30;
-    this.useKeyWordTrack=false;
-    this.keyWordTrackCaseSensitive=true;
     this.deleteSpaceWhenCopy=true;
     this.preventNewTongWenAutoConv=true;
     this.pushThreadLineLength=70;
@@ -137,7 +140,9 @@ function bbsfoxPrefHandler(listener) {
       switchBgDisplayMenu: false,
       blacklistMenu: false,
       keyWordTrackMenu: false,
-      useKeyWordTrack: false,
+      enableHighlightWords: false,
+      keyWordTrackCaseSensitive: true,
+      highlightWords: '',
       //status -start
       haveLink: false,
       mouseOnPicWindow: false,
@@ -558,9 +563,7 @@ bbsfoxPrefHandler.prototype={
           _this.updateOverlayPrefs([{key:'copyHtmlMenu', value:branch.getBoolPref(name)}]);
           break;
         case "KeyWordTrackMenu":
-          /*
           _this.updateOverlayPrefs([{key:'keyWordTrackMenu', value:branch.getBoolPref(name)}]);
-          */
           break;
         case "DelayPasteMenu":
           _this.updateOverlayPrefs([{key:'delayPasteMenu', value:branch.getBoolPref(name)}]);
@@ -754,19 +757,6 @@ bbsfoxPrefHandler.prototype={
         case "DisplayDelay":
           _this.viewBufferTimer = branch.getIntPref(name);
           break;
-        case "UseKeyWordTrack":
-          /*
-          _this.updateOverlayPrefs([{key:'useKeyWordTrack', value:branch.getBoolPref(name)}]);
-          //refresh view, hightlight keyword.
-          bbsCore.view.update(true);
-          bbsCore.view.updateCursorPos();
-          */
-          break;
-        case "KeyWordTrackCaseSensitive":
-          _this.keyWordTrackCaseSensitive = branch.getBoolPref(name);
-          bbsCore.view.update(true);
-          bbsCore.view.updateCursorPos();
-          break;
         case "DeleteSpaceWhenCopy":
           _this.deleteSpaceWhenCopy=branch.getBoolPref(name);
           break;
@@ -840,7 +830,7 @@ bbsfoxPrefHandler.prototype={
           blu = blu.replace(/\r\n/g, '\r');
           blu = blu.replace(/\n/g, '\r');
           blu = blu.replace(/\r/g, ',');
-          bluArr = blu.split(',');
+          var bluArr = blu.split(',');
           _this.blacklistedUserIds = [];
           for(var i=0;i<bluArr.length;++i){
             if(bluArr[i]!='')
@@ -850,6 +840,29 @@ bbsfoxPrefHandler.prototype={
           break;
         case "EnableBlacklist":
           _this.enableBlacklist = branch.getBoolPref(name);
+          break;
+        case "HighlightWords":
+          var hlw = branch.getComplexValue(name, CiStr).data || '';
+          hlw = hlw.replace(/\r\n/g, '\r');
+          hlw = hlw.replace(/\n/g, '\r');
+          hlw = hlw.replace(/\r/g, ',');
+          var hlwArr = hlw.split(',');
+          _this.highlightWords = [];
+          for(var i=0;i<hlwArr.length;++i){
+            if(hlwArr[i]!='')
+              _this.highlightWords.push(hlwArr[i]);
+          }
+          bbsCore.view.update(true);
+          break;
+        case "EnableHighlightWords":
+          _this.enableHighlightWords = branch.getBoolPref(name);
+          _this.updateOverlayPrefs([{key:'enableHighlightWords', value:_this.enableHighlightWords}]);
+          bbsCore.view.update(true);
+          break;
+        case "KeyWordTrackCaseSensitive":
+          _this.keyWordTrackCaseSensitive = branch.getBoolPref(name);
+          _this.updateOverlayPrefs([{key:'keyWordTrackCaseSensitive', value:_this.keyWordTrackCaseSensitive}]);
+          bbsCore.view.update(true);
           break;
         }
       } catch(e) {
@@ -921,7 +934,7 @@ bbsfoxPrefHandler.prototype={
         blu = blu.replace(/\r\n/g, '\r');
         blu = blu.replace(/\n/g, '\r');
         blu = blu.replace(/\r/g, ',');
-        bluArr = blu.split(',');
+        var bluArr = blu.split(',');
         var blacklistedUserIds = [];
         var blacklistedUserIdsTLC = [];
         for(var i=0;i<bluArr.length;++i){

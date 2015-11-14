@@ -57,6 +57,7 @@
                   <tab label="&options_emdeddplayer.label;"/>
                   <tab label="&options_picturepreview.label;"/>
                   <tab label="&options_servernotify.label;"/>
+                  <tab label="&options_highlight.label;"/>
                   <tab label="&options_other.label;"/>
                 </tabs>
                 <tabpanels>
@@ -692,7 +693,7 @@
                               <checkbox id="CopyHtmlMenu" label="&options_copyhtmlmenu.label;" disabled="true" hidden="true" bbsfoxDefaultValue="false"/>
                               <checkbox id="ScreenKeyboardMenu" label="&options_screenkeyboardmenu.label;" bbsfoxDefaultValue="true"/>
                               <checkbox id="AnsiColorToolMenu" label="&options_ansicolortoolmenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="KeyWordTrackMenu" label="&options_keywordtrackmenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
+                              <checkbox id="KeyWordTrackMenu" label="&options_keywordtrackmenu.label;" bbsfoxDefaultValue="false"/>
                               <checkbox id="DelayPasteMenu" label="&options_delaypastemenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
                               <checkbox id="EasyReadingMenu" label="&options_easyreadingmenu.label;" bbsfoxDefaultValue="false"/>
                               <checkbox id="DownloadPostMenu" label="&options_downloadpostmenu.label;" bbsfoxDefaultValue="false"/>
@@ -807,6 +808,13 @@
                     </vbox>
                   </tabpanel>
                   <tabpanel>
+                    <vbox flex="1">
+                      <checkbox id="EnableHighlightWords" label="&options_enablehighlightwrods.label;" bbsfoxDefaultValue="false"/>
+                      <checkbox id="KeyWordTrackCaseSensitive" label="&options_keywordtrackcasesensitive.label;" bbsfoxDefaultValue="false"/>
+                      <textbox id="HighlightWords" multiline="true" flex="1"/>
+                    </vbox>
+                  </tabpanel>
+                  <tabpanel>
                     <vbox>
                       <hbox align="center">
                         <label control="ScreenKeyboardAlpha" value="&options_screenkeyboardalpha.label;"/>
@@ -827,8 +835,6 @@
                         <checkbox id="EasyReadingWithImg" label="&options_easyreadingwithimg.label;" bbsfoxDefaultValue="false"/>
                         <checkbox id="EasyReadingWithVideo" label="&options_easyreadingwithvideo.label;" bbsfoxDefaultValue="false"/>
                       </hbox>
-                      <checkbox id="UseKeyWordTrack" label="&options_usekeywordtrack.label;" bbsfoxDefaultValue="false" hidden="true"/>
-                      <checkbox id="KeyWordTrackCaseSensitive" label="&options_keywordtrackcasesensitive.label;" bbsfoxDefaultValue="true" hidden="true"/>
                       <checkbox id="DeleteSpaceWhenCopy" label="&options_deletespacewhencopy.label;" bbsfoxDefaultValue="true"/>
                       <checkbox id="PreventNewTongWenAutoConv" label="&options_preventnewtongwenautoconv.label;" bbsfoxDefaultValue="true"/>
                       <groupbox>
