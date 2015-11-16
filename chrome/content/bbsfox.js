@@ -398,21 +398,16 @@ BBSFox.prototype={
       var clipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
       if(this.prefs.deleteSpaceWhenCopy)
       {
+        var splitter = this.os == 'WINNT' ? '\r\n' : '\n';
         var strArray;
-        if(this.os == 'WINNT')
-          strArray = str.split('\r\n');
-        else
-          strArray = str.split('\n');
+        strArray = str.split(splitter);
 
         str = '';
         for (var i=0 ;i<strArray.length ;i++)
         {
           str+=this.trim_right(strArray[i]);
           if(i<strArray.length-1){
-            if(this.os == 'WINNT')
-              str+='\r\n';
-            else
-              str+='\n';
+            str+=splitter;
           }
         }
       }
@@ -1520,6 +1515,23 @@ BBSFox.prototype={
 
     mouse_dragstart: function(event) {
       this.DragText=true;
+
+      if(this.prefs.deleteSpaceWhenCopy) {
+        var str = event.dataTransfer.getData("text/plain");
+        var strArray;
+        var splitter = this.os == 'WINNT' ? '\r\n' : '\n';
+        strArray = str.split(splitter);
+
+        str = '';
+        for (var i=0 ;i<strArray.length ;i++)
+        {
+          str+=this.trim_right(strArray[i]);
+          if(i<strArray.length-1){
+            str+=splitter;
+          }
+        }
+        event.dataTransfer.setData("text/plain", str);
+      }
     },
 
     mouse_dragend: function(event) {

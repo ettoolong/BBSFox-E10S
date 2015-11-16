@@ -24,7 +24,6 @@ function TermView(colCount, rowCount) {
 
     //this.DBDetection = false;
     this.blinkShow = false;
-    this.cursorShow = false;
     this.blinkOn = false;
     this.doBlink = true;
 
@@ -106,7 +105,7 @@ function TermView(colCount, rowCount) {
     //init view - end
 
     var _this=this;
-    this.blinkTimeout = setTimer(true, function(){_this.onBlink();}, 500); //500
+    this.blinkTimeout = setTimer(true, function(){_this.onBlink();}, 1000); //500
 
     this.highlightTimeout = null;
     this.highlighter = new Highlighter(this);
@@ -136,18 +135,8 @@ TermView.prototype={
       '#ffffff'  // white
     ],
     onBlink: function(){
-      this.cursorShow =! this.cursorShow;
-      //this.bbsCursor.style.display = this.cursorShow ? 'none' : 'block';
-      if(this.cursorShow)
-      {
-        this.bbsCursor.setAttribute('show', '0');
-        this.blinkOn=true;
-        this.buf.queueUpdate(true);
-      }
-      else
-      {
-        this.bbsCursor.removeAttribute('show');
-      }
+      this.blinkOn=true;
+      this.buf.queueUpdate(true);
     },
 
     showAlertMessageEx: function(blockByTime, showMsg, playSound, msg){
@@ -968,16 +957,30 @@ TermView.prototype={
       this.cursorDiv.style.textAlign = this.mainDisplay.style.textAlign;
       this.cursorDiv.style.width = this.mainDisplay.style.width;
       this.cursorDiv.style.height = '0px';
-      this.cursorDiv.style.marginTop = '0px';
+      if(this.scaleX==1 && this.scaleY==1){
+        this.cursorDiv.style.top = '0px';
+        this.cursorDiv.style.marginTop = '0px';
+      } else {
+        this.cursorDiv.style.top = this.mainDisplay.style.marginTop;
+        this.cursorDiv.style.marginTop = '1px';
+      }
       this.cursorDiv.style.transform = this.mainDisplay.style.transform;
+      this.bbsCursor.style.width = this.chw + 'px';
+      var curHeight = Math.floor(this.chh/6);
+      if(curHeight<2) curHeight = 2;
+      this.bbsCursor.style.height = curHeight + 'px';
 
       this.updateCursorPos();
     },
 
     convertMN2XY: function (cx, cy){
-      var origin = [this.firstGrid.offsetLeft, this.firstGrid.offsetTop];
-      var realX = origin[0] + (cx) * this.chw;
-      var realY = origin[1] + 1 + (cy) * this.chh;
+      var origin = [this.firstGrid.offsetLeft, 0];
+      if(this.scaleX==1 && this.scaleY==1){
+        origin[1] = this.firstGrid.offsetTop;
+      }
+
+      var realX = origin[0] + (cx * this.chw);
+      var realY = origin[1] + (cy * this.chh);
       return [realX, realY];
     },
 
@@ -987,8 +990,8 @@ TermView.prototype={
         origin = [((document.documentElement.clientWidth - (this.chw*this.buf.cols)*this.scaleX)/2), this.firstGrid.offsetTop];
       else
         origin = [this.firstGrid.offsetLeft, this.firstGrid.offsetTop];
-      var realX = origin[0] + (cx) * this.chw * this.scaleX;
-      var realY = origin[1] + (cy) * this.chh +1 + parseInt(this.mainDisplay.style.marginTop, 10);
+      var realX = origin[0] + (cx * this.chw) * this.scaleX;
+      var realY = origin[1] + (cy * this.chh) + 1 + parseInt(this.mainDisplay.style.marginTop, 10);
       return [realX, realY];
     },
 
@@ -1026,10 +1029,9 @@ TermView.prototype={
       var bg = ch.getBg();
 
       this.bbsCursor.style.left = pos[0] + 'px';
-      if(this.prefs.fixUnicodeDisplay)
-        this.bbsCursor.style.top = (pos[1]-1) + 'px';
-      else
-        this.bbsCursor.style.top = pos[1] + 'px';
+      var h = this.chh - parseInt(this.bbsCursor.style.height);
+      this.bbsCursor.style.top = pos[1] + h + 'px';
+
       // if you want to set cursor color by now background, use this.
       this.bbsCursor.setAttribute('cr', 'Iq'+bg);
       this.updateInputBufferPos();

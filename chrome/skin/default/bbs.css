@@ -50,6 +50,13 @@ a:link,a:visited,a:active,a:hover {
   text-decoration:none;
 }
 
+@keyframes blinkBgColor {
+    0% {opacity: 1;}
+    50% {opacity: 1;}
+    51% {opacity: 0;}
+    100% {opacity: 0;}
+}
+
 .terminal_display {
   white-space: pre;
   cursor: text;
@@ -59,6 +66,7 @@ a:link,a:visited,a:active,a:hover {
   margin-top:0.1%;
   -moz-user-select: none;
   user-select: none;
+  animation: blinkBgColor 1s infinite linear;
 }
 
 img{background:white; color:black; padding:5px 5px;}
