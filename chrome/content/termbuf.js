@@ -486,6 +486,7 @@ TermBuf.prototype={
                 }
                 var res;
                 var uris=null;
+                var aiduris=null;
                 // pairs of URI start and end positions are stored in line.uri.
                 while( (res=this.uriRegEx.exec(s)) != null ) {
                     if(!uris)
@@ -497,11 +498,25 @@ TermBuf.prototype={
 
                 if(this.prefs.aidAction!=0) {
                   while( (res=this.aidRegEx.exec(s)) != null ) {
-                    if(!uris)
-                      uris=new Array();
                     var uri=[res.index, res.index+res[0].length];
-                    uris.push(uri);
+                    var addAidUri = true;
+                    if(uris){
+                      for(var i=0;i<uris.length;++i) {
+                        if((uri[0] > uris[i][0] && uri[0] < uris[i][1]) || (uri[1] > uris[i][0] && uri[1] < uris[i][1]))
+                          addAidUri = false;
+                      }
+                    }
+                    if(addAidUri) {
+                      if(!aiduris)
+                        aiduris=new Array();
+                      aiduris.push(uri);
+                    }
                     //console.log('found AID: ' + res[0]);
+                  }
+                  if(uris && aiduris){
+                    uris = uris.concat(aiduris);
+                  } else if(aiduris) {
+                    uris = aiduris;
                   }
                 }
 
