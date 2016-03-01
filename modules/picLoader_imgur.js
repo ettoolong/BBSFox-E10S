@@ -11,7 +11,7 @@ BBSImgurPicLoader.prototype={
   lastUrl: '',
   lastSuccessUrl: '',
   lastSuccessPic: '',
-  regEx: /^(https?:\/\/(m\.)?imgur\.com\/)(\w{5,8})(\?tags)?/i,
+  regEx: /^https?:\/\/(?:m\.)?imgur\.com\/(\w{5,8})(?:\?tags)?/i,
   codeBlockList: [],
   codeQueue: [],
   codePicture: [],
@@ -42,7 +42,7 @@ BBSImgurPicLoader.prototype={
       //var consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
       //consoleService.logStringMessage("BBSFox: B=" + this.codeBlockList.length + ", Q=" + this.codeQueue.length + ", P =" + this.codePicture.length);
       var strArr = url.split(this.regEx);
-      if(strArr.length<4)
+      if(strArr.length<3)
         return false;
       //var shortCode = strArr[3];
 
@@ -83,8 +83,8 @@ BBSImgurPicLoader.prototype={
   },
 
   onPageResponse: function(info) {
-    var strArr = info.UniUrl.split(this.regEx);
-    var shortCode = strArr[3];
+    var strArr = this.regEx.exec(info.UniUrl);
+    var shortCode = strArr[1];
     if(info.LoaderAction=='load') {
       this.removeFromQueue(info.UniUrl);
     }

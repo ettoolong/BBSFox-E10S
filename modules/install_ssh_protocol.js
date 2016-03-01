@@ -87,7 +87,7 @@ SshProtocol.prototype =
     url.init(nsIStandardURL.URLTYPE_AUTHORITY, 22, spec, charset, baseURI);
     // Filter and return the pure URI
     var cleanURI = url.QueryInterface(nsIURI);
-    var PttRegEx = /^((bbs\.)?(ptt(2|3)?\.cc)|(ptt(2|3)?\.twbbs\.org))$/i;
+    var PttRegEx = /^(?:(?:(?:bbs\.)?ptt(?:2|3)?\.cc)|(?:ptt(?:2|3)?\.twbbs\.org))$/i;
     if(!PttRegEx.test(cleanURI.host)) //ONLY allow site ptt/ptt2/ptt3 keep username
       cleanURI.userPass = '';
     cleanURI.path = '';

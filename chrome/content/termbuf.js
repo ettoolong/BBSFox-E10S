@@ -206,6 +206,10 @@ TermBuf.prototype={
     //aidWithBoardNameRegEx2: /\u203B\u0020\u005B\u672C\u6587\u8F49\u9304\u81EA\u0020(\w{2,11})\u0020\u770B\u677F\u0020(#[a-zA-Z0-9]{8})\u0020\u005D/,
     //uriRegEx: /http:\/\/www\.youtube\.com\/watch\?v=([A-Za-z0-9._%-]*)/ig,
     pttThreadRegEx: /^https?:\/\/www\.ptt\.cc\/bbs\/([A-Za-z0-9\._%-]*)\/([A-Za-z0-9\._%-]*)\.html/ig,
+    pictureRegEx: /(?:(?:\.(?:(?:bmp|gif|jpe?g|png)(?:\?[^\/]*)?)$)|(?:https?:\/\/pbs.twimg.com\/media\/[a-zA-Z0-9_\-]{15,15}\.(?:(?:bmp|gif|jpe?g|png)(?::[^\/]*)?)$))/i,
+    //example: https://pbs.twimg.com/media/CW6zb_3UMAI0nEX.jpg:orig
+    //         https://pbs.twimg.com/media/CW6zb_3UMAI0nEX.jpg
+    //
 
     onResize: function(newcols, newrows) {
         if(newcols>=65535) newcols=65535;

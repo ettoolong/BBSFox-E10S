@@ -86,6 +86,6 @@ TelnetProtocol.prototype = {
   newChannel: function(aURI) {
     // create dummy nsIURI and nsIChannel instances
     var ios = Components.classes[kIOSERVICE_CONTRACTID].getService(nsIIOService);
-    return ios.newChannel("chrome://bbsfox/content/telnet.html", null, null)
+    return ios.newChannel("chrome://bbsfox/content/telnet.html", null, null);
   }
 };

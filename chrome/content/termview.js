@@ -90,7 +90,7 @@ function TermView(colCount, rowCount) {
     var tmp = [];
     tmp[0] = '<spen class="s">';
     for(var col=1; col<=colCount; ++col) {
-      tmp[col] = '<span style="color:#FFFFFF;background-color:#000000;">&nbsp;</span>';
+      tmp[col] = '<span style="color:#FFFFFF;background-color:#000000;">\u0020</span>';
     }
     tmp[colCount+1] = '<br></spen>';
     for (var row=0 ;row<rowCount ;++row)
@@ -216,7 +216,7 @@ TermView.prototype={
           var tmp = [];
           tmp[0] = '<spen class="s">';
           for(var col=1; col<=cols; ++col)
-            tmp[col] = '<span style="color:#FFFFFF;background-color:#000000;">&nbsp;</span>';
+            tmp[col] = '<span style="color:#FFFFFF;background-color:#000000;">\u0020</span>';
           tmp[cols+1] = '</spen>';
           var doc = this.dp.parseFromString(tmp.join(''), "text/html");
           if(newEle.firstChild)
@@ -248,7 +248,7 @@ TermView.prototype={
     },
 
     prePicRel: function (str){
-      if(str.search(/\.(bmp|gif|jpe?g|png)$/i) == -1)
+      if(str.search(this.buf.pictureRegEx) == -1)
         return ' rel="w"';
       else
         return ' rel="p"';
@@ -412,9 +412,9 @@ TermView.prototype={
       if(bg==defbg && (fg == deffg || char1 <= ' ') && !ch.isBlink() )
       {
         if(char1 <= ' ') // only display visible chars to speed up
-          return s0+'&nbsp;'+s2;//return ' ';
+          return s0+'\u0020'+s2;//return ' ';
         else if(char1 == '\x80') // 128, display ' ' or '?'
-          return s0+'&nbsp;'+s2;
+          return s0+'\u0020'+s2;
         else if(char1 == '\x3c')
           return s0+'&lt;'+s2;
         else if(char1 == '\x3e')
@@ -428,9 +428,9 @@ TermView.prototype={
       {
         s1 +='<span '+ (ch.isPartOfURL()?'link="true" ':'') +'class="q' +fg+ ' b' +bg+ '">'+ (ch.isBlink()?'<x s="q'+fg+' b'+bg+'" h="qq'+bg+'"></x>':'');
         if(char1 <= ' ') // only display visible chars to speed up
-          s1 += '&nbsp;';
+          s1 += '\u0020';
         else if(char1 == '\x80') // 128, display ' ' or '?'
-          s1 += '&nbsp;';
+          s1 += '\u0020';
         else
           s1 += char1;
         s1 += '</span>';

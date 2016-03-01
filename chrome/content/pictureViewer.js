@@ -179,13 +179,14 @@ PicViewerMgr.prototype={
 
     //if(this.imgurPicLoader && this.imgurPicLoader.show(aurl, this, this.setPictureUrl))
     //  return;
-
-    if(aurl.search(/\.(bmp|gif|jpe?g|png)$/i) == -1)
+    var pictureRegEx = /(?:(?:\.(?:(?:bmp|gif|jpe?g|png)(?:\?[^\/]*)?)$)|(?:https?:\/\/pbs.twimg.com\/media\/[a-zA-Z0-9_]{15,15}\.(?:(?:bmp|gif|jpe?g|png)(?::[^\/]*)?)$))/i;
+    if(aurl.search(pictureRegEx) == -1)
       return;
 
-    if(  aurl.toLowerCase().indexOf("http://photo.xuite.net/")<0
-      && aurl.toLowerCase().indexOf("http://simplest-image-hosting.net/")<0
-      && aurl.toLowerCase().indexOf("http://screensnapr.com/")<0 )
+    if(aurl.toLowerCase().indexOf("http://photo.xuite.net/")<0 &&
+       aurl.toLowerCase().indexOf("http://simplest-image-hosting.net/")<0 &&
+       aurl.toLowerCase().indexOf("http://screensnapr.com/")<0 &&
+       aurl.toLowerCase().indexOf("https://www.dropbox.com")<0)
     {
       this.setPictureUrl(this, aurl);
     }

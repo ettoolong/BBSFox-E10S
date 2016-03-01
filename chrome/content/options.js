@@ -1121,7 +1121,11 @@ function onSelectBGImage()
       const PR_UINT32_MAX = 0xffffffff;
       ch.updateFromStream(istream, PR_UINT32_MAX);
       var hash = ch.finish(false);
-      var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
+      //var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
+      var s = '';
+      for(var i=0;i<hash.length;++i){
+        s+=toHexString(hash.charCodeAt(i));
+      }
       //save md5 value, we reload background image when this value be change.
       var textEdit = document.getElementById('BackgroundImageMD5');
       textEdit.value = s;

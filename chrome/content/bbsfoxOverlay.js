@@ -4,7 +4,7 @@ var ETT_BBSFOX_Overlay =
   //http://youtu.be/XXXXXXXXXX
   //http://www.youtube.com/watch?v=XXXXXXXXXX
   //http://m.youtube.com/watch?v=XXXXXXXXXX
-  vtRegex: /((https?:\/\/www\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*))|(https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))|(https?:\/\/m\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*)))/i,
+  vtRegex: /(https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)|https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))/i,
   vtRegex2: /(http:\/\/www\.ustream\.tv\/(channel|channel-popup)\/([A-Za-z0-9._%-]*))/i,
   vtRegex3: /(http:\/\/www\.ustream\.tv\/recorded\/([0-9]{5,10}))/i,
 //  urlCheck : /(^(telnet|ssh):\/\/)/i,

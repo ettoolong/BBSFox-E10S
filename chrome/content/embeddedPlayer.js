@@ -384,7 +384,7 @@ EmbeddedPlayer.prototype={
       var autoplaystr = '0';
       if(autoPlay)
         autoplaystr = '1';
-      var scrstr = 'http://www.youtube.com/embed/'+code+'?enablejsapi=1&hl=zh_TW&autoplay='+autoplaystr;
+      var scrstr = 'https://www.youtube.com/embed/'+code+'?enablejsapi=1&hl=zh_TW&autoplay='+autoplaystr;
       if(loop)
         scrstr+=("&loop=1&playlist=" + code);
       else
@@ -579,10 +579,9 @@ function EmbeddedPlayerMgr(bbscore) {
 
 EmbeddedPlayerMgr.prototype={
   timerMinWindow: Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer),
-  youtubeRegEx: /((https?:\/\/www\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*))|(https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))|(https?:\/\/m\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*)))/i,
-  youtubeRegEx1: /(https?:\/\/www\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*))/i,
-  youtubeRegEx2: /(https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))/i,
-  youtubeRegEx3: /(https?:\/\/m\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*))/i,
+  youtubeRegEx: /(https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)|https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))/i,
+  youtubeRegEx1: /https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)/i,
+  youtubeRegEx2: /https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*)/i,
   ustreamRegEx: /(http:\/\/www\.ustream\.tv\/(channel|channel-popup)\/([A-Za-z0-9._%-]*))/i,
   urecordRegEx: /(http:\/\/www\.ustream\.tv\/recorded\/([0-9]{5,10}))/i,
 
@@ -654,45 +653,19 @@ EmbeddedPlayerMgr.prototype={
     if(this.youtubeRegEx1.test(aurl))
     {
       youtubeURLType = 1;
-      var splits = aurl.split(this.youtubeRegEx1);
-      for(var i = 0; i < splits.length; ++i)
-      {
-        if(splits[i].length>2)
-        {
-          if(splits[i].substr(0,2)=='v=')
-          {
-            aurl = splits[i].substring(2, splits[i].length);
-            break;
-          }
-        }
-      }
+      var res = this.youtubeRegEx1.exec(aurl);
+      aurl = res[1];
     }
     else if(this.youtubeRegEx2.test(aurl))
     {
       youtubeURLType = 2;
-      aurl=aurl.substring(16, aurl.length);
-      aurl=aurl.replace(/\//, '');
-    }
-    else if(this.youtubeRegEx3.test(aurl))
-    {
-      youtubeURLType = 3;
-      var splits = aurl.split(this.youtubeRegEx3);
-      for(var i = 0; i < splits.length; ++i)
-      {
-        if(splits[i].length>2)
-        {
-          if(splits[i].substr(0,2)=='v=')
-          {
-            aurl = splits[i].substring(2, splits[i].length);
-            break;
-          }
-        }
-      }
+      var res = this.youtubeRegEx2.exec(aurl);
+      aurl = res[1];
     }
 
-    if(youtubeURLType==1 || youtubeURLType==2 || youtubeURLType==3)
+    if(youtubeURLType==1 || youtubeURLType==2)
     {
-      tempurl = 'http://www.youtube.com/watch?v='+aurl;
+      tempurl = 'https://www.youtube.com/watch?v='+aurl;
       var embeddedPlayer = new EmbeddedPlayer(this.bbscore, tempurl, this.epCopyUrlButton, this.embeddedPlayerSize);
       this.eplayers.push(embeddedPlayer);
       embeddedPlayer.playerDiv.display = 'none';

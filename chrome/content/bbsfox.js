@@ -99,10 +99,10 @@ BBSFox.prototype={
     _bundle: Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService)
             .createBundle("chrome://bbsfox/locale/bbsfox.properties"),
 
-    youtubeRegEx: /((https?:\/\/www\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*))|(https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))|(https?:\/\/m\.youtube\.com\/watch\?.*(v=[A-Za-z0-9._%-]*)))/i,
+    youtubeRegEx: /(https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)|https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))/i,
     ustreamRegEx: /(http:\/\/www\.ustream\.tv\/(channel|channel-popup)\/([A-Za-z0-9._%-]*))/i,
     urecordRegEx: /(http:\/\/www\.ustream\.tv\/recorded\/([0-9]{5,10}))/i,
-    PttRegEx: /^((bbs\.)?(ptt(2|3)?\.cc)|(ptt(2|3)?\.twbbs\.org))$/i,
+    PttRegEx: /^(?:(?:(?:bbs\.)?ptt(?:2|3)?\.cc)|(?:ptt(?:2|3)?\.twbbs\.org))$/i,
     //there are some problem: http://www.ustream.tv/xxx -> http://www.ustream.tv/channel/xxx
 
     documentControllers: {
@@ -397,20 +397,7 @@ BBSFox.prototype={
     doCopy: function(str) {
       var clipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
       if(this.prefs.deleteSpaceWhenCopy)
-      {
-        var splitter = this.os == 'WINNT' ? '\r\n' : '\n';
-        var strArray;
-        strArray = str.split(splitter);
-
-        str = '';
-        for (var i=0 ;i<strArray.length ;i++)
-        {
-          str+=this.trim_right(strArray[i]);
-          if(i<strArray.length-1){
-            str+=splitter;
-          }
-        }
-      }
+        str = str.replace(/\s+$/gm,'');
       clipboardHelper.copyString(str);
 
       var evt = document.createEvent("HTMLEvents");
@@ -595,25 +582,15 @@ BBSFox.prototype={
     },
 
     replaceColorDefines: function(cssCode){
-      var getColorValue = function(hexTripletColor) {
-          return hexTripletColor;
-      };
-      var getInvertColorValue = function(hexTripletColor) {
-          return hexTripletColor;
-      };
-      if(this.view.colorTable == 0)
-        getInvertColorValue = this.view.invertColor;
-      if(this.view.colorTable == 1)
-        getColorValue = this.view.invertColor;
-
+      var getColorValue = function(match, inv, code) {
         var prefs = this.prefs;
-        for(var i=0;i<16;++i){
-          var colorRegex = new RegExp('var\\(--bbscolor-'+i+'\\)', 'g');
-          var invColorRegex = new RegExp('var\\(--bbscolor-inv-'+i+'\\)', 'g');
-          cssCode = cssCode.replace(colorRegex, getColorValue(prefs.bbsColor[i]));
-          cssCode = cssCode.replace(invColorRegex, getInvertColorValue(prefs.bbsColor[i]));
+        if(this.view.colorTable == 0 && inv || this.view.colorTable == 1 && inv === undefined){
+          return this.view.invertColor(prefs.bbsColor[parseInt(code, 10)]);
+        } else {
+          return prefs.bbsColor[parseInt(code, 10)];
         }
-        return cssCode;
+      }.bind(this);
+      return cssCode.replace(/var\(--bbscolor-(inv-)?(1?\d)\)/g, getColorValue);
     },
 
     getMainCssDefine: function(){
@@ -1435,10 +1412,11 @@ BBSFox.prototype={
               this.view.hoverUrl = false;
             }
 
-            if(hrel && hrel.toLowerCase()=='p'
-              && url.toLowerCase().indexOf("http://photo.xuite.net/")<0
-              && url.toLowerCase().indexOf("http://simplest-image-hosting.net/")<0
-              && url.toLowerCase().indexOf("http://screensnapr.com/")<0)
+            if(hrel && hrel.toLowerCase()=='p' &&
+               url.toLowerCase().indexOf("http://photo.xuite.net/")<0 &&
+               url.toLowerCase().indexOf("http://simplest-image-hosting.net/")<0 &&
+               url.toLowerCase().indexOf("http://screensnapr.com/")<0 &&
+               url.toLowerCase().indexOf("https://www.dropbox.com")<0)
             {
               this.showPicPreview(url, url);
             }
@@ -1518,18 +1496,7 @@ BBSFox.prototype={
 
       if(this.prefs.deleteSpaceWhenCopy) {
         var str = event.dataTransfer.getData("text/plain");
-        var strArray;
-        var splitter = this.os == 'WINNT' ? '\r\n' : '\n';
-        strArray = str.split(splitter);
-
-        str = '';
-        for (var i=0 ;i<strArray.length ;i++)
-        {
-          str+=this.trim_right(strArray[i]);
-          if(i<strArray.length-1){
-            str+=splitter;
-          }
-        }
+        str = str.replace(/\s+$/gm,'');
         event.dataTransfer.setData("text/plain", str);
       }
     },

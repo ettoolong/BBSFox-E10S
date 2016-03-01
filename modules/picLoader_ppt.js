@@ -11,7 +11,7 @@ BBSPPTPicLoader.prototype={
   lastUrl: '',
   lastSuccessUrl: '',
   lastSuccessPic: '',
-  regEx: /^(http:\/\/ppt\.cc\/).{4,6}$/i,
+  regEx: /^http:\/\/ppt\.cc\/(.{4,6})$/i,
   codeBlockList: [],
   codeQueue: [],
   codePicture: [],

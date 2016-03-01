@@ -5,7 +5,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>{86095750-AD15-46d8-BF32-C0789F7E6A32}</em:id>
-    <em:version>4.0.20</em:version>
+    <em:version>4.0.21</em:version>
     <em:type>2</em:type>
 
     <em:targetApplication><!-- Firefox -->
@@ -60,6 +60,7 @@
     <em:contributor>hyk(forum.moztw.org)</em:contributor>
     <em:contributor>mmis1000(forum.moztw.org)</em:contributor>
     <em:contributor>adam(forum.moztw.org)</em:contributor>
+    <em:contributor>house_chiu(forum.moztw.org)</em:contributor>
     <em:contributor>Treant(ptt.cc)</em:contributor>
     <em:contributor>maplemeowcat(ptt.cc)</em:contributor>
     <em:contributor>abatw(ptt.cc)</em:contributor>
@@ -126,6 +127,7 @@
         <em:contributor>hyk (forum.moztw.org)</em:contributor>
         <em:contributor>mmis1000 (forum.moztw.org)</em:contributor>
         <em:contributor>adam (forum.moztw.org)</em:contributor>
+        <em:contributor>house_chiu (forum.moztw.org)</em:contributor>
         <em:contributor>Treant (ptt.cc)</em:contributor>
         <em:contributor>maplemeowcat (ptt.cc)</em:contributor>
         <em:contributor>abatw (ptt.cc)</em:contributor>
