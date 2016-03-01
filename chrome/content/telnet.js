@@ -36,7 +36,7 @@ const STATE_WONT=3;
 const STATE_DO=4;
 const STATE_DONT=5;
 const STATE_SB=6;
-console.log(Components);
+
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
