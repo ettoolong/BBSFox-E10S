@@ -13,7 +13,19 @@ function SymbolInput(bbscore) {
   this.symbolPageCount = 12;
   var keydata;
   var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-  var channel = ioService.newChannel('resource://bbsfox/keyboard.res', null, null);
+  //var channel = ioService.newChannel('resource://bbsfox/keyboard.res', null, null);
+  var ssm = Components.classes["@mozilla.org/scriptsecuritymanager;1"].getService(Components.interfaces.nsIScriptSecurityManager);
+  var sp = ssm.getSystemPrincipal();
+  var channel = ioService.newChannel2("resource://bbsfox/keyboard.res", //aSpec
+                           null, //aOriginCharset
+                           null, //aBaseURI
+                           null, //aLoadingNode
+                           sp, //aLoadingPrincipal
+                           null, //aTriggeringPrincipal
+                           Components.interfaces.nsILoadInfo.SEC_NORMAL, //aSecurityFlags
+                           Components.interfaces.nsIContentPolicy.TYPE_OTHER); //aContentPolicyType
+
+
   var ins = channel.open();
   var scriptableStream=Components.classes["@mozilla.org/scriptableinputstream;1"].getService(Components.interfaces.nsIScriptableInputStream);
   var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);

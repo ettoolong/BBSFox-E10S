@@ -14,7 +14,18 @@ var uaoConv = {
         var ioService = Components.classes["@mozilla.org/network/io-service;1"]
                             .getService(Components.interfaces.nsIIOService);
         // load from resource:// instead of file path
-        var channel = ioService.newChannel('resource://bbsfox/u2b.tab', null, null);
+        //var channel = ioService.newChannel('resource://bbsfox/u2b.tab', null, null);
+        var ssm = Components.classes["@mozilla.org/scriptsecuritymanager;1"].getService(Components.interfaces.nsIScriptSecurityManager);
+        var sp = ssm.getSystemPrincipal();
+        var channel = ioService.newChannel2("resource://bbsfox/u2b.tab", //aSpec
+                           null, //aOriginCharset
+                           null, //aBaseURI
+                           null, //aLoadingNode
+                           sp, //aLoadingPrincipal
+                           null, //aTriggeringPrincipal
+                           Components.interfaces.nsILoadInfo.SEC_NORMAL, //aSecurityFlags
+                           Components.interfaces.nsIContentPolicy.TYPE_OTHER); //aContentPolicyType
+
         var ins = channel.open();
         var bins = Components.classes["@mozilla.org/binaryinputstream;1"].
                        createInstance(Components.interfaces.nsIBinaryInputStream);
@@ -29,7 +40,18 @@ var uaoConv = {
         var ioService = Components.classes["@mozilla.org/network/io-service;1"]
                             .getService(Components.interfaces.nsIIOService);
         // load from resource:// instead of file path
-        var channel = ioService.newChannel('resource://bbsfox/b2u.tab', null, null);
+        //var channel = ioService.newChannel('resource://bbsfox/b2u.tab', null, null);
+        var ssm = Components.classes["@mozilla.org/scriptsecuritymanager;1"].getService(Components.interfaces.nsIScriptSecurityManager);
+        var sp = ssm.getSystemPrincipal();
+        var channel = ioService.newChannel2("resource://bbsfox/b2u.tab", //aSpec
+                           null, //aOriginCharset
+                           null, //aBaseURI
+                           null, //aLoadingNode
+                           sp, //aLoadingPrincipal
+                           null, //aTriggeringPrincipal
+                           Components.interfaces.nsILoadInfo.SEC_NORMAL, //aSecurityFlags
+                           Components.interfaces.nsIContentPolicy.TYPE_OTHER); //aContentPolicyType
+
         var ins = channel.open();
         var bins = Components.classes["@mozilla.org/binaryinputstream;1"].
                        createInstance(Components.interfaces.nsIBinaryInputStream);

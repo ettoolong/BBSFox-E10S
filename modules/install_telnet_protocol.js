@@ -83,9 +83,25 @@ TelnetProtocol.prototype = {
     return url.QueryInterface(nsIURI);
   },
 
-  newChannel: function(aURI) {
+  newChannel: function(aURI, loadInfo) {
     // create dummy nsIURI and nsIChannel instances
+    //https://hg.mozilla.org/mozilla-central/file/e894b69587bc/toolkit/components/addoncompat/RemoteAddonsParent.jsm
+    //https://hg.mozilla.org/mozilla-central/file/e894b69587bc/toolkit/components/addoncompat/RemoteAddonsChild.jsm
+    //TODO: why loadInfo is undefined ?
+    //      var aLoadingPrincipal = loadInfo.loadingPrincipal;
+    //      var aSecurityFlags = loadInfo.securityFlags;
+    //      var aContentPolicyType = loadInfo.contentPolicyType;
+
     var ios = Components.classes[kIOSERVICE_CONTRACTID].getService(nsIIOService);
-    return ios.newChannel("chrome://bbsfox/content/telnet.html", null, null);
+    var ssm = Components.classes["@mozilla.org/scriptsecuritymanager;1"].getService(Components.interfaces.nsIScriptSecurityManager);
+    var sp = ssm.getSystemPrincipal();
+    return ios.newChannel2("chrome://bbsfox/content/telnet.html", //aSpec
+                           null, //aOriginCharset
+                           null, //aBaseURI
+                           null, //aLoadingNode
+                           sp, //aLoadingPrincipal
+                           null, //aTriggeringPrincipal
+                           Components.interfaces.nsILoadInfo.SEC_NORMAL, //aSecurityFlags
+                           Components.interfaces.nsIContentPolicy.TYPE_OTHER); //aContentPolicyType
   }
 };

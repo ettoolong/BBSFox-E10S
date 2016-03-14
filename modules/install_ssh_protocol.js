@@ -94,9 +94,20 @@ SshProtocol.prototype =
     return cleanURI;
   },
 
-  newChannel: function(aURI) {
+  newChannel: function(aURI, loadInfo) {
     // create dummy nsIURI and nsIChannel instances
     var ios = Components.classes[kIOSERVICE_CONTRACTID].getService(nsIIOService);
-    return ios.newChannel('chrome://bbsfox/content/ssh.html', null, null);
+    //return ios.newChannel('chrome://bbsfox/content/ssh.html', null, null);
+
+    var ssm = Components.classes["@mozilla.org/scriptsecuritymanager;1"].getService(Components.interfaces.nsIScriptSecurityManager);
+    var sp = ssm.getSystemPrincipal();
+    return ios.newChannel2("chrome://bbsfox/content/ssh.html", //aSpec
+                           null, //aOriginCharset
+                           null, //aBaseURI
+                           null, //aLoadingNode
+                           sp, //aLoadingPrincipal
+                           null, //aTriggeringPrincipal
+                           Components.interfaces.nsILoadInfo.SEC_NORMAL, //aSecurityFlags
+                           Components.interfaces.nsIContentPolicy.TYPE_OTHER); //aContentPolicyType
   }
 };

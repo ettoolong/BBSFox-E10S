@@ -1,4 +1,5 @@
 var EXPORTED_SYMBOLS = ["BBSFoxAboutPage"];
+//TODO: about:bbsfox  page still broken, need fix.
 
 function BBSFoxAboutPage() {}
 
@@ -13,12 +14,24 @@ BBSFoxAboutPage.prototype = {
       throw Components.results.NS_ERROR_NO_INTERFACE;
   },
 
-  newChannel: function(aURI) {
+  newChannel: function(aURI, loadInfo) {
     if (! (aURI.spec == 'about:bbsfox') )
       return;
 
     var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-    var channel =  ios.newChannel('chrome://bbsfox/content/options.xul', null, null);
+    //var channel =  ios.newChannel('chrome://bbsfox/content/options.xul', null, null);
+    var ios = Components.classes[kIOSERVICE_CONTRACTID].getService(nsIIOService);
+    var aLoadingPrincipal = loadInfo.loadingPrincipal;
+    var aSecurityFlags = loadInfo.securityFlags;
+    var aContentPolicyType = loadInfo.contentPolicyType;
+    var channel = ios.newChannel2("chrome://bbsfox/content/options.xul", //aSpec
+                           null, //aOriginCharset
+                           null, //aBaseURI
+                           null, //aLoadingNode
+                           aLoadingPrincipal, //aLoadingPrincipal
+                           null, //aTriggeringPrincipal
+                           aSecurityFlags, //aSecurityFlags
+                           aContentPolicyType); //aContentPolicyType
     channel.originalURI = aURI;
       return channel;
   },
