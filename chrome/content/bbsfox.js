@@ -397,7 +397,7 @@ BBSFox.prototype={
     doCopy: function(str) {
       var clipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
       if(this.prefs.deleteSpaceWhenCopy)
-        str = str.replace(/\s+$/gm,'');
+        str = str.replace(/[ \t\f]+$/gm,'');
       clipboardHelper.copyString(str);
 
       var evt = document.createEvent("HTMLEvents");
@@ -1502,7 +1502,7 @@ BBSFox.prototype={
 
       if(this.prefs.deleteSpaceWhenCopy) {
         var str = event.dataTransfer.getData("text/plain");
-        str = str.replace(/\s+$/gm,'');
+        str = str.replace(/[ \t\f]+$/gm,'');
         event.dataTransfer.setData("text/plain", str);
       }
     },
