@@ -56,15 +56,15 @@ AnsiColor.prototype = {
 
     systemClipboard: function(text) {
         if(text) { // copy string to system clipboard
-            var clipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"]
-                                            .getService(Components.interfaces.nsIClipboardHelper);
+            var clipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"]
+                                            .getService(Ci.nsIClipboardHelper);
             clipboardHelper.copyString(text);
         } else { // get string from system clipboard
-            var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
-            var loadContext = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                  .getInterface(Components.interfaces.nsIWebNavigation)
-                  .QueryInterface(Components.interfaces.nsILoadContext);
-            var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+            var clip = Cc["@mozilla.org/widget/clipboard;1"].getService(Ci.nsIClipboard);
+            var loadContext = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                  .getInterface(Ci.nsIWebNavigation)
+                  .QueryInterface(Ci.nsILoadContext);
+            var trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
             trans.init(loadContext);
             trans.addDataFlavor("text/unicode");
             clip.getData(trans, clip.kGlobalClipboard);
@@ -73,7 +73,7 @@ AnsiColor.prototype = {
             trans.getTransferData("text/unicode", data, len);
             if(!data || !data.value)
                 return "";
-            text = data.value.QueryInterface(Components.interfaces.nsISupportsString);
+            text = data.value.QueryInterface(Ci.nsISupportsString);
             text = text.data.substring(0, len.value / 2);
             return text;
         }

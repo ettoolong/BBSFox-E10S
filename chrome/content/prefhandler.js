@@ -7,7 +7,6 @@ function bbsfoxPrefHandler(listener) {
     this.highlightWords_local=[];
     this.enableHighlightWords=false;
     this.keyWordTrackCaseSensitive=true;
-    this.keyWordTrackMenu=false;
     this.useMouseBrowsing = false;
     this.useMouseBrowsingEx = false;
     this.highlightCursor = false;
@@ -61,6 +60,7 @@ function bbsfoxPrefHandler(listener) {
     this.easyReadingWithImg=false;
     this.easyReadingWithVideo=false;
     this.epWhenDropLink=true;
+    this.enableNotification=true;
     this.notifyWhenBackground=true;
     this.notifyBySound=true;
     this.notifyByMessage=true;
@@ -93,66 +93,55 @@ function bbsfoxPrefHandler(listener) {
     this.keepFontAspectRatio=false;
     this.hokeyChangeColorTable=false;
     this.fixUnicodeDisplay=false;
-    //this.mouseWheelFunc1=0;
-    //this.mouseWheelFunc2=0;
-    //this.mouseWheelFunc3=0;
-    this.hokeyForMouseBrowsing=false;
     this.bbsColor=['#000000','#800000','#008000','#808000',
                    '#000080','#800080','#008080','#c0c0c0',
                    '#808080','#ff0000','#00ff00','#ffff00',
                    '#0000ff','#ff00ff','#00ffff','#ffffff'];
+
+    //overlay pref
+    this.ansiCopyMenu = true;
+    this.embeddedPlayerMenu = true;
+    this.previewPictureMenu = false;
+    this.mouseBrowseMenu = false;
+    this.switchBgDisplayMenu = false;
+    this.openAllLinkMenu = false;
+    this.copyHtmlMenu = false;
+    this.screenKeyboardMenu = true;
+    this.ansiColorToolMenu = true;
+    this.keyWordTrackMenu = false;
+    this.easyReadingMenu = false;
+    this.downloadPostMenu = false;
+    this.fileIoMenu = false;
+    this.changeColorTableMenu = false;
+    this.blacklistMenu = false;
+    this.pushThreadMenu = false;
+    this.openThreadUrlMenu = false;
+    //this.savePageMenu = false;
+    //
+    this.status = {
+      mouseOnPicWindow: false,
+      ansiColorToolOpened: false,
+      screenKeyboardOpened: false
+    };
+
     this.eventPrefs = {
       mouseWheelFunc1 : 0,
       mouseWheelFunc2 : 0,
       mouseWheelFunc3 : 0,
       hokeyForPaste : false,
       hokeyForMouseBrowsing: false,
-      hotkeyCtrlW: false,
-      hotkeyCtrlT: false,
-      useHttpContextMenu: true,
+      hotkeyCtrlW: 1,
+      hotkeyCtrlB: 1,
+      hotkeyCtrlL: 1,
+      hotkeyCtrlT: 1,
       useMouseBrowsing: true,
-      keyEventStatus: true,
-      result: true
-    };
-    this.overlayPrefs = {
-      hideBookMarkLink: false,
-      hideBookMarkPage: false,
-      hideSendLink: false,
-      hideSendPage: false,
-      hideViewInfo: false,
-      hideInspect: false,
-      savePageMenu: false,
-      embeddedPlayerMenu: false,
-      ansiCopyMenu: false,
-      delayPasteMenu: false,
-      copyHtmlMenu: false,
-      screenKeyboardMenu: false,
-      ansiColorToolMenu: false,
-      openAllLinkMenu: false,
-      previewPictureMenu: false,
-      easyReadingMenu: false,
-      pushThreadMenu: false,
-      openThreadUrlMenu: false,
-      changeColorTableMenu: false,
-      downloadPostMenu: false,
-      fileIoMenu: false,
-      mouseBrowseMenu: false,
-      switchBgDisplayMenu: false,
-      blacklistMenu: false,
-      keyWordTrackMenu: false,
-      enableHighlightWords: false,
-      keyWordTrackCaseSensitive: true,
-      highlightWords: '',
-      //status -start
-      haveLink: false,
-      mouseOnPicWindow: false,
-      screenKeyboardOpened: false,
-      ansiColorToolOpened: false,
-      enableBackground: false,
-      addToBlacklist: false,
-      removeFromBlacklist: false,
-      tabIcon: "chrome://bbsfox/skin/logo/logo.png",
-      //status -end
+      keyEventStatus: true, //TODO: prevent key event from addon-script
+      hideBookMarkLink: true,
+      hideSendLink: true,
+      hideSendPage: true,
+      hideViewSource: true,
+      hideViewInfo: true,
+      hideInspect: true,
       result: true
     };
 }
@@ -162,7 +151,7 @@ bbsfoxPrefHandler.prototype={
     onPrefChange: function(bbsCore, branch, name) {
       var _this = bbsCore.prefs;
       try {
-        var CiStr = Components.interfaces.nsISupportsString;
+        var CiStr = Ci.nsISupportsString;
         switch (name) {
         case "MouseWheelFunc1":
           _this.updateEventPrefs([{key:'mouseWheelFunc1', value:branch.getIntPref(name)}]);
@@ -362,11 +351,26 @@ bbsfoxPrefHandler.prototype={
           bbsCore.view.fontResize();
           break;
         case "FontFace.string":
-          _this.fontFace=branch.getComplexValue(name, CiStr).data;
+        case "FontFaceEn.string":
+          _this.fontFace = branch.getComplexValue('FontFace.string', CiStr).data;
+          _this.fontFaceEn = branch.getComplexValue('FontFaceEn.string', CiStr).data;
           if(!_this.fontFace)
             _this.fontFace='monospace';
-          bbsCore.view.mainDisplay.style.fontFamily = _this.fontFace;
-          bbsCore.view.cursorDiv.style.fontFamily = _this.fontFace;
+          if(!_this.fontFaceEn) {
+            bbsCore.view.mainDisplay.style.fontFamily = _this.fontFace;
+            bbsCore.view.cursorDiv.style.fontFamily = _this.fontFace;
+            bbsCore.view.spaceCharacterElem.style.fontFamily = _this.fontFace;
+            bbsCore.view.nbspCharacterElem.style.fontFamily = _this.fontFace;
+          } else {
+            bbsCore.view.setFontDefine(_this.fontFace, _this.fontFaceEn);
+            bbsCore.view.mainDisplay.style.fontFamily = 'BBSFoxFont';
+            bbsCore.view.cursorDiv.style.fontFamily = 'BBSFoxFont';
+            bbsCore.view.spaceCharacterElem.style.fontFamily = _this.fontFaceEn;
+            bbsCore.view.nbspCharacterElem.style.fontFamily = _this.fontFaceEn;
+          }
+          bbsCore.view.setSpaceCharacter();
+          //bbsCore.view.mainDisplay.style.fontFamily = _this.fontFace;
+          //bbsCore.view.cursorDiv.style.fontFamily = _this.fontFace;
           //bbsCore.view.wordtest.style.fontFamily = _this.fontFace;
           break;
         case "Escape.string":
@@ -466,9 +470,9 @@ bbsfoxPrefHandler.prototype={
           break;
         case "ask":
           if(branch.getBoolPref(name))
-            bbsCore.RegExitAlert();
+            bbsCore.regExitAlert();
           else
-            bbsCore.UnregExitAlert();
+            bbsCore.unregExitAlert();
           break;
         case "DetectLink":
           _this.useHyperLink=branch.getBoolPref(name);
@@ -495,9 +499,11 @@ bbsfoxPrefHandler.prototype={
           break;
         case "HotkeyCtrlB":
           _this.hotkeyCtrlB = branch.getIntPref(name);
+          _this.updateEventPrefs([{key:'hotkeyCtrlB', value:_this.hotkeyCtrlB}]);
           break;
         case "HotkeyCtrlL":
           _this.hotkeyCtrlL = branch.getIntPref(name);
+          _this.updateEventPrefs([{key:'hotkeyCtrlL', value:_this.hotkeyCtrlL}]);
           break;
         case "HotkeyCtrlT":
           _this.hotkeyCtrlT = branch.getIntPref(name);
@@ -520,8 +526,7 @@ bbsfoxPrefHandler.prototype={
           _this.hokeyForSelectAll = branch.getBoolPref(name);
           break;
         case "HokeyForMouseBrowsing":
-          _this.hokeyForMouseBrowsing = branch.getBoolPref(name);
-          _this.updateEventPrefs([{key:'hokeyForMouseBrowsing', value:_this.hokeyForMouseBrowsing}]);
+          _this.updateEventPrefs([{key:'hokeyForMouseBrowsing', value:branch.getBoolPref(name)}]);
           break;
         case "HokeyForEasyReading":
           _this.hokeyForEasyReading = branch.getBoolPref(name);
@@ -535,47 +540,49 @@ bbsfoxPrefHandler.prototype={
         case "HokeyOpenThreadUrl":
           _this.hokeyOpenThreadUrl = branch.getBoolPref(name);
           break;
+        /* TODO: remove this feature
         case "SavePageMenu":
-          _this.updateOverlayPrefs([{key:'savePageMenu', value:branch.getBoolPref(name)}]);
+          _this.savePageMenu = branch.getBoolPref(name);
           break;
+        */
         case "AnsiCopyMenu":
-          _this.updateOverlayPrefs([{key:'ansiCopyMenu', value:branch.getBoolPref(name)}]);
+          _this.ansiCopyMenu = branch.getBoolPref(name);
           break;
         case "EmbeddedPlayerMenu":
-          _this.updateOverlayPrefs([{key:'embeddedPlayerMenu', value:branch.getBoolPref(name)}]);
+          _this.embeddedPlayerMenu = branch.getBoolPref(name);
           break;
         case "PreviewPictureMenu":
-          _this.updateOverlayPrefs([{key:'previewPictureMenu', value:branch.getBoolPref(name)}]);
+          _this.previewPictureMenu = branch.getBoolPref(name);
           break;
         case "ScreenKeyboardMenu":
-          _this.updateOverlayPrefs([{key:'screenKeyboardMenu', value:branch.getBoolPref(name)}]);
+          _this.screenKeyboardMenu = branch.getBoolPref(name);
           break;
         case "AnsiColorToolMenu":
-          _this.updateOverlayPrefs([{key:'ansiColorToolMenu', value:branch.getBoolPref(name)}]);
+          _this.ansiColorToolMenu = branch.getBoolPref(name);
           break;
         case "OpenAllLinkMenu":
-          _this.updateOverlayPrefs([{key:'openAllLinkMenu', value:branch.getBoolPref(name)}]);
+          _this.openAllLinkMenu = branch.getBoolPref(name);
           break;
         case "MouseBrowseMenu":
-          _this.updateOverlayPrefs([{key:'mouseBrowseMenu', value:branch.getBoolPref(name)}]);
+          _this.mouseBrowseMenu = branch.getBoolPref(name);
           break;
         case "CopyHtmlMenu":
-          _this.updateOverlayPrefs([{key:'copyHtmlMenu', value:branch.getBoolPref(name)}]);
+          _this.copyHtmlMenu = branch.getBoolPref(name);
           break;
         case "KeyWordTrackMenu":
-          _this.updateOverlayPrefs([{key:'keyWordTrackMenu', value:branch.getBoolPref(name)}]);
+          _this.keyWordTrackMenu = branch.getBoolPref(name);
           break;
         case "DelayPasteMenu":
-          _this.updateOverlayPrefs([{key:'delayPasteMenu', value:branch.getBoolPref(name)}]);
+          _this.delayPasteMenu = branch.getBoolPref(name);
           break;
         case "DownloadPostMenu":
-          _this.updateOverlayPrefs([{key:'downloadPostMenu', value:branch.getBoolPref(name)}]);
+          _this.downloadPostMenu = branch.getBoolPref(name);
           break;
         case "EasyReadingMenu":
-          _this.updateOverlayPrefs([{key:'easyReadingMenu', value:branch.getBoolPref(name)}]);
+          _this.easyReadingMenu = branch.getBoolPref(name);
           break;
         case "PushThreadMenu":
-          _this.updateOverlayPrefs([{key:'pushThreadMenu', value: (branch.getBoolPref (name)&& bbsCore.isPTT()) }]);
+          _this.pushThreadMenu = (branch.getBoolPref(name) && bbsCore.isPTT());
           break;
         case "OpenThreadUrlMenu":
           if(branch.getBoolPref(name) && bbsCore.isPTT() )
@@ -584,19 +591,13 @@ bbsfoxPrefHandler.prototype={
             _this.testPttThread = false;
           break;
         case "ChangeColorTableMenu":
-          _this.updateOverlayPrefs([{key:'changeColorTableMenu', value:branch.getBoolPref(name)}]);
+          _this.changeColorTableMenu = branch.getBoolPref(name);
           break;
         case "BlacklistMenu":
-          _this.updateOverlayPrefs([{key:'blacklistMenu', value:branch.getBoolPref(name)}]);
-          break;
-        case "UseSubMenuForSearchEngine":
-          if(branch.getBoolPref(name))
-            bbsCore.CmdHandler.setAttribute('UseSubMenuForSearchEngine', '1');
-          else
-            bbsCore.CmdHandler.setAttribute('UseSubMenuForSearchEngine', '0');
+          _this.blacklistMenu = branch.getBoolPref(name);
           break;
         case "FileIoMenu":
-          _this.updateOverlayPrefs([{key:'fileIoMenu', value:branch.getBoolPref(name)}]);
+          _this.fileIoMenu = branch.getBoolPref(name);
           break;
         case "DownloadLineDelay":
           _this.downloadLineDelay=branch.getIntPref(name);
@@ -618,8 +619,9 @@ bbsfoxPrefHandler.prototype={
             bbsCore.symbolinput.setWindowAlpha(branch.getIntPref(name));
           break;
         case "EmbeddedPlayerSize":
+          _this.embeddedPlayerSize = branch.getIntPref(name);
           if(bbsCore.playerMgr)
-            bbsCore.playerMgr.setDefaultWindowSize(branch.getIntPref(name));
+            bbsCore.playerMgr.setDefaultWindowSize( _this.embeddedPlayerSize );
           break;
         case "EPAutoPlay":
           if(bbsCore.playerMgr)
@@ -643,11 +645,8 @@ bbsfoxPrefHandler.prototype={
         case "EPWhenDropLink":
           _this.epWhenDropLink = branch.getBoolPref(name);
           break;
-        case "UseHttpContextMenu":
-          /*
-          // ignor this option.
-          _this.updateEventPrefs([{key:'useHttpContextMenu', value:branch.getBoolPref(name)}]);
-          */
+        case "EnableNotification":
+          _this.enableNotification=branch.getBoolPref(name);
           break;
         case "NotifyWhenBackground":
           _this.notifyWhenBackground=branch.getBoolPref(name);
@@ -720,22 +719,22 @@ bbsfoxPrefHandler.prototype={
           _this.alertReplyString=UnEscapeStr(branch.getComplexValue(name, CiStr).data);
           break;
         case "HideBookMarkLinkMenu":
-          _this.updateOverlayPrefs([{key:'hideBookMarkLink', value:branch.getBoolPref(name)}]);
+          _this.updateEventPrefs([{key:'hideBookMarkLink', value:branch.getBoolPref(name)}]);
           break;
         case "HideSendLinkMenu":
-          _this.updateOverlayPrefs([{key:'hideSendLink', value:branch.getBoolPref(name)}]);
-          break;
-        case "HideBookMarkPageMenu":
-          _this.updateOverlayPrefs([{key:'hideBookMarkPage', value:branch.getBoolPref(name)}]);
+          _this.updateEventPrefs([{key:'hideSendLink', value:branch.getBoolPref(name)}]);
           break;
         case "HideSendPageMenu":
-          _this.updateOverlayPrefs([{key:'hideSendPage', value:branch.getBoolPref(name)}]);
+          _this.updateEventPrefs([{key:'hideSendPage', value:branch.getBoolPref(name)}]);
+          break;
+        case "HideViewSourceMenu":
+          _this.updateEventPrefs([{key:'hideViewSource', value:branch.getBoolPref(name)}]);
           break;
         case "HideViewInfoMenu":
-          _this.updateOverlayPrefs([{key:'hideViewInfo', value:branch.getBoolPref(name)}]);
+          _this.updateEventPrefs([{key:'hideViewInfo', value:branch.getBoolPref(name)}]);
           break;
         case "HideInspectMenu":
-          _this.updateOverlayPrefs([{key:'hideInspect', value:branch.getBoolPref(name)}]);
+          _this.updateEventPrefs([{key:'hideInspect', value:branch.getBoolPref(name)}]);
           break;
         case "HideInputBuffer":
           _this.hideInputBuffer = branch.getBoolPref(name);
@@ -823,7 +822,7 @@ bbsfoxPrefHandler.prototype={
           _this.hokeyChangeColorTable = branch.getBoolPref(name);
           break;
         case "SwitchBgDisplayMenu":
-          _this.updateOverlayPrefs([{key:'switchBgDisplayMenu', value:branch.getBoolPref(name)}]);
+          _this.switchBgDisplayMenu = branch.getBoolPref(name);
           break;
         case "BlacklistedUserIds":
           var blu = branch.getComplexValue(name, CiStr).data || '';
@@ -856,12 +855,10 @@ bbsfoxPrefHandler.prototype={
           break;
         case "EnableHighlightWords":
           _this.enableHighlightWords = branch.getBoolPref(name);
-          _this.updateOverlayPrefs([{key:'enableHighlightWords', value:_this.enableHighlightWords}]);
           bbsCore.view.update(true);
           break;
         case "KeyWordTrackCaseSensitive":
           _this.keyWordTrackCaseSensitive = branch.getBoolPref(name);
-          _this.updateOverlayPrefs([{key:'keyWordTrackCaseSensitive', value:_this.keyWordTrackCaseSensitive}]);
           bbsCore.view.update(true);
           break;
         }
@@ -888,30 +885,12 @@ bbsfoxPrefHandler.prototype={
         }
       }
     },
-    updateOverlayPrefs: function(dataArray){
-      if(this.overlayPrefs.result) {
-        var anyChange = false;
-        if(dataArray) {
-          for(var i=0;i<dataArray.length;++i) {
-            if( this.overlayPrefs[ dataArray[i].key ] != dataArray[i].value )
-              anyChange = true;
-            this.overlayPrefs[ dataArray[i].key ] = dataArray[i].value;
-          }
-        } else {
-          anyChange = true;
-        }
-        if(anyChange) {
-          //console.log('prefHandler updateOverlayPrefs');
-          this.listener.sendCoreCommand({command: "updateOverlayPrefs", overlayPrefs: this.overlayPrefs});
-        }
-      }
-    },
     addToBlacklist: function(userId){
       if(this.branchName){
-        var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+        var prefService = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
         var _branch = prefService.getBranch(this.branchName);
 
-        var CiStr = Components.interfaces.nsISupportsString;
+        var CiStr = Ci.nsISupportsString;
         var blu = _branch.getComplexValue('BlacklistedUserIds', CiStr).data || '';
         if(blu != '') blu+='\n';
         blu += userId;
@@ -919,17 +898,17 @@ bbsfoxPrefHandler.prototype={
         this.listener.sendCoreCommand({command: "writePrefs",
                                      branchName: this.branchName,
                                      name: "BlacklistedUserIds",
-                                     vtype: Components.interfaces.nsIPrefBranch.PREF_STRING,
+                                     vtype: Ci.nsIPrefBranch.PREF_STRING,
                                      value: blu
                                      }, true);
       }
     },
     removeFromBlacklist: function(userId){
       if(this.branchName){
-        var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+        var prefService = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
         var _branch = prefService.getBranch(this.branchName);
 
-        var CiStr = Components.interfaces.nsISupportsString;
+        var CiStr = Ci.nsISupportsString;
         var blu = _branch.getComplexValue('BlacklistedUserIds', CiStr).data || '';
         blu = blu.replace(/\r\n/g, '\r');
         blu = blu.replace(/\n/g, '\r');
@@ -948,7 +927,7 @@ bbsfoxPrefHandler.prototype={
         this.listener.sendCoreCommand({command: "writePrefs",
                                      branchName: this.branchName,
                                      name: "BlacklistedUserIds",
-                                     vtype: Components.interfaces.nsIPrefBranch.PREF_STRING,
+                                     vtype: Ci.nsIPrefBranch.PREF_STRING,
                                      value: blu
                                      }, true);
       }

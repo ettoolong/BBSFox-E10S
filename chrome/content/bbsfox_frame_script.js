@@ -1,8 +1,10 @@
 //fire event from bbsfox overlay
+
+const { utils: Cu, classes: Cc, interfaces: Ci, manager: Cm, results: Cr } = Components;
 addMessageListener("bbsfox@ettoolong:bbsfox-overlayCommand",
   function(message) {
     if(content) {
-      var bbscore = content.bbsfox;
+      let bbscore = content.bbsfox;
       if(bbscore) {
         bbscore.overlaycmd.exec(message.data);
       }
@@ -10,132 +12,84 @@ addMessageListener("bbsfox@ettoolong:bbsfox-overlayCommand",
   }
 );
 
-//fire event from bbsfox overlay tabAttrModified
-addMessageListener("bbsfox@ettoolong:bbsfox-overlayEvent",
+addMessageListener("bbsfox@ettoolong:bbsfox-addonCommand",
   function(message) {
-    var bbscore;
-    if(content) bbscore = content.bbsfox;
+    //console.log(message.data.command);
+    let doRefreshTabs = function(doc, close) {
+      let loc = doc.location;
+      let protocol = loc.protocol.toLowerCase();
+      if (protocol == "telnet:" || protocol == "ssh:") {
+        // Disconnect page.
+      } else if(loc.href == "about:bbsfox"){
+        content.close();
+      }
+    };
+    if(content) {
+      switch (message.data.command) {
+        case "disable":
+        case "uninstall":
+          doRefreshTabs(content.document, true);
+          break;
+        case "startup":
+        case "enable":
+        case "install":
+        case "upgrade":
+        case "downgrade":
+          doRefreshTabs(content.document, false);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+);
+
+let init = function() {
+  if(content) {
+    let bbscore = content.bbsfox;
     if(bbscore) {
-      var init = bbscore.setFrameScript( function(command, async){
+      //console.log("bbsfox_frame_script: sendSyncMessage frameScriptReady");
+      sendSyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", {command: "frameScriptReady"});
+      bbscore.setFrameScript( function(command, async){
         if(!async)
           return sendSyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", command);
         else
           return sendAsyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", command);
       }.bind(this));
-      if(init)
-        bbscore.setSelectStatus(message.data.selected);
-    } else {
-      sendSyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", {command:"removePrefs"});
+      //if(init)
+      //  bbscore.setSelectStatus(message.data.selected); //TODO: still need this ?
+    } else if(bbscore !== null) {
+      sendSyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", {command:"removeStatus"});
+      if(content.document.location.protocol === "telnet:" || content.document.location.protocol === "ssh:") {
+        Cc["@mozilla.org/timer;1"]
+        .createInstance(Ci.nsITimer)
+        .initWithCallback({ notify: init },100,Ci.nsITimer.TYPE_ONE_SHOT);
+      }
+      //sendSyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", {command:"removePrefs"}); //TODO: still need this ?
     }
+  } else {
   }
-);
-
-function BBSFoxFSHttpReq(redirection, info, callback) {
-  this.info = info;
-  this.callback = callback;
-  //this.xmlhttp = new XMLHttpRequest();
-  this.redirection = redirection;
-}
-
-BBSFoxFSHttpReq.prototype={
-  open: function(url){
-    //1. send message to overlay.
-    //2. overlay open xmlhttp and send response back.
-    //3. parse the response and get real image url.
-    sendAsyncMessage("bbsfox@ettoolong:bbsfox-coreCommand", {command: "sendHttpRequest", url: url, info: this.info, redirection: this.redirection});
-  },
-  onPageResponse: function(xmlhttp, status, responseText) {
-    this.info.status = status;
-    this.info.responseText = responseText;
-    this.callback(this.info);
-  },
 };
-addMessageListener("bbsfox@ettoolong:bbsfox-overlayResponse",
-  function(message) {
-    if(content.bbsfoxEm && message.data.info && message.data.info.owner) {
-      var xmlhttp = content.bbsfoxEm.xmlhttpMap['a' + message.data.info.owner];
-      if(xmlhttp) {
-        xmlhttp.onPageResponse(xmlhttp, message.data.info.status, message.data.info.responseText);
+
+//fire event from bbsfox overlay tabAttrModified
+addMessageListener("bbsfox@ettoolong:bbsfox-overlayEvent", function(message) {
+  if(message.data.command === "update") {
+    if(content) {
+      let bbscore = content.bbsfox;
+      if(bbscore) {
+        bbscore.updateTabInfo();
       }
     }
-  }
-);
-
-addEventListener("DOMContentLoaded", function(event) {
-  var doc = event.originalTarget;
-  if (doc.nodeName != "#document" && doc.location.protocol == 'file:') return; // only documents and file
-  var bbsfoxEm = doc.getElementById('bbsfox_em');
-  if(bbsfoxEm) { //only process bbsfox easy-reading page.
-      Components.utils.import("resource://bbsfox/picLoader_ppt.js");
-      Components.utils.import("resource://bbsfox/picLoader_imgur.js");
-      var dp = new content.DOMParser();
-      var htmlParser = function (aHTMLString){
-        var html = doc.implementation.createDocument("http://www.w3.org/1999/xhtml", "html", null),
-        body = doc.createElementNS("http://www.w3.org/1999/xhtml", "body");
-        html.documentElement.appendChild(body);
-        body.appendChild(Components.classes["@mozilla.org/feed-unescapehtml;1"].getService(Components.interfaces.nsIScriptableUnescapeHTML).parseFragment(aHTMLString, false, null, body));
-        return body;
-      };
-      content.bbsfoxEm = {};
-      content.bbsfoxEm.xmlhttpMap = {};
-      content.bbsfoxEm.cb_show = function(nodeIdx, imageurl) {
-        var anode = this.allLinks[nodeIdx];
-        try{
-          anode.setAttribute("emload", "1");
-          var parentDiv = anode.parentNode;
-          var doc = anode.ownerDocument;
-          while(parentDiv.className!="BBSLine")
-            parentDiv=parentDiv.parentNode;
-
-          var node = parentDiv.nextSibling;
-          var div;
-          if(node.className!="AddLine")
-          {
-            div = doc.createElement("div");
-            div.setAttribute("class","AddLine");
-            parentDiv.parentNode.insertBefore(div, parentDiv.nextSibling);
-          }
-          else
-          {
-            div = node;
-          }
-          var br = doc.createElement("BR");
-          div.appendChild(br);
-          var img = doc.createElement("img");
-          div.appendChild(img);
-          img.setAttribute("src", imageurl);
-          img.setAttribute("class", "scale");
-          img.addEventListener("click", switchSize, false);
-        }catch(ex)
-        {}
-      };
-      var pptPicLoader = new BBSPPTPicLoader(content.bbsfoxEm, dp, BBSFoxFSHttpReq, htmlParser);
-      var imgurPicLoader = new BBSImgurPicLoader(content.bbsfoxEm, dp, BBSFoxFSHttpReq, htmlParser);
-
-      //
-      var allLinks = doc.getElementsByTagName("a");
-      content.bbsfoxEm.allLinks = allLinks;
-      var PPTRegEx = /^(http:\/\/ppt\.cc\/).{4,6}$/i;
-      var ImgurRegEx = /^(https?:\/\/imgur\.com\/)(\w{5,8})(\?tags)?/i;
-      for(var i=0;i<allLinks.length;i++)
-      {
-        var url = allLinks[i].getAttribute("href");
-        if(!allLinks[i].getAttribute("emload"))
-        {
-          if(imgurPicLoader.regEx.test(url))
-          {
-            var xmlhttp = new BBSFoxFSHttpReq(false, {UniUrl: url, LoaderAction: "show", owner: i}, imgurPicLoader.onPageResponse.bind(imgurPicLoader));
-            content.bbsfoxEm.xmlhttpMap['a' + i] = xmlhttp;
-            imgurPicLoader.show(url, i, xmlhttp);
-          }
-          else if(pptPicLoader.regEx.test(url))
-          {
-            var xmlhttp = new BBSFoxFSHttpReq(false, {UniUrl: url, LoaderAction: "show", owner: i}, pptPicLoader.onPageResponse.bind(pptPicLoader));
-            content.bbsfoxEm.xmlhttpMap['a' + i] = xmlhttp;
-            pptPicLoader.show(url, i, xmlhttp);
-          }
-        }
-      }
-      //
   }
 });
+
+addEventListener("DOMContentLoaded", function(event) {
+  //console.log("DOMContentLoaded: " + content.document.location.protocol);
+  let doc = event.originalTarget;
+  if(event.originalTarget.nodeName == "#document"){
+    let timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    Cc["@mozilla.org/timer;1"]
+    .createInstance(Ci.nsITimer)
+    .initWithCallback({ notify: init },10,Ci.nsITimer.TYPE_ONE_SHOT);
+  }
+}, false);

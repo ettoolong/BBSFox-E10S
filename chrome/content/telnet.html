@@ -10,11 +10,15 @@
         --bbscolor-inv-0:#ffffff;
       }
     </style>
+    <style id="BBSFontDefine"></style>
     <link rel="icon" type='image/gif' href="chrome://bbsfox/skin/logo/logo.png"/>
     <link rel="stylesheet" type="text/css" href="chrome://bbsfox/skin/bbs.css"/>
     <link rel="stylesheet" type="text/css" id="ColorCSS" href="chrome://bbsfox/skin/color.css"/>
     <link rel="stylesheet" type="text/css" id="ColorFix" href="chrome://bbsfox/skin/color-normal.css"/>
     <title></title>
+    <script type="text/javascript" src="chrome://bbsfox/content/telnetDef.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/commonDef.js"></script>
+    <script type="text/javascript" src="chrome://bbsfox/content/uao/uao.js"></script>
     <script type="text/javascript" src="chrome://bbsfox/content/mainpage.js"></script>
     <script type="text/javascript" src="chrome://bbsfox/content/stringutil.js"></script>
     <script type="text/javascript" src="chrome://bbsfox/content/aidhandler.js"></script>
@@ -61,7 +65,8 @@
       </div>
 
     </div> <!--BBSWindow end-->
-    <div id="BBSFoxFontTest" style="left:-10000px; top:-10000px;position: absolute;overflow: hidden;"></div>
+    <div id="SpaceCharacterTest" class="testElem">&#32;</div>
+    <div id="NbspCharacterTest" class="testElem">&nbsp;</div>
     <div id="hideobj" style="display: none;">
       <span id="cmdHandler"></span>
       <div id="TrackKeyWordList"></div>

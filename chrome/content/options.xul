@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://bbsfox/skin/options.css" type="text/css"?>
 <!DOCTYPE dialog SYSTEM "chrome://bbsfox/locale/bbsfox.dtd">
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -10,7 +11,7 @@
         ondialogcancel="cancel();"
         buttons="accept, cancel"
         title="&options_bbsfoxoptions.label;"
-        >
+        windowtype="bbsfox:options">
 
   <stringbundleset id="bbsfoxoptions-stringbundleset">
     <stringbundle id="bbsfoxoptions-string-bundle" src="chrome://bbsfox/locale/bbsfox.properties"/>
@@ -75,30 +76,30 @@
                               <caption label="&options_resolution.label;"/>
                               <hbox align="center">
                                 <label control="bbsbox.col" value="&options_bbscol.label;"/>
-                                <textbox id="bbsbox.col" type="number" min="80" max="65535" size="3" bbsfoxDefaultValue="80"/>
+                                <textbox id="bbsbox.col" type="number" min="80" max="65535" size="3"/>
                                 <label control="bbsbox.col" value="&options_bbsrow.label;"/>
-                                <textbox id="bbsbox.row" type="number" min="24" max="65535" size="3" bbsfoxDefaultValue="24"/>
+                                <textbox id="bbsbox.row" type="number" min="24" max="65535" size="3"/>
                               </hbox>
                             </groupbox>
                             <groupbox>
                               <caption label="&options_screentype.label;"/>
                               <vbox>
-                                <radiogroup id="ScreenType" bbsfoxDefaultValue="0">
+                                <radiogroup id="ScreenType">
                                   <hbox align="center">
                                     <radio id="bbsbox.autoResize" value="0" label="&options_autoresize.label;"/>
-                                    <checkbox id="KeepFontAspectRatio" label="&options_keepfontaspectratio.label;" bbsfoxDefaultValue="true"/>
+                                    <checkbox id="KeepFontAspectRatio" label="&options_keepfontaspectratio.label;"/>
                                   </hbox>
                                   <hbox align="center">
                                     <radio id="bbsbox.fixBoxSize" value="1" label="&options_fixboxsize.label;"/>
                                     <label control="bbsbox.width" value="&options_screensize.label;"/>
-                                    <textbox id="bbsbox.width" type="number" size="3" bbsfoxDefaultValue="960"/>
+                                    <textbox id="bbsbox.width" type="number" size="3"/>
                                     <label control="bbsbox.width" value="x"/>
-                                    <textbox id="bbsbox.height" type="number" size="3" bbsfoxDefaultValue="576"/>
+                                    <textbox id="bbsbox.height" type="number" size="3"/>
                                   </hbox>
                                   <hbox align="center">
                                     <radio id="bbsbox.fixFontSize" value="2" label="&options_fixfontsize.label;"/>
                                     <label control="FontSize" value="&options_fontsize.label;"/>
-                                    <textbox id="FontSize" type="number" size="3" bbsfoxDefaultValue="16"/>
+                                    <textbox id="FontSize" type="number" size="3"/>
                                   </hbox>
                                 </radiogroup>
                               </vbox>
@@ -106,16 +107,16 @@
                             <groupbox>
                               <caption label="&options_view.label;"/>
                               <hbox>
-                                <checkbox id="HAlignCenter" label="&options_haligncenter.label;" bbsfoxDefaultValue="true"/>
-                                <checkbox id="VAlignCenter" label="&options_valigncenter.label;" bbsfoxDefaultValue="true"/>
+                                <checkbox id="HAlignCenter" label="&options_haligncenter.label;"/>
+                                <checkbox id="VAlignCenter" label="&options_valigncenter.label;"/>
                               </hbox>
                             </groupbox>
                             <groupbox>
                               <caption label="&options_border.label;"/>
                               <hbox align="center">
-                                <checkbox id="DisplayBorder" label="&options_displayborder.label;" bbsfoxDefaultValue="false"/>
+                                <checkbox id="DisplayBorder" label="&options_displayborder.label;"/>
                                 <label control="BorderColor" value="&options_bordercolor.label;"/>
-                                <menulist editable="false" disableautoselect="true" id="BorderColor" bbsfox_images_autosize="true" sizetopopup="always" bbsfoxDefaultValue="15">
+                                <menulist editable="false" disableautoselect="true" id="BorderColor" bbsfox_images_autosize="true" sizetopopup="always">
                                   <menupopup>
                                     <menuitem class="menuitem-iconic" image="chrome://bbsfox/skin/colorpicker/0.png" label="" value="0"/>
                                     <menuitem class="menuitem-iconic" image="chrome://bbsfox/skin/colorpicker/1.png" label="" value="1"/>
@@ -143,7 +144,7 @@
                               <vbox>
                                 <hbox align="center">
                                   <label control="BackgroundType" value="&options_backgroundtype.label;"/>
-                                  <menulist editable="false" id="BackgroundType" bbsfoxDefaultValue="0">
+                                  <menulist editable="false" id="BackgroundType">
                                     <menupopup>
                                       <menuitem label="&options_bgpurecolor.label;" value="0"/>
                                       <menuitem label="&options_bgrepeatimage.label;" value="1"/>
@@ -155,16 +156,16 @@
                                 </hbox>
                                 <hbox align="center">
                                   <label control="BackgroundImageMD5" value="&options_selectbgimage.label;"/>
-                                  <textbox id="BackgroundImageMD5" size="36" bbsfoxDefaultValue="" hidden="true"/>
+                                  <textbox id="BackgroundImageMD5" size="36" hidden="true"/>
                                   <button label="&options_browse.label;" style="min-width: 12px;" oncommand="onSelectBGImage();"/>
                                   <label control="BackgroundBrightness" value="&options_bgbrightness.label;"/>
-                                  <textbox id="BackgroundBrightness" size="3" type="number" min="0" max="100" increment="1" decimalplaces="0" bbsfoxDefaultValue="50"/>
+                                  <textbox id="BackgroundBrightness" size="3" type="number" min="0" max="100" increment="1" decimalplaces="0"/>
                                 </hbox>
                               </vbox>
                             </groupbox>
                             <hbox align="center">
                               <label control="DisplayDelay" value="&options_displaydelay.label;"/>
-                              <textbox id="DisplayDelay" size="3" type="number" min="1" max="30" increment="1" decimalplaces="0" bbsfoxDefaultValue="10"/>
+                              <textbox id="DisplayDelay" size="3" type="number" min="1" max="30" increment="1" decimalplaces="0"/>
                               <label control="DisplayDelay" value="&options_displaydelay2.label;"/>
                             </hbox>
                           </vbox>
@@ -173,7 +174,7 @@
                           <vbox>
                             <hbox align="center">
                               <label control="Charset" value="&options_codepage.label;"/>
-                              <menulist editable="true" id="Charset" oncommand="charsetChange();" bbsfoxDefaultValue="big5">
+                              <menulist editable="true" id="Charset" oncommand="charsetChange();">
                                 <menupopup>
                                   <menuitem label="big5"/>
                                   <menuitem label="gb2312" hidden="true"/>
@@ -181,18 +182,23 @@
                                 </menupopup>
                               </menulist>
                             </hbox>
-                            <checkbox id="AutoDbcsDetection" label="&options_dbcsdetect.label;" bbsfoxDefaultValue="false"/>
-                            <checkbox id="LineFeed" label="&options_linefeed.label;" bbsfoxDefaultValue="true"/>
+                            <checkbox id="AutoDbcsDetection" label="&options_dbcsdetect.label;"/>
+                            <checkbox id="LineFeed" label="&options_linefeed.label;"/>
                             <hbox align="center">
                               <label control="LineWrap" value="&options_linewrap1.label;"/>
-                              <textbox id="LineWrap" type="number" size="3" bbsfoxDefaultValue="0"/>
+                              <textbox id="LineWrap" type="number" size="3"/>
                               <label control="LineWrap" value="&options_linewrap2.label;"/>
                             </hbox>
                             <hbox align="center">
                               <label control="FontFace.string" value="&options_foneface.label;"/>
-                              <menulist editable="true" id="FontFace.string" oncommand="onFontChange();" bbsfoxDefaultValue="monospace"/>
+                              <menulist editable="true" id="FontFace.string" oncommand="onFontChange();"/>
                             </hbox>
                             <label id="FontTestResult" style="color: #FF0000;" size="50"/>
+                            <hbox align="center" id="EnFontSetting" hidden="true">
+                              <label control="FontFaceEn.string" value="&options_enfoneface.label;"/>
+                              <menulist editable="true" id="FontFaceEn.string" oncommand="onFontEnChange();"/>
+                            </hbox>
+                            <label id="FontEnTestResult" style="color: #FF0000;" size="50"/>
                             <hbox>
                               <html:span id="FontFaceTest.span0" style="height: 0px; overflow: hidden; position:absolute; left:0px; top:0px;">&options_testkey2.label;</html:span>
                               <html:span id="FontFaceTest.span1" style="height: 0px; overflow: hidden; position:absolute; left:0px; top:0px;">&options_testkey.label;</html:span>
@@ -201,8 +207,7 @@
                               <html:span id="FontFaceTest.span4" style="height: 0px; overflow: hidden; position:absolute; left:0px; top:0px;">WW</html:span>
                               <html:span id="FontFaceTest.span5" style="height: 0px; overflow: hidden; position:absolute; left:0px; top:0px;">MM</html:span>
                             </hbox>
-                            <menulist editable="true" id="FontFaceEn.string" hidden="true"/>
-                            <checkbox id="FixUnicodeDisplay" label="&options_fixunicodedisplay.label;" bbsfoxDefaultValue="false" hidden="true"/>
+                            <checkbox id="FixUnicodeDisplay" label="&options_fixunicodedisplay.label;" hidden="true"/>
                           </vbox>
                         </tabpanel>
                         <tabpanel>
@@ -210,67 +215,67 @@
                             <label value="&options_colordisplaynote.label;" style="color:#0000FF;"/>
                             <label value=""/>
                             <hbox align="center">
-                              <html:input id="BBSColor01" type="color" value="#000000" bbsfoxDefaultValue="#000000"/>
+                              <html:input id="BBSColor01" type="color" value="#000000"/>
                               <label value="&options_defaultColor01.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor02" type="color" value="#800000" bbsfoxDefaultValue="#800000"/>
+                              <html:input id="BBSColor02" type="color" value="#800000"/>
                               <label value="&options_defaultColor02.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor03" type="color" value="#008000" bbsfoxDefaultValue="#008000"/>
+                              <html:input id="BBSColor03" type="color" value="#008000"/>
                               <label value="&options_defaultColor03.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor04" type="color" value="#808000" bbsfoxDefaultValue="#808000"/>
+                              <html:input id="BBSColor04" type="color" value="#808000"/>
                               <label value="&options_defaultColor04.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor05" type="color" value="#000080" bbsfoxDefaultValue="#000080"/>
+                              <html:input id="BBSColor05" type="color" value="#000080"/>
                               <label value="&options_defaultColor05.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor06" type="color" value="#800080" bbsfoxDefaultValue="#800080"/>
+                              <html:input id="BBSColor06" type="color" value="#800080"/>
                               <label value="&options_defaultColor06.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor07" type="color" value="#008080" bbsfoxDefaultValue="#008080"/>
+                              <html:input id="BBSColor07" type="color" value="#008080"/>
                               <label value="&options_defaultColor07.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor08" type="color" value="#c0c0c0" bbsfoxDefaultValue="#c0c0c0"/>
+                              <html:input id="BBSColor08" type="color" value="#c0c0c0"/>
                               <label value="&options_defaultColor08.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor09" type="color" value="#808080" bbsfoxDefaultValue="#808080"/>
+                              <html:input id="BBSColor09" type="color" value="#808080"/>
                               <label value="&options_defaultColor09.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor10" type="color" value="#ff0000" bbsfoxDefaultValue="#ff0000"/>
+                              <html:input id="BBSColor10" type="color" value="#ff0000"/>
                               <label value="&options_defaultColor10.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor11" type="color" value="#00ff00" bbsfoxDefaultValue="#00ff00"/>
+                              <html:input id="BBSColor11" type="color" value="#00ff00"/>
                               <label value="&options_defaultColor11.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor12" type="color" value="#ffff00" bbsfoxDefaultValue="#ffff00"/>
+                              <html:input id="BBSColor12" type="color" value="#ffff00"/>
                               <label value="&options_defaultColor12.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor13" type="color" value="#0000ff" bbsfoxDefaultValue="#0000ff"/>
+                              <html:input id="BBSColor13" type="color" value="#0000ff"/>
                               <label value="&options_defaultColor13.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor14" type="color" value="#ff00ff" bbsfoxDefaultValue="#ff00ff"/>
+                              <html:input id="BBSColor14" type="color" value="#ff00ff"/>
                               <label value="&options_defaultColor14.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor15" type="color" value="#00ffff" bbsfoxDefaultValue="#00ffff"/>
+                              <html:input id="BBSColor15" type="color" value="#00ffff"/>
                               <label value="&options_defaultColor15.label;"/>
                             </hbox>
                             <hbox align="center">
-                              <html:input id="BBSColor16" type="color" value="#ffffff" bbsfoxDefaultValue="#ffffff"/>
+                              <html:input id="BBSColor16" type="color" value="#ffffff"/>
                               <label value="&options_defaultColor16.label;"/>
                             </hbox>
 
@@ -291,19 +296,19 @@
                       <tabpanels>
                         <tabpanel>
                           <vbox>
-                            <checkbox id="ask" label="&options_askasclose.label;" bbsfoxDefaultValue="false"/>
+                            <checkbox id="ask" label="&options_askasclose.label;"/>
 
                             <hbox align="center">
                               <label control="AntiIdle.seconds" value="&options_antiidle1.label;"/>
-                              <textbox id="AntiIdle.seconds" type="number" size="3" bbsfoxDefaultValue="0"/>
+                              <textbox id="AntiIdle.seconds" type="number" size="3"/>
                               <label control="AntiIdle.string" value="&options_antiidle2.label;"/>
-                              <textbox id="AntiIdle.string" bbsfoxDefaultValue="^[[A^[[B"/>
+                              <textbox id="AntiIdle.string"/>
                               <label control="AntiIdle.seconds" value="&options_antiidle3.label;"/>
                             </hbox>
 
                             <hbox align="center">
                               <label control="Escape.string" value="&options_replaceesc1.label;"/>
-                              <menulist editable="true" id="Escape.string" bbsfoxDefaultValue="^U">
+                              <menulist editable="true" id="Escape.string">
                                 <menupopup>
                                   <menuitem label="^["/>
                                   <menuitem label="^[^["/>
@@ -316,7 +321,7 @@
 
                             <hbox align="center">
                               <label control="EnterType" value="&options_enertype.label;"/>
-                              <menulist editable="false" id="EnterType" bbsfoxDefaultValue="0">
+                              <menulist editable="false" id="EnterType">
                                 <menupopup>
                                   <menuitem label="CR" value="0"/>
                                   <menuitem label="LF" value="2"/>
@@ -327,7 +332,7 @@
 
                             <hbox align="center" hidden="true">
                               <label control="FGBGcolor" value="&options_fgbgcolor.label;"/>
-                              <menulist editable="false" id="FGBGcolor" bbsfoxDefaultValue="0">
+                              <menulist editable="false" id="FGBGcolor">
                                 <menupopup>
                                   <menuitem label="&options_bblackfwhite.label;" value="0"/>
                                   <menuitem label="&options_bwhitefblack.label;" value="1"/>
@@ -337,7 +342,7 @@
 
                             <hbox align="center">
                               <label control="TermType" value="&options_termtype.label;"/>
-                              <menulist editable="true" id="TermType" bbsfoxDefaultValue="VT100">
+                              <menulist editable="true" id="TermType">
                                 <menupopup>
                                   <menuitem label="VT100"/>
                                 </menupopup>
@@ -351,35 +356,35 @@
                               <vbox>
                                 <hbox align="center">
                                   <label control="PreLoginPrompt" value="&options_preloginprompt.label;"/>
-                                  <textbox id="PreLoginPrompt" bbsfoxDefaultValue=""/>
+                                  <textbox id="PreLoginPrompt"/>
                                 </hbox>
                                 <hbox align="center">
                                   <label control="LoginPrompt" value="&options_loginprompt.label;"/>
-                                  <textbox id="LoginPrompt" bbsfoxDefaultValue=""/>
+                                  <textbox id="LoginPrompt"/>
                                 </hbox>
                                 <hbox align="center">
                                   <label control="PasswdPrompt" value="&options_passwordprompt.label;"/>
-                                  <textbox id="PasswdPrompt" bbsfoxDefaultValue=""/>
+                                  <textbox id="PasswdPrompt"/>
                                 </hbox>
                               </vbox>
                               <vbox>
                                 <hbox align="center">
                                   <label control="PreLogin" value="&options_prelogin.label;"/>
-                                  <textbox id="PreLogin" bbsfoxDefaultValue=""/>
+                                  <textbox id="PreLogin"/>
                                 </hbox>
                                 <hbox align="center">
                                   <label control="Login" value="&options_login.label;"/>
-                                  <textbox id="Login" bbsfoxDefaultValue=""/>
+                                  <textbox id="Login"/>
                                 </hbox>
                                 <hbox align="center">
                                   <label control="Passwd" value="&options_passwd.label;"/>
-                                  <textbox id="Passwd" type="password" bbsfoxDefaultValue=""/>
+                                  <textbox id="Passwd" type="password"/>
                                 </hbox>
                               </vbox>
                             </hbox>
                             <hbox align="center">
                               <label control="PostLogin" value="&options_postlogin.label;"/>
-                              <textbox id="PostLogin" bbsfoxDefaultValue=""/>
+                              <textbox id="PostLogin"/>
                             </hbox>
                             <label value="&options_autologincaution1.label;" style="color:#0000FF;"/>
                             <label value="&options_autologincaution2.label;" style="color:#0000FF;"/>
@@ -391,12 +396,12 @@
                             <groupbox>
                               <caption label="&options_reconnecttype.label;"/>
                               <vbox>
-                                <radiogroup id="ReconnectType" bbsfoxDefaultValue="0">
+                                <radiogroup id="ReconnectType">
                                   <radio value="0" label="&options_rcdisable.label;"/>
                                   <radio value="1" label="&options_rcalways.label;"/>
                                   <hbox align="center">
                                     <radio value="2" label="&options_reconnect1.label;"/>
-                                    <textbox id="ReconnectTime" type="number" size="3" min="1" increment="1" bbsfoxDefaultValue="20"/>
+                                    <textbox id="ReconnectTime" type="number" size="3" min="1" increment="1"/>
                                     <label control="ReconnectTime" value="&options_reconnect2.label;"/>
                                   </hbox>
                                 </radiogroup>
@@ -405,9 +410,9 @@
 
                             <hbox align="center">
                               <label control="ReconnectDelay" value="&options_reconnect3.label;"/>
-                              <textbox id="ReconnectDelay" type="number" size="3" onchange="save();" bbsfoxDefaultValue="2"/>
+                              <textbox id="ReconnectDelay" type="number" size="3" onchange="save();"/>
                               <label control="ReconnectDelay" value="&options_reconnect4.label;"/>
-                              <textbox id="ReconnectCount" type="number" size="3" onchange="save();" bbsfoxDefaultValue="200"/>
+                              <textbox id="ReconnectCount" type="number" size="3" onchange="save();"/>
                               <label control="ReconnectCount" value="&options_reconnect5.label;"/>
                             </hbox>
                           </vbox>
@@ -417,7 +422,7 @@
                             <groupbox>
                               <caption label="&options_proxy.label;"/>
                               <hbox align="center">
-                                <menulist editable="false" id="TelnetProxyType" bbsfoxDefaultValue="0">
+                                <menulist editable="false" id="TelnetProxyType">
                                   <menupopup>
                                     <menuitem label="&options_noproxyserver.label;" value="0"/>
                                     <menuitem label="&options_proxyhttp.label;" value="1"/>
@@ -428,9 +433,9 @@
                                   </menupopup>
                                 </menulist>
                                 <label control="SshProxyHost" value="&options_proxyhost.label;"/>
-                                <textbox id="TelnetProxyHost" bbsfoxDefaultValue=""/>
+                                <textbox id="TelnetProxyHost"/>
                                 <label control="SshProxyPort" value="&options_proxyport.label;"/>
-                                <textbox id="TelnetProxyPort" type="number" min="1" max="65535" size="6" increment="1" bbsfoxDefaultValue="23"/>
+                                <textbox id="TelnetProxyPort" type="number" min="1" max="65535" size="6" increment="1"/>
                               </hbox>
                               <label style="color:#0000FF;" value="&options_proxyhint.label;"/>
                             </groupbox>
@@ -441,7 +446,7 @@
                             <groupbox>
                               <caption label="&options_proxy.label;"/>
                               <hbox align="center">
-                                <menulist editable="false" id="SshProxyType" bbsfoxDefaultValue="0">
+                                <menulist editable="false" id="SshProxyType">
                                   <menupopup>
                                     <menuitem label="&options_noproxyserver.label;" value="0"/>
                                     <menuitem label="&options_proxyhttp.label;" value="1"/>
@@ -452,25 +457,25 @@
                                   </menupopup>
                                 </menulist>
                                 <label control="SshProxyHost" value="&options_proxyhost.label;"/>
-                                <textbox id="SshProxyHost" bbsfoxDefaultValue=""/>
+                                <textbox id="SshProxyHost"/>
                                 <label control="SshProxyPort" value="&options_proxyport.label;"/>
-                                <textbox id="SshProxyPort" type="number" min="1" max="65535" size="6" increment="1" bbsfoxDefaultValue="22"/>
+                                <textbox id="SshProxyPort" type="number" min="1" max="65535" size="6" increment="1"/>
                               </hbox>
                               <label style="color:#0000FF;" value="&options_proxyhint.label;"/>
                             </groupbox>
                             <groupbox>
                               <caption label="&options_sshlogin.label;"/>
-                              <radiogroup id="SshLoginType" bbsfoxDefaultValue="0">
+                              <radiogroup id="SshLoginType">
                                 <radio value="0" label="&options_sshnormallogin.label;"/>
                                 <hbox align="center">
                                   <label value=""/><label value=""/>
                                   <label control="SshUserName" value="&options_sshusername.label;"/>
-                                  <textbox id="SshUserName" bbsfoxDefaultValue=""/>
+                                  <textbox id="SshUserName"/>
                                 </hbox>
                                 <hbox align="center">
                                   <label value=""/><label value=""/>
                                   <label control="SshPassword" value="&options_sshpassword.label;"/>
-                                  <textbox id="SshPassword" type="password" bbsfoxDefaultValue=""/>
+                                  <textbox id="SshPassword" type="password"/>
                                 </hbox>
                                 <hbox align="center" hidden="true">
                                   <label value=""/><label value=""/>
@@ -493,7 +498,7 @@
                         <vbox>
                           <hbox align="center">
                             <label control="MouseWheelFunc1" value="&options_mousewheelfunc1.label;"/>
-                            <menulist editable="false" id="MouseWheelFunc1" bbsfoxDefaultValue="0">
+                            <menulist editable="false" id="MouseWheelFunc1">
                               <menupopup>
                                 <menuitem label="&options_mousewheelaction0.label;" value="0"/>
                                 <menuitem label="&options_mousewheelaction1.label;" value="1"/>
@@ -505,7 +510,7 @@
                           </hbox>
                           <hbox align="center">
                             <label control="MouseWheelFunc2" value="&options_mousewheelfunc2.label;"/>
-                            <menulist editable="false" id="MouseWheelFunc2" bbsfoxDefaultValue="0">
+                            <menulist editable="false" id="MouseWheelFunc2">
                               <menupopup>
                                 <menuitem label="&options_mousewheelaction0.label;" value="0"/>
                                 <menuitem label="&options_mousewheelaction1.label;" value="1"/>
@@ -517,7 +522,7 @@
                           </hbox>
                           <hbox align="center">
                             <label control="MouseWheelFunc3" value="&options_mousewheelfunc3.label;"/>
-                            <menulist editable="false" id="MouseWheelFunc3" bbsfoxDefaultValue="0">
+                            <menulist editable="false" id="MouseWheelFunc3">
                               <menupopup>
                                 <menuitem label="&options_mousewheelaction0.label;" value="0"/>
                                 <menuitem label="&options_mousewheelaction1.label;" value="1"/>
@@ -531,13 +536,13 @@
                       <groupbox>
                         <caption label="&options_mousebrowsingfunc.label;"/>
                           <vbox>
-                            <checkbox id="UseMouseBrowsing" label="&options_mousebrowse.label;" bbsfoxDefaultValue="false"/>
-                            <checkbox id="UseMouseBrowsingEx" label="&options_mousebrowseex.label;" bbsfoxDefaultValue="false"/>
-                            <checkbox id="MouseBrowseSendEnter" label="&options_mousebrowsesendenter.label;" bbsfoxDefaultValue="false"/>
+                            <checkbox id="UseMouseBrowsing" label="&options_mousebrowse.label;"/>
+                            <checkbox id="UseMouseBrowsingEx" label="&options_mousebrowseex.label;"/>
+                            <checkbox id="MouseBrowseSendEnter" label="&options_mousebrowsesendenter.label;"/>
                             <hbox align="center">
-                              <checkbox id="MouseBrowsingHighlight" label="&options_mousebrowsinghighlight.label;" bbsfoxDefaultValue="true"/>
+                              <checkbox id="MouseBrowsingHighlight" label="&options_mousebrowsinghighlight.label;"/>
                               <label control="HighlightBG" value="&options_highlightbgcolor.label;"/>
-                              <menulist editable="false" disableautoselect="true" id="HighlightBG" bbsfox_images_autosize="true" sizetopopup="always" bbsfoxDefaultValue="2">
+                              <menulist editable="false" disableautoselect="true" id="HighlightBG" bbsfox_images_autosize="true" sizetopopup="always">
                                 <menupopup>
                                   <menuitem class="menuitem-iconic" image="chrome://bbsfox/skin/colorpicker/0.png" label="" value="0"/>
                                   <menuitem class="menuitem-iconic" image="chrome://bbsfox/skin/colorpicker/1.png" label="" value="1"/>
@@ -558,11 +563,11 @@
                                 </menupopup>
                               </menulist>
                               <label control="MouseBrowsingHlTime" value="&options_mousebrowsinghltime.label;"/>
-                              <textbox id="MouseBrowsingHlTime" type="number" size="3" min="0" increment="1000" decimalplaces="0" bbsfoxDefaultValue="0"/>
+                              <textbox id="MouseBrowsingHlTime" type="number" size="3" min="0" increment="1000" decimalplaces="0"/>
                               <label control="MouseBrowsingHlTime" value="&options_mousebrowsinghltime2.label;"/>
                               <spacer flex="1"/>
                             </hbox>
-                            <checkbox id="MouseBrowsingHandPointer" label="&options_mousebrowsinghandpointer.label;" bbsfoxDefaultValue="true"/>
+                            <checkbox id="MouseBrowsingHandPointer" label="&options_mousebrowsinghandpointer.label;"/>
                           </vbox>
                       </groupbox>
                       <groupbox>
@@ -570,7 +575,7 @@
                           <vbox>
                             <hbox align="center">
                               <label control="MiddleButtonFunction" value="&options_middlebuttonfunction.label;"/>
-                              <menulist editable="false" id="MiddleButtonFunction" bbsfoxDefaultValue="0">
+                              <menulist editable="false" id="MiddleButtonFunction">
                                 <menupopup>
                                   <menuitem label="&options_middlebuttonnone.label;" value="0"/>
                                   <menuitem label="&options_middlebuttonsendenter.label;" value="1"/>
@@ -584,14 +589,14 @@
                                 </menupopup>
                               </menulist>
                             </hbox>
-                            <checkbox id="LoadUrlInBG" label="&options_dontgotonewtab.label;" bbsfoxDefaultValue="false" hidden="true"/>
-                            <checkbox id="DropToPaste" label="&options_dropToPaste.label;" bbsfoxDefaultValue="false"/>
-                            <checkbox id="ClearCopiedSel" label="&options_clearcopiedsel.label;" bbsfoxDefaultValue="false"/>
-                            <checkbox id="DetectLink" label="&options_showlink.label;" bbsfoxDefaultValue="true"/>
+                            <checkbox id="LoadUrlInBG" label="&options_dontgotonewtab.label;" hidden="true"/>
+                            <checkbox id="DropToPaste" label="&options_dropToPaste.label;"/>
+                            <checkbox id="ClearCopiedSel" label="&options_clearcopiedsel.label;"/>
+                            <checkbox id="DetectLink" label="&options_showlink.label;"/>
                             <hbox align="center" id="DetectAid" hidden="true">
                               <label control="aidAction" value="&options_pttaid.label;"/>
                               <label control="aidAction" value="&options_onlyforpttsite.label;"/>
-                              <menulist editable="false" id="AidAction" bbsfoxDefaultValue="0">
+                              <menulist editable="false" id="AidAction">
                                 <menupopup>
                                   <menuitem label="&options_aidnone.label;" value="0"/>
                                   <menuitem label="&options_aidseek.label;" value="2"/>
@@ -607,55 +612,55 @@
 
                   <tabpanel>
                     <vbox>
-                      <hbox align="center">
+                      <hbox align="center" id="HotkeyCtrlWSet">
                         <label control="HotkeyCtrlW" value="&options_hotkeyctrlw.label;"/>
-                        <menulist editable="false" id="HotkeyCtrlW" bbsfoxDefaultValue="1">
+                        <menulist editable="false" id="HotkeyCtrlW">
                           <menupopup>
                             <menuitem label="&options_hotkeyclosetab.label;" value="0"/>
                             <menuitem label="&options_hotkeysendcharw.label;" value="1"/>
                           </menupopup>
                         </menulist>
                       </hbox>
-                      <hbox align="center">
+                      <hbox align="center" id="HotkeyCtrlBSet">
                         <label control="HotkeyCtrlB" value="&options_hotkeyctrlb.label;"/>
-                        <menulist editable="false" id="HotkeyCtrlB" bbsfoxDefaultValue="1">
+                        <menulist editable="false" id="HotkeyCtrlB">
                           <menupopup>
                             <menuitem label="&options_hotkeyopenbookmark.label;" value="0"/>
                             <menuitem label="&options_hotkeysendcharb.label;" value="1"/>
                           </menupopup>
                         </menulist>
                       </hbox>
-                      <hbox align="center">
+                      <hbox align="center" id="HotkeyCtrlLSet">
                         <label control="HotkeyCtrlL" value="&options_hotkeyctrll.label;"/>
-                        <menulist editable="false" id="HotkeyCtrlL" bbsfoxDefaultValue="1">
+                        <menulist editable="false" id="HotkeyCtrlL">
                           <menupopup>
                             <menuitem label="&options_hotkeyurlbar.label;" value="0"/>
                             <menuitem label="&options_hotkeysendcharl.label;" value="1"/>
                           </menupopup>
                         </menulist>
                       </hbox>
-                      <hbox align="center">
+                      <hbox align="center" id="HotkeyCtrlTSet">
                         <label control="HotkeyCtrlT" value="&options_hotkeyctrlt.label;"/>
-                        <menulist editable="false" id="HotkeyCtrlT" bbsfoxDefaultValue="1">
+                        <menulist editable="false" id="HotkeyCtrlT">
                           <menupopup>
                             <menuitem label="&options_hotkeynewtab.label;" value="0"/>
                             <menuitem label="&options_hotkeysendchart.label;" value="1"/>
                           </menupopup>
                         </menulist>
                       </hbox>
-                      <checkbox id="HokeyForCopy" label="&options_hotkeyforcopy.label;" bbsfoxDefaultValue="true"/>
-                      <checkbox id="HokeyForAnsiCopy" label="&options_hotkeyforansicopy.label;" bbsfoxDefaultValue="true"/>
+                      <checkbox id="HokeyForCopy" label="&options_hotkeyforcopy.label;"/>
+                      <checkbox id="HokeyForAnsiCopy" label="&options_hotkeyforansicopy.label;"/>
                       <hbox align="center">
-                        <checkbox id="HokeyForPaste" label="&options_hotkeyforpaste.label;" bbsfoxDefaultValue="true"/>
-                        <checkbox id="Hokey2ForPaste" label="&options_hotkey2forpaste.label;" bbsfoxDefaultValue="false"/>
+                        <checkbox id="HokeyForPaste" label="&options_hotkeyforpaste.label;"/>
+                        <checkbox id="Hokey2ForPaste" label="&options_hotkey2forpaste.label;"/>
                       </hbox>
-                      <checkbox id="HokeyForSelectAll" label="&options_hotkeyforselectall.label;" bbsfoxDefaultValue="true"/>
-                      <checkbox id="HokeyForMouseBrowsing" label="&options_hokeyformousebrowsing.label;" bbsfoxDefaultValue="false"/>
-                      <checkbox id="HokeyForBgDisplay" label="&options_hokeyforbgdisplay.label;" bbsfoxDefaultValue="false"/>
-                      <checkbox id="HokeyForEasyReading" label="&options_hokeyforeasyreading.label;" bbsfoxDefaultValue="false"/>
+                      <checkbox id="HokeyForSelectAll" label="&options_hotkeyforselectall.label;"/>
+                      <checkbox id="HokeyForMouseBrowsing" label="&options_hokeyformousebrowsing.label;"/>
+                      <checkbox id="HokeyForBgDisplay" label="&options_hokeyforbgdisplay.label;"/>
+                      <checkbox id="HokeyForEasyReading" label="&options_hokeyforeasyreading.label;"/>
                       <hbox align="center">
-                        <checkbox id="HokeyForDownloadPost" label="&options_hotkeyfordownloadpost.label;" bbsfoxDefaultValue="false"/>
-                        <menulist editable="false" id="HotkeyDownloadType" bbsfoxDefaultValue="0">
+                        <checkbox id="HokeyForDownloadPost" label="&options_hotkeyfordownloadpost.label;"/>
+                        <menulist editable="false" id="HotkeyDownloadType">
                           <menupopup>
                             <menuitem label="&options_hotkeydowntext.label;" value="0"/>
                             <menuitem label="&options_hotkeydownansi.label;" value="1"/>
@@ -664,17 +669,15 @@
                         </menulist>
                       </hbox>
                       <hbox align="center" id="HokeyOpenThreadUrlOpt" hidden="true">
-                        <checkbox id="HokeyOpenThreadUrl" label="&options_hokeyopenthreadurl.label;" bbsfoxDefaultValue="false"/>
+                        <checkbox id="HokeyOpenThreadUrl" label="&options_hokeyopenthreadurl.label;"/>
                         <label value="&options_onlyforpttsite.label;"/>
                       </hbox>
-                      <checkbox id="HokeyChangeColorTable" label="&options_hokeychangecolortable.label;" bbsfoxDefaultValue="false"/>
+                      <checkbox id="HokeyChangeColorTable" label="&options_hokeychangecolortable.label;"/>
                     </vbox>
                   </tabpanel>
 
                   <tabpanel>
                     <vbox>
-                      <checkbox id="UseHttpContextMenu" label="&options_usehttpcontextmenu.label;" hidden="true" bbsfoxDefaultValue="true"/>
-                      <checkbox id="UseSubMenuForSearchEngine" label="&options_usesubmenuforsearchengine.label;" hidden="true" bbsfoxDefaultValue="false"/>
                       <tabbox>
                         <tabs>
                           <tab label="&options_bbsfoxcontextmenu.label;"/>
@@ -683,29 +686,28 @@
                         <tabpanels>
                           <tabpanel>
                             <vbox>
-                              <checkbox id="SavePageMenu" label="&options_savepagemenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="AnsiCopyMenu" label="&options_ansicopymenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="EmbeddedPlayerMenu" label="&options_embeddedplayermenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="PreviewPictureMenu" label="&options_previewpicturemenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="MouseBrowseMenu" label="&options_mousebrowsemenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="SwitchBgDisplayMenu" label="&options_switchbgdisplaymenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="OpenAllLinkMenu" label="&options_openalllinkmenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="CopyHtmlMenu" label="&options_copyhtmlmenu.label;" disabled="true" hidden="true" bbsfoxDefaultValue="false"/>
-                              <checkbox id="ScreenKeyboardMenu" label="&options_screenkeyboardmenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="AnsiColorToolMenu" label="&options_ansicolortoolmenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="KeyWordTrackMenu" label="&options_keywordtrackmenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="DelayPasteMenu" label="&options_delaypastemenu.label;" bbsfoxDefaultValue="false" hidden="true"/>
-                              <checkbox id="EasyReadingMenu" label="&options_easyreadingmenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="DownloadPostMenu" label="&options_downloadpostmenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="FileIoMenu" label="&options_fileiomenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="ChangeColorTableMenu" label="&options_changecolortablemenu.label;" bbsfoxDefaultValue="false"/>
-                              <checkbox id="BlacklistMenu" label="&options_blacklistemenu.label;" bbsfoxDefaultValue="false"/>
+                              <checkbox id="AnsiCopyMenu" label="&options_ansicopymenu.label;"/>
+                              <checkbox id="EmbeddedPlayerMenu" label="&options_embeddedplayermenu.label;"/>
+                              <checkbox id="PreviewPictureMenu" label="&options_previewpicturemenu.label;"/>
+                              <checkbox id="MouseBrowseMenu" label="&options_mousebrowsemenu.label;"/>
+                              <checkbox id="SwitchBgDisplayMenu" label="&options_switchbgdisplaymenu.label;"/>
+                              <checkbox id="OpenAllLinkMenu" label="&options_openalllinkmenu.label;"/>
+                              <checkbox id="CopyHtmlMenu" label="&options_copyhtmlmenu.label;" disabled="true" hidden="true"/>
+                              <checkbox id="ScreenKeyboardMenu" label="&options_screenkeyboardmenu.label;"/>
+                              <checkbox id="AnsiColorToolMenu" label="&options_ansicolortoolmenu.label;"/>
+                              <checkbox id="KeyWordTrackMenu" label="&options_keywordtrackmenu.label;"/>
+                              <checkbox id="DelayPasteMenu" label="&options_delaypastemenu.label;" hidden="true"/>
+                              <checkbox id="EasyReadingMenu" label="&options_easyreadingmenu.label;"/>
+                              <checkbox id="DownloadPostMenu" label="&options_downloadpostmenu.label;"/>
+                              <checkbox id="FileIoMenu" label="&options_fileiomenu.label;"/>
+                              <checkbox id="ChangeColorTableMenu" label="&options_changecolortablemenu.label;"/>
+                              <checkbox id="BlacklistMenu" label="&options_blacklistemenu.label;"/>
                               <hbox align="center" id="PushThreadMenuOpt" hidden="true">
-                                <checkbox id="PushThreadMenu" label="&options_pushthreadmenu.label;" bbsfoxDefaultValue="false"/>
+                                <checkbox id="PushThreadMenu" label="&options_pushthreadmenu.label;"/>
                                 <label value="&options_onlyforpttsite.label;"/>
                               </hbox>
                               <hbox align="center" id="OpenThreadUrlMenuOpt" hidden="true">
-                                <checkbox id="OpenThreadUrlMenu" label="&options_openthreadurlmenu.label;" bbsfoxDefaultValue="false"/>
+                                <checkbox id="OpenThreadUrlMenu" label="&options_openthreadurlmenu.label;"/>
                                 <label value="&options_onlyforpttsite.label;"/>
                               </hbox>
                             </vbox>
@@ -714,12 +716,12 @@
                             <vbox>
                               <label value="&options_optionnote0.label;"/>
                               <label value="&options_optionnote1.label;"/>
-                              <checkbox id="HideBookMarkLinkMenu" label="&options_hidebookmarklinkmenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="HideSendLinkMenu" label="&options_hidesendlinkmenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="HideBookMarkPageMenu" label="&options_hidebookmarkpagemenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="HideSendPageMenu" label="&options_hidesendpagemenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="HideViewInfoMenu" label="&options_hideviewinfomenu.label;" bbsfoxDefaultValue="true"/>
-                              <checkbox id="HideInspectMenu" label="&options_hideinspectmenu.label;" bbsfoxDefaultValue="true"/>
+                              <checkbox id="HideBookMarkLinkMenu" label="&options_hidebookmarklinkmenu.label;"/>
+                              <checkbox id="HideSendLinkMenu" label="&options_hidesendlinkmenu.label;"/>
+                              <checkbox id="HideSendPageMenu" label="&options_hidesendpagemenu.label;"/>
+                              <checkbox id="HideViewSourceMenu" label="&options_hideviewsourcemenu.label;"/>
+                              <checkbox id="HideViewInfoMenu" label="&options_hideviewinfomenu.label;"/>
+                              <checkbox id="HideInspectMenu" label="&options_hideinspectmenu.label;"/>
                             </vbox>
                           </tabpanel>
                         </tabpanels>
@@ -731,7 +733,7 @@
                     <vbox>
                       <groupbox>
                         <caption label="&options_embeddedplayersize.label;"/>
-                        <radiogroup id="EmbeddedPlayerSize" bbsfoxDefaultValue="0">
+                        <radiogroup id="EmbeddedPlayerSize">
                           <hbox>
                             <vbox>
                               <radio value="0" label="&options_embeddedplayersize1.label;"/>
@@ -754,11 +756,11 @@
                       </groupbox>
                       <groupbox>
                         <caption label="&options_embeddedplayeroption.label;"/>
-                        <checkbox id="EPAutoPlay" label="&options_epautoplay.label;" bbsfoxDefaultValue="false"/>
-                        <checkbox id="EPLoop" label="&options_eploop.label;" bbsfoxDefaultValue="false"/>
-                        <checkbox id="EPAutoUseHQ" label="&options_epautousehq.label;" bbsfoxDefaultValue="false"/>
-                        <checkbox id="EPCopyUrlButton" label="&options_epcopyurlbutton.label;" bbsfoxDefaultValue="false"/>
-                        <checkbox id="EPWhenDropLink" label="&options_epwhendroplink.label;" bbsfoxDefaultValue="true"/>
+                        <checkbox id="EPAutoPlay" label="&options_epautoplay.label;"/>
+                        <checkbox id="EPLoop" label="&options_eploop.label;"/>
+                        <checkbox id="EPAutoUseHQ" label="&options_epautousehq.label;"/>
+                        <checkbox id="EPCopyUrlButton" label="&options_epcopyurlbutton.label;"/>
+                        <checkbox id="EPWhenDropLink" label="&options_epwhendroplink.label;"/>
                       </groupbox>
                     </vbox>
                   </tabpanel>
@@ -766,16 +768,16 @@
                   <tabpanel>
                     <vbox>
                       <hbox>
-                        <checkbox id="EnablePicturePreview" label="&options_enablepicturepreview.label;" bbsfoxDefaultValue="false"/>
-                        <checkbox id="CtrlPicturePreview" label="&options_ctrlpicturepreview.label;" bbsfoxDefaultValue="false"/>
+                        <checkbox id="EnablePicturePreview" label="&options_enablepicturepreview.label;"/>
+                        <checkbox id="CtrlPicturePreview" label="&options_ctrlpicturepreview.label;"/>
                       </hbox>
-                      <checkbox id="PicturePreviewInfo" label="&options_picturepreviewinfo.label;" bbsfoxDefaultValue="false"/>
+                      <checkbox id="PicturePreviewInfo" label="&options_picturepreviewinfo.label;"/>
                       <hbox align="center">
                         <label control="PicturePreviewHeight" value="&options_picturepreviewheight.label;"/>
-                        <textbox id="PicturePreviewHeight" size="6" type="number" increment="20" bbsfoxDefaultValue="150"/>
+                        <textbox id="PicturePreviewHeight" size="6" type="number" increment="20"/>
                         <label control="PicturePreviewHeight" value="&options_picturepreviewheight2.label;"/>
                       </hbox>
-                      <checkbox id="PicturePreviewClose" label="&options_picturepreviewclose.label;" bbsfoxDefaultValue="false"/>
+                      <checkbox id="PicturePreviewClose" label="&options_picturepreviewclose.label;"/>
                     </vbox>
                   </tabpanel>
 
@@ -786,16 +788,17 @@
                         <label id="AlarmServiceTest2" value="&options_needGrowl2.label;" style="color:#0000FF;margin:0px" class="text-link" onclick="openURL('http://growl.info/');" hidden="true"/>
                         <label id="AlarmServiceTest3" value="&options_needGrowl3.label;" style="color:#FF0000;" hidden="true"/>
                       </hbox>
-                      <checkbox id="NotifyWhenBackground" label="&options_notifywhenbackground.label;" bbsfoxDefaultValue="true"/>
+                      <checkbox id="EnableNotification" label="&options_enablenotification.label;"/>
+                      <checkbox id="NotifyWhenBackground" label="&options_notifywhenbackground.label;"/>
                       <hbox>
-                        <checkbox id="NotifyBySound" label="&options_notifybysound.label;" bbsfoxDefaultValue="false"/>
-                        <checkbox id="NotifyByMessage" label="&options_notifybymessage.label;" bbsfoxDefaultValue="true"/>
+                        <checkbox id="NotifyBySound" label="&options_notifybysound.label;"/>
+                        <checkbox id="NotifyByMessage" label="&options_notifybymessage.label;"/>
                       </hbox>
-                      <checkbox id="NotifyBlockByTime" label="&options_notifyblockbytime.label;" bbsfoxDefaultValue="true"/>
-                      <checkbox id="NotifyShowContent" label="&options_notifyshowcontent.label;" bbsfoxDefaultValue="false" hidden="true"/>
+                      <checkbox id="NotifyBlockByTime" label="&options_notifyblockbytime.label;"/>
+                      <checkbox id="NotifyShowContent" label="&options_notifyshowcontent.label;" hidden="true"/>
                       <hbox align="center">
                         <label control="ClickAlertAction" value="&options_clickalertaction.label;"/>
-                        <menulist editable="false" id="ClickAlertAction" oncommand="alertActionChange()" bbsfoxDefaultValue="1">
+                        <menulist editable="false" id="ClickAlertAction" oncommand="alertActionChange()">
                           <menupopup>
                             <menuitem label="&options_alertactionnone.label;" value="0"/>
                             <menuitem label="&options_alertactionswitchtab.label;" value="1"/>
@@ -803,14 +806,14 @@
                           </menupopup>
                         </menulist>
                         <label id="LableAlertReplyString" control="AlertReplyString" value="&options_alertreplystring.label;"/>
-                        <textbox id="AlertReplyString" bbsfoxDefaultValue=""/>
+                        <textbox id="AlertReplyString"/>
                       </hbox>
                     </vbox>
                   </tabpanel>
                   <tabpanel>
                     <vbox flex="1">
-                      <checkbox id="EnableHighlightWords" label="&options_enablehighlightwrods.label;" bbsfoxDefaultValue="false"/>
-                      <checkbox id="KeyWordTrackCaseSensitive" label="&options_keywordtrackcasesensitive.label;" bbsfoxDefaultValue="false"/>
+                      <checkbox id="EnableHighlightWords" label="&options_enablehighlightwrods.label;"/>
+                      <checkbox id="KeyWordTrackCaseSensitive" label="&options_keywordtrackcasesensitive.label;"/>
                       <textbox id="HighlightWords" multiline="true" flex="1"/>
                     </vbox>
                   </tabpanel>
@@ -818,30 +821,30 @@
                     <vbox>
                       <hbox align="center">
                         <label control="ScreenKeyboardAlpha" value="&options_screenkeyboardalpha.label;"/>
-                        <textbox id="ScreenKeyboardAlpha" size="3" type="number" min="0" max="100" increment="1" decimalplaces="0" bbsfoxDefaultValue="15"/>
+                        <textbox id="ScreenKeyboardAlpha" size="3" type="number" min="0" max="100" increment="1" decimalplaces="0"/>
                         <label control="ScreenKeyboardAlpha" value="&options_screenkeyboardalpha2.label;"/>
                       </hbox>
                       <hbox align="center" id="PushThreadLineLengthSet" hidden="true">
                         <label control="PushThreadLineLength" value="&options_pushthreadlinelength.label;"/>
-                        <textbox id="PushThreadLineLength" size="3" type="number" min="46" max="60" increment="1" decimalplaces="0" bbsfoxDefaultValue="54"/>
+                        <textbox id="PushThreadLineLength" size="3" type="number" min="46" max="60" increment="1" decimalplaces="0"/>
                       </hbox>
                       <hbox align="center">
                         <label control="DownloadLineDelay" value="&options_downloadlinedelay.label;"/>
-                        <textbox id="DownloadLineDelay" size="6" type="number" min="150" increment="50" decimalplaces="0" bbsfoxDefaultValue="300"/>
+                        <textbox id="DownloadLineDelay" size="6" type="number" min="150" increment="50" decimalplaces="0"/>
                         <label control="DownloadLineDelay" value="&options_downloadlinedelay2.label;"/>
                       </hbox>
-                      <checkbox id="DownloadFullPost" label="&options_downloadfullpost.label;" bbsfoxDefaultValue="true"/>
+                      <checkbox id="DownloadFullPost" label="&options_downloadfullpost.label;"/>
                       <hbox align="center">
-                        <checkbox id="EasyReadingWithImg" label="&options_easyreadingwithimg.label;" bbsfoxDefaultValue="false"/>
-                        <checkbox id="EasyReadingWithVideo" label="&options_easyreadingwithvideo.label;" bbsfoxDefaultValue="false"/>
+                        <checkbox id="EasyReadingWithImg" label="&options_easyreadingwithimg.label;"/>
+                        <checkbox id="EasyReadingWithVideo" label="&options_easyreadingwithvideo.label;"/>
                       </hbox>
-                      <checkbox id="DeleteSpaceWhenCopy" label="&options_deletespacewhencopy.label;" bbsfoxDefaultValue="true"/>
-                      <checkbox id="PreventNewTongWenAutoConv" label="&options_preventnewtongwenautoconv.label;" bbsfoxDefaultValue="true"/>
+                      <checkbox id="DeleteSpaceWhenCopy" label="&options_deletespacewhencopy.label;"/>
+                      <checkbox id="PreventNewTongWenAutoConv" label="&options_preventnewtongwenautoconv.label;"/>
                       <groupbox>
                         <caption label="&options_inputbuffer.label;"/>
                         <vbox>
-                          <checkbox id="HideInputBuffer" label="&options_hideinputbuffer.label;" bbsfoxDefaultValue="false"/>
-                          <radiogroup id="InputBufferSizeType" bbsfoxDefaultValue="1">
+                          <checkbox id="HideInputBuffer" label="&options_hideinputbuffer.label;"/>
+                          <radiogroup id="InputBufferSizeType">
                             <hbox align="center">
                               <label value="&options_inputbuffersizetype.label;"/>
                               <radio value="0" label="&options_samewithfontsize.label;"/>
@@ -850,14 +853,14 @@
                           </radiogroup>
                           <hbox align="center">
                             <label control="DefineInputBufferSize" value="&options_defineinputbuffersize.label;"/>
-                            <textbox id="DefineInputBufferSize" size="3" type="number" min="10" max="60" bbsfoxDefaultValue="12"/>
+                            <textbox id="DefineInputBufferSize" size="3" type="number" min="10" max="60"/>
                           </hbox>
                         </vbox>
                       </groupbox>
                       <groupbox flex="1">
                         <caption label="&options_blacklistid.label;" id="blacklistid" hidden="true"/>
                         <vbox flex="1">
-                          <checkbox id="EnableBlacklist" label="&options_enableblacklist.label;" bbsfoxDefaultValue="false"/>
+                          <checkbox id="EnableBlacklist" label="&options_enableblacklist.label;"/>
                           <textbox id="BlacklistedUserIds" multiline="true" flex="1"/>
                         </vbox>
                       </groupbox>
@@ -878,39 +881,38 @@
               <label control='bbsScript' value='&BBSGESTURES;'/>
               <menulist id='bbsScript' oncommand="checkSelect();">
                 <menupopup>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doPageUp");' label='&KEYPAGEUP;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doPageDown");' label='&KEYPAGEDOWN;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doEnd");' label='&KEYEND;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doHome");' label='&KEYHOME;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doArrowLeft");' label='&KEYLEFT;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doArrowUp");' label='&KEYUP;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doArrowRight");' label='&KEYRIGHT;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("doArrowDown");' label='&KEYDOWN;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.copyText();' resetFocus='false' label='&COPY;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.copyAnsi();' label='&ANSICOPY;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.pasteText();' label='&PASTE;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.delayPasteText();' label='&DELAYPASTE;' id="DelayPasteGesture" hidden="true"/>
-                  <menuitem value='ETT_BBSFOX_Overlay.selectAllText();' label='&SELALL;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.openAllLink();' label='&OPENALLLINK;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.switchMouseBrowse();' label='&SWITCHMOUSEBROWSING;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.switchBgDisplay();' label='&SWITCHBGDISPLAY;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.easyReading();' label='&EASYREADING;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.pushThread();' label='&PUSHTHREAD;' id="PushThreadGesture" hidden="true"/>
-                  <menuitem value='ETT_BBSFOX_Overlay.openThreadUrl();' label='&OPENTHREADURL;' id="OpenThreadUrlGesture" hidden="true"/>
-                  <menuitem value='ETT_BBSFOX_Overlay.changeColorTable();' label='&CHANGECOLORTABLE;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.downloadPost(0);' label='&DOWNLOADPOSTTEXT;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.downloadPost(1);' label='&DOWNLOADPOSTANSI;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.downloadPost(2);' label='&DOWNLOADPOSTHTML;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.loadFile();' label='&LOADFILE;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("switchSymbolInput");' label='&OPENSYMBOLINPUT;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("switchAnsiColorTool");' label='&OPENANSICOLORTOOL;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doPageUp");' label='&KEYPAGEUP;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doPageDown");' label='&KEYPAGEDOWN;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doEnd");' label='&KEYEND;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doHome");' label='&KEYHOME;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doArrowLeft");' label='&KEYLEFT;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doArrowUp");' label='&KEYUP;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doArrowRight");' label='&KEYRIGHT;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doArrowDown");' label='&KEYDOWN;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doCopy");' label='&COPY;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doCopyAnsi");' label='&ANSICOPY;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doPaste");' label='&PASTE;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doDelayPasteText");' label='&DELAYPASTE;' id="DelayPasteGesture" hidden="true"/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doSelectAll");' label='&SELALL;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doOpenAllLink");' label='&OPENALLLINK;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("switchMouseBrowsing");' label='&SWITCHMOUSEBROWSING;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("switchBgDisplay");' label='&SWITCHBGDISPLAY;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("easyReading");' label='&EASYREADING;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("pushThread");' label='&PUSHTHREAD;' id="PushThreadGesture" hidden="true"/>
+                  <menuitem value='BBSFox_API.setBBSCmd("openThreadUrl");' label='&OPENTHREADURL;' id="OpenThreadUrlGesture" hidden="true"/>
+                  <menuitem value='BBSFox_API.setBBSCmd("changeColorTable");' label='&CHANGECOLORTABLE;'/>
+                  <menuitem value='BBSFox_API.setBBSCmdEx({command:"doDownloadPost", downloadColor: 0});' label='&DOWNLOADPOSTTEXT;'/>
+                  <menuitem value='BBSFox_API.setBBSCmdEx({command:"doDownloadPost", downloadColor: 1});' label='&DOWNLOADPOSTANSI;'/>
+                  <menuitem value='BBSFox_API.setBBSCmdEx({command:"doDownloadPost", downloadColor: 2});' label='&DOWNLOADPOSTHTML;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("doLoadFile");' label='&LOADFILE;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("switchSymbolInput");' label='&OPENSYMBOLINPUT;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("switchAnsiColorTool");' label='&OPENANSICOLORTOOL;'/>
                   <menuitem value='OpenEmbeddedPlayer' label='&OPENEP;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("minimizeEmbeddedPlayer");' label='&MINEP;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("minimizeEmbeddedPlayer");' label='&MINEP;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("closeEmbeddedPlayer");' label='&CLOSEEP;'/>
                   <menuitem value='OpenPictureViewer' label='&OPENPV;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("closePictureViewer");' label='&CLOSEPV;'/>
-                  <menuitem value='ETT_BBSFOX_Overlay.setBBSCmd("closeEmbeddedPlayer");' label='&CLOSEEP;'/>
+                  <menuitem value='BBSFox_API.setBBSCmd("closePictureViewer");' label='&CLOSEPV;'/>
                   <menuitem value='SendString' label='&SENDSTR;'/>
-                  <menuitem value='SearchSelString' label='&SEARCHSELSTRING;'/>
                 </menupopup>
               </menulist>
             </hbox>
@@ -963,7 +965,7 @@
                   <menuitem value='FireGestures:CloseOtherTabs' label='&CLOSEOTHERTABS;'/>
                   <menuitem value='FireGestures:CloseLeftTabs' label='&CLOSELEFTTABS;'/>
                   <menuitem value='FireGestures:CloseRightTabs' label='&CLOSERIGHTTABS;'/>
-                  <menuitem value='Browser:ToggleTabView' label='&TOGGLETABVIEW;'/>
+                  <menuitem value='httpcmd:TabView.toggle();' label='&TOGGLETABVIEW;'/>
                   <menuitem label="&PAGES;" disabled="true"/>
                   <menuitem value='cmd_textZoomEnlarge' label='&TEXTZOOMENLARGE;'/>
                   <menuitem value='cmd_textZoomReduce' label='&TEXTZOOMREDUCE;'/>
@@ -1019,13 +1021,13 @@
                   <menuitem label="&POPUPS;" disabled="true"/>
                   <menuitem value='FireGestures:BFHistoryPopup' label='&BFHISTORYPOPUP;'/>
                   <menuitem value='FireGestures:AllTabsPopup' label='&ALLTABSPOPUP;'/>
-                  <menuitem value='Browser:ShowAllTabs' label='&SHOWALLTAB;'/>
                   <menuitem value='FireGestures:ClosedTabsPopup' label='&CLOSEDTABSPOPUP;'/>
                   <menuitem value='FireGestures:WebSearchPopup' label='&WEBSEARCHPOPUP;'/>
+                  <menuitem value='FireGestures:AllScriptsPopup' label='&ALLSCRIPTSPOPUP;'/>
+                  <menuitem value='FireGestures:OpenPanelUI' label='&OPENPANELUI;'/>
                   <menuitem label="&HYBRIDS;" disabled="true"/>
                   <menuitem value='FireGestures:HybridBookmark' label='&HYBRIDBOOKMARK;'/>
                   <menuitem value='FireGestures:HybridSave' label='&HYBRIDSAVE;'/>
-                  <menuitem value='FireGestures:HybridSendURL' label='&HYBRIDSENDURL;'/>
                   <menuitem value='FireGestures:HybridCopyURL' label='&HYBRIDCOPYURL;'/>
                   <menuitem value='FireGestures:HybridViewSource' label='&HYBRIDVIEWSOURCE;'/>
                   <menuitem value='FireGestures:HybridMetaData' label='&HYBRIDPROPERTIES;'/>
@@ -1107,7 +1109,6 @@
       <button id="btnBackup" label="&options_backup.label;" oncommand="backup();"/>
       <button id="btnRecover" label="&options_recover.label;" oncommand="recover();"/>
       <spacer flex="1" />
-      <button label="&options_help.label;" oncommand="openURL('chrome://bbsfox/locale/help.htm');"/>
       <button label="&options_apply.label;" oncommand="save();"/>
       <button label="&options_default.label;" oncommand="onSetDefaultClick();"/>
     </hbox>

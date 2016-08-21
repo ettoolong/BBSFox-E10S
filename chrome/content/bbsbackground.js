@@ -4,46 +4,45 @@ function BBSBackground(listener) {
   this.BackgroundMD5='';
   this.DisplayBackground = false;
   this.BBSBg = document.getElementById('BBSBackgroundImage');
+  this.key = 0;
 }
 
-BBSBackground.prototype={
+BBSBackground.prototype = {
 
   ResetBackground: function(backgroundType, md5) {
-    if(backgroundType!=0 && md5!='')
-    {
-      var fileName;
+    this.key++;
+    if(backgroundType!=0 && md5!='') {
+      let fileName;
 
       if(this.bbscore.isDefaultPref) {
         fileName =  "_bg.default";
-      } else {
-        var url = this.bbscore.siteAuthInfo;2
+      }
+      else {
+        let url = this.bbscore.siteAuthInfo;
         url = url.replace(/:/g, '~');
         fileName = "_bg."+url;
       }
+
       //if(file exists)
       {
-        this.BBSBg.style.backgroundImage='url(resource://bbsfox2/'+fileName+')';
+        this.BBSBg.style.backgroundImage='url(resource://bbsfox2/'+fileName+'?' + this.key + ')';
         //this.BBSBg.style.backgroundImage='url(resource://bbsfox2/bbsfoxBg/'+fileName+')';
-        if(backgroundType==4)
-        {
+        if(backgroundType==4) {
           this.BBSBg.style.backgroundSize='100% 100%';
           this.BBSBg.style.backgroundPosition='left top';
           this.BBSBg.style.backgroundRepeat='no-repeat';
         }
-        else if(backgroundType==3)
-        {
+        else if(backgroundType==3) {
           this.BBSBg.style.backgroundSize='cover';
           this.BBSBg.style.backgroundPosition='left top';
           this.BBSBg.style.backgroundRepeat='no-repeat';
         }
-        else if(backgroundType==2)
-        {
+        else if(backgroundType==2) {
           this.BBSBg.style.backgroundSize='auto auto';
           this.BBSBg.style.backgroundPosition='center center';
           this.BBSBg.style.backgroundRepeat='no-repeat';
         }
-        else if(backgroundType==1)
-        {
+        else if(backgroundType==1) {
           this.BBSBg.style.backgroundSize='auto auto';
           this.BBSBg.style.backgroundPosition='center center';
           this.BBSBg.style.backgroundRepeat='repeat';
@@ -57,29 +56,25 @@ BBSBackground.prototype={
       */
       //try to load picture, if load fail, set backgroundType = 0;
     }
-    if(backgroundType==0)
-    {
+    if(backgroundType==0) {
       this.BBSBg.style.display='none';
-      this.prefs.updateOverlayPrefs([{key:'enableBackground', value:false}]);
-      this.DisplayBackground=true; //?
+      this.prefs.enableBackground = false;
+      this.DisplayBackground=true;
       this.BackgroundMD5='';
     }
-    else
-    {
+    else {
       this.BBSBg.style.display='block';
-      this.prefs.updateOverlayPrefs([{key:'enableBackground', value:true}]);
+      this.prefs.enableBackground = true;
       this.DisplayBackground=true;
     }
   },
 
   SwitchBgDisplay: function() {
-    if(this.DisplayBackground)
-    {
+    if(this.DisplayBackground) {
       this.DisplayBackground = false;
       this.BBSBg.style.display='none';
     }
-    else
-    {
+    else {
       this.DisplayBackground = true;
       this.BBSBg.style.display='block';
     }

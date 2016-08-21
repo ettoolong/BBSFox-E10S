@@ -1,34 +1,3 @@
-﻿<!ENTITY menu_test.label "BBSFox test">
-<!ENTITY menu_copy.label "複製">
-<!ENTITY menu_ansiCopy.label "複製(包含ANSI色碼)">
-<!ENTITY menu_paste.label "貼上">
-<!ENTITY menu_selAll.label "全選">
-<!ENTITY menu_search.label "搜尋">
-<!ENTITY menu_ansicopy.label "彩色複製">
-<!ENTITY menu_embeddedplayer.label "在浮動視窗中顯示影片">
-<!ENTITY menu_previewpicture.label "顯示縮圖">
-<!ENTITY menu_screenkeyboard.label "開啟符號輸入窗">
-<!ENTITY menu_ansicolortool.label "開啟色彩輸入工具">
-<!ENTITY menu_openalllink.label "開啟畫面上所有鏈結">
-<!ENTITY menu_easyread.label "好讀模式">
-<!ENTITY menu_pushthread.label "推文工具">
-<!ENTITY menu_openthreadurl.label "開啟文章網址">
-<!ENTITY menu_changecolortable.label "切換高亮度顯示">
-<!ENTITY menu_replyrobot.label "自動輸入文字">
-<!ENTITY menu_downloadpost.label "下載文章">
-<!ENTITY menu_downtext.label "文字">
-<!ENTITY menu_downansi.label "ANSI彩色">
-<!ENTITY menu_downhtml.label "HTML">
-<!ENTITY menu_loadfile.label "載入檔案">
-<!ENTITY menu_addtoblacklist.label "加入黑名單">
-<!ENTITY menu_removefromblacklist.label "從黑名單中移除">
-<!ENTITY menu_addtrack.label "新增追蹤關鍵字">
-<!ENTITY menu_deltrack.label "取消追蹤關鍵字">
-<!ENTITY menu_cleartrack.label "清除所有的追蹤關鍵字">
-<!ENTITY menu_delaypaste.label "每秒貼上一個字元">
-<!ENTITY menu_copyhtml.label "複製成網頁">
-<!ENTITY menu_mousebrowsing.label "滑鼠瀏覽切換">
-<!ENTITY menu_switchbgdisplay.label "背景圖片顯示切換">
 <!ENTITY emailImageCmd.label "郵寄此圖片…">
 <!ENTITY emailImageCmd.accesskey "n">
 <!ENTITY pushthread_title.label "推文工具">
@@ -105,6 +74,7 @@
 <!ENTITY options_linefeed.label "文字超出畫面自動換行">
 <!ENTITY options_fixunicodedisplay.label "修正ANSI圖(只會在維持字體長寬比時套用)">
 <!ENTITY options_foneface.label "字型：">
+<!ENTITY options_enfoneface.label "英文/數字字型：">
 <!ENTITY options_fontsize.label "字型大小：">
 <!ENTITY options_codepage.label "編碼：">
 <!ENTITY options_testkey.label "中">
@@ -254,9 +224,7 @@
 <!ENTITY options_hotkeydowntext.label "文字">
 <!ENTITY options_hotkeydownansi.label "ANSI彩色">
 <!ENTITY options_hotkeydownhtml.label "HTML">
-<!ENTITY options_usehttpcontextmenu.label "使用網頁的快顯功能表">
 <!ENTITY options_bbsfoxcontextmenu.label "BBSFox快顯功能表">
-<!ENTITY options_savepagemenu.label "啟用 [另存新檔...] 項目">
 <!ENTITY options_ansicopymenu.label "啟用 [複製(包含ANSI色碼)] 項目">
 <!ENTITY options_embeddedplayermenu.label "啟用 [在浮動視窗中顯示影片] 項目(此功能目前僅支援Youtube/USTREAM)">
 <!ENTITY options_previewpicturemenu.label "啟用 [顯示縮圖] 項目">
@@ -276,15 +244,14 @@
 <!ENTITY options_blacklistemenu.label "啟用 [黑名單] 相關項目">
 <!ENTITY options_onlyforpttsite.label "(只支援PTT)">
 <!ENTITY options_changecolortablemenu.label "啟用 [切換高亮度顯示] 項目">
-<!ENTITY options_usesubmenuforsearchengine.label "使用搜尋引擎子選單">
 <!ENTITY options_submenuforsearchenginenote.label "此項目只適用BBS快顯功能表，通用網頁的快顯功能表請安裝Context Search套件">
 <!ENTITY options_firefoxcontextmenu.label "Firefox快顯功能表">
 <!ENTITY options_optionnote0.label "以下快顯功能表項目在此套件下均可正常使用，">
 <!ENTITY options_optionnote1.label "但因使用頻率較低，可視個人需要在BBS頁面中隱藏指定項目。">
 <!ENTITY options_hidebookmarklinkmenu.label "在BBS視窗隱藏快顯功能表 [此鍵結加入書籤] 項目">
 <!ENTITY options_hidesendlinkmenu.label "在BBS視窗隱藏滑鼠快顯功能表 [郵寄此鍵結] 項目">
-<!ENTITY options_hidebookmarkpagemenu.label "在BBS視窗隱藏快顯功能表 [此頁加入書籤] 項目">
 <!ENTITY options_hidesendpagemenu.label "在BBS視窗隱藏快顯功能表 [郵寄網址] 項目">
+<!ENTITY options_hideviewsourcemenu.label "在BBS視窗隱藏快顯功能表 [檢視原始碼] 項目">
 <!ENTITY options_hideviewinfomenu.label "在BBS視窗隱藏快顯功能表 [檢視頁面資訊] 項目">
 <!ENTITY options_hideinspectmenu.label "在BBS視窗隱藏快顯功能表 [檢測元素] 項目">
 <!ENTITY options_downloadlinedelay.label "下載文章時每行間的延遲">
@@ -307,6 +274,7 @@
 <!ENTITY options_needGrowl1.label "您可能需要安裝">
 <!ENTITY options_needGrowl2.label "Growl">
 <!ENTITY options_needGrowl3.label "才能使此功能正常使用">
+<!ENTITY options_enablenotification.label "啟用來訊通知">
 <!ENTITY options_notifywhenbackground.label "只有當BBS頁面不是當前的頁面才產生通知">
 <!ENTITY options_notifybysound.label "聲音通知">
 <!ENTITY options_notifybymessage.label "視窗右下角訊息">
@@ -387,7 +355,7 @@
 <!ENTITY DOWNLOADPOSTHTML "下載文章(HTML)">
 <!ENTITY LOADFILE "載入檔案">
 <!ENTITY OPENSYMBOLINPUT "開啟符號輸入視窗／關閉符號輸入視窗">
-<!ENTITY OPENANSICOLORTOOL "開啟色彩輸入工具">
+<!ENTITY OPENANSICOLORTOOL "開啟色彩輸入工具／關閉色彩輸入工具">
 <!ENTITY OPENEP "在浮動視窗中顯示影片">
 <!ENTITY CLOSEEP "關閉影片浮動視窗">
 <!ENTITY MINEP "最小化影片浮動視窗／還原影片浮動視窗">
@@ -495,6 +463,8 @@
 <!ENTITY SHOWALLTAB "[彈出視窗]列出所有分頁(預覽模式)">
 <!ENTITY CLOSEDTABSPOPUP "[彈出視窗]最近關閉的分頁">
 <!ENTITY WEBSEARCHPOPUP "[彈出視窗]以選取的搜尋引擎搜尋文字">
+<!ENTITY ALLSCRIPTSPOPUP "[彈出視窗]所有使用者腳本">
+<!ENTITY OPENPANELUI "[彈出視窗]開啟選單">
 <!ENTITY HYBRIDS "--混合類--">
 <!ENTITY HYBRIDBOOKMARK "[混合手勢]加入書籤...(鏈結／頁框／頁面)">
 <!ENTITY HYBRIDSAVE "[混合手勢]另存新檔...(鏈結／圖片／頁框／頁面)">

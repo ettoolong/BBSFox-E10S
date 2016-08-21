@@ -1,16 +1,13 @@
 // Browser utilities, including preferences API access, site-depedent setting through Places API
 
-//const Cc = Components.classes;
-//const Ci = Components.interfaces;
-
 // From https://developer.mozilla.org/en/Code_snippets/Preferences
 function BBSFoxPrefListener(branchName, func, prefsHandler) {
-  var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+  var prefService = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
   var branch = prefService.getBranch(branchName);
   if(prefsHandler) {
     prefsHandler.branchName = branchName;
   }
-  branch.QueryInterface(Components.interfaces.nsIPrefBranch);
+  branch.QueryInterface(Ci.nsIPrefBranch);
   this.register = function() {
     branch.addObserver("", this, false);
     branch.getChildList("", { })
@@ -30,16 +27,16 @@ function BBSFoxBrowserUtils() {
   // XXX: UNUSED AND UNTESTED
   this.__defineGetter__('_prefBranch', function() {
     delete this['_prefBranch'];
-    return this['_prefBranch'] = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefService)
+    return this['_prefBranch'] = Cc['@mozilla.org/preferences-service;1'].getService(Ci.nsIPrefService)
                                                                           .getBranch('extensions.bbsfox2.');
   });
   //this.__defineGetter__('_bookmarkService', function() {
   //  delete this['_bookmarkService'];
-  //  return this['_bookmarkService'] = Components.classes['@mozilla.org/browser/nav-bookmarks-service;1'].getService(Components.interfaces.nsINavBookmarksService);
+  //  return this['_bookmarkService'] = Cc['@mozilla.org/browser/nav-bookmarks-service;1'].getService(Ci.nsINavBookmarksService);
   //});
   this.__defineGetter__('_ioService', function() {
     delete this['_ioService'];
-    return this['_ioService'] = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
+    return this['_ioService'] = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
   });
   //this.bookmarkID = null;
   this.isDefaultPref = true;
@@ -52,7 +49,7 @@ BBSFoxBrowserUtils.prototype = {
   findSiteTitle: function(url, port) {
     var url2 = url+":"+port;
     var siteIDs = this.getSubBranch('hostlist_').getChildList("", { });
-    var CiStr = Components.interfaces.nsISupportsString;
+    var CiStr = Ci.nsISupportsString;
     //var availableIDs = new Array();
     for(var i=0; i<siteIDs.length; ++i) {
     	var urlToken = siteIDs[i].split(":");
@@ -90,8 +87,8 @@ BBSFoxBrowserUtils.prototype = {
   },
 
   getSubBranch: function(subBranch) {
-    return Components.classes["@mozilla.org/preferences-service;1"]
-             .getService(Components.interfaces.nsIPrefService)
+    return Cc["@mozilla.org/preferences-service;1"]
+             .getService(Ci.nsIPrefService)
              .getBranch(this._prefBranch.root + subBranch);
   },
 
@@ -107,24 +104,24 @@ BBSFoxBrowserUtils.prototype = {
         // mark for creatng new site pref
         this._prefBranch.setBoolPref('hostlist_' + siteAddr, false);
       }
-      var nsIString = Components.classes["@mozilla.org/supports-string;1"]
-                              .createInstance(Components.interfaces.nsISupportsString);
+      var nsIString = Cc["@mozilla.org/supports-string;1"]
+                      .createInstance(Ci.nsISupportsString);
       nsIString.data = siteName;
-      this._prefBranch.setComplexValue('host_' + siteAddr + '.sitename', Components.interfaces.nsISupportsString, nsIString);
+      this._prefBranch.setComplexValue('host_' + siteAddr + '.sitename', Ci.nsISupportsString, nsIString);
   },
 
   saveSite: function(siteName, siteAddr) {
       this._prefBranch.setBoolPref('hostlist_' + siteAddr, true);
-      var nsIString = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+      var nsIString = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
       nsIString.data = siteName;
-      this._prefBranch.setComplexValue('host_' + siteAddr + '.sitename', Components.interfaces.nsISupportsString, nsIString);
+      this._prefBranch.setComplexValue('host_' + siteAddr + '.sitename', Ci.nsISupportsString, nsIString);
   },
 
   deleteSitePref: function(url) {
     this.getSubBranch('hostlist_' + url).deleteBranch("");
     this.getSubBranch('host_' + url + '.').deleteBranch("");
     //if image data in pref, delete it!
-    var dstfile = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+    var dstfile = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
     dstfile.append("_bg."+url);
     try{
       if(dstfile.exists())

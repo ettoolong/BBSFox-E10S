@@ -3,7 +3,7 @@
   local machine.  If an SSH agent is running, this class can be used to
   connect to it and retreive L{PKey} objects which can be used when
   attempting to authenticate to remote SSH servers.
-  
+
   Because the SSH agent protocol uses environment variables and unix-domain
   sockets, this probably doesn't work on Windows.  It does work on most
   posix platforms though (Linux and MacOS X, for example).
@@ -13,7 +13,7 @@ paramikojs.Agent = function () {
     Open a session with the local machine's SSH agent, if one is running.
     If no agent is running, initialization will succeed, but L{get_keys}
     will return an empty tuple.
-    
+
     @raise SSHException: if an SSH agent is found, but speaks an
         incompatible protocol
   */
@@ -21,10 +21,7 @@ paramikojs.Agent = function () {
   this.conn = null;
   this.keys = [];
 
-  if(!(Components && Components.classes)) {
-    throw new Error("Unable to use OS environment without Mozilla's Components.classes"); //FIXME
-  }
-  var userEnvironment = Components.classes["@mozilla.org/process/environment;1"].getService(Components.interfaces.nsIEnvironment);
+  var userEnvironment = Cc["@mozilla.org/process/environment;1"].getService(Ci.nsIEnvironment);
   if (userEnvironment.exists('SSH_AUTH_SOCK') && sys.platform != 'win32') {
     var conn = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM); // todo, fixme, doesn't work right now :-/
     var auth_sock = userEnvironment.get('SSH_AUTH_SOCK');
@@ -46,7 +43,7 @@ paramikojs.Agent = function () {
     // no agent support
     return;
   }
-      
+
   var msg = this._send_message(String.fromCharCode(paramikojs.Agent.SSH2_AGENTC_REQUEST_IDENTITIES));
   if (msg.ptype != paramikojs.Agent.SSH2_AGENT_IDENTITIES_ANSWER) {
     throw new paramikojs.ssh_exception.SSHException('could not get keys from ssh-agent');
@@ -81,7 +78,7 @@ paramikojs.Agent.prototype = {
     Return the list of keys available through the SSH agent, if any.  If
     no SSH agent was running (or it couldn't be contacted), an empty list
     will be returned.
-    
+
     @return: a list of keys available on the SSH agent
     @rtype: tuple of L{AgentKey}
   */

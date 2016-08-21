@@ -7,3 +7,7 @@ menulist[bbsfox_images_autosize="true"] > menupopup > menuitem .menu-iconic-icon
   width: auto;
   height: auto;
 }
+.redLabel
+{
+  color:#ff0000;
+}

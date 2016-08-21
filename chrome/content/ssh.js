@@ -1,8 +1,5 @@
 // SSH Connection porting from firessh 0.93.1
 
-const Cc = Components.classes;
-const Ci = Components.interfaces;
-
 function ConnectCore(listener) {
     this.host = null;
     this.port = BBSFOX_DEFAULT_PORT;
@@ -50,7 +47,7 @@ ConnectCore.prototype={
             acc[1] = extData.password;
           }
 
-          var ioService  = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+          var ioService  = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
           var uri = ioService.newURI(document.URL, null, null);
           var user = uri.username;
           var pwd = uri.password;
@@ -311,7 +308,7 @@ ConnectCore.prototype={
 
         key = key[index];
       }
-      var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+      var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
       var flags    = promptService.BUTTON_TITLE_YES    * promptService.BUTTON_POS_0 +
                      promptService.BUTTON_TITLE_NO     * promptService.BUTTON_POS_2 +
                      promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1;

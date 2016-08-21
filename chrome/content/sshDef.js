@@ -1,0 +1,1 @@
+const BBSFOX_DEFAULT_PORT = 22;

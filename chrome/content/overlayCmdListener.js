@@ -81,10 +81,12 @@ BBSOverlayCmdListener.prototype={
           case "setInputAreaFocus":
             bbscore.setInputAreaFocus();
             break;
+          case "updateCursor":
+            bbscore.view.updateCursorPos();
+            break;
           case "sendCharCode":
-            console.log(' data.charCode = ' + data.charCode);
             bbscore.conn.send(String.fromCharCode(data.charCode));
-            break;          
+            break;
           case "doAddTrack":
             bbscore.doAddTrack();
             break;
@@ -144,26 +146,9 @@ BBSOverlayCmdListener.prototype={
             if(bbscore.cancelDownloadAndPaste())
               return;
             break;
-          case "openPlayerWindow":
-            if(bbscore.playerMgr){
-              if(data.videoType == "Y")
-                bbscore.playerMgr.openYoutubeWindow(data.videoUrl);
-              else if(data.videoType == "U")
-                bbscore.playerMgr.openUstreamWindow(data.videoUrl);
-              else if(data.videoType == "R")
-                bbscore.playerMgr.openUrecordWindow(data.videoUrl);
-            }
-            break;
           case "openPlayerWindowEx":
-            if(bbscore.playerMgr){
-              var testresult = bbscore.playerMgr.testURL(data.videoUrl);
-              if(testresult==1)
-                bbscore.playerMgr.openYoutubeWindow(data.videoUrl);
-              else if(testresult==2)
-                bbscore.playerMgr.openUstreamWindow(data.videoUrl);
-              else if(testresult==3)
-                bbscore.playerMgr.openUrecordWindow(data.videoUrl);
-            }
+            if(bbscore.playerMgr)
+              bbscore.playerMgr.openVideoWindow(data.videoUrl);
             break;
           case "minimizeEmbeddedPlayer":
             if(bbscore.playerMgr)
@@ -199,6 +184,9 @@ BBSOverlayCmdListener.prototype={
           case "pushThread":
             bbscore.doPushThread();
             break;
+          case "sendPushThreadText":
+            bbscore.sendPushThreadText(data.sendText, data.temp);
+            break;
           case "openThreadUrl":
             bbscore.OpenThreadUrl();
             break;
@@ -214,9 +202,11 @@ BBSOverlayCmdListener.prototype={
           case "sendText":
             bbscore.conn.send(data.text);
             break;
+          /*
           case "setRemoteBrowserStatus":
             bbscore.prefs.updateOverlayPrefs([{key:'remoteBrowser', value:data.remoteBrowser}]);
             break;
+          */
           case "disableKeyEvent":
             bbscore.disableKeyEvent();
             break;
@@ -237,6 +227,10 @@ BBSOverlayCmdListener.prototype={
             break;
           case "skipMouseClick":
             bbscore.CmdHandler.setAttribute('SkipMouseClick','1');
+            break;
+          case "unload":
+            bbscore.unregExitAlert();
+            window.close();
             break;
           case "setAlert":
             //bbscore.view.showAlertMessageEx(false, true, false, data.alertMessage);

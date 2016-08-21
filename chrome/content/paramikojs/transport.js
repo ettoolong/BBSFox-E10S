@@ -47,10 +47,8 @@ paramikojs.transport.prototype = {
   authenticatedCallback : null,
   writeCallback : null,
 
-  toUTF8 : ((Components && Components.classes) ? Components.classes["@mozilla.org/intl/utf8converterservice;1"].getService(Components.interfaces.nsIUTF8ConverterService)
-                       : { convertStringToUTF8: function(str) { return str; } }),
-  fromUTF8 : ((Components && Components.classes) ? Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].getService   (Components.interfaces.nsIScriptableUnicodeConverter)
-                         : { ConvertFromUnicode: function(str) { return str; }, Finish: function() { /* do nothing */ } }),
+  toUTF8 : Cc["@mozilla.org/intl/utf8converterservice;1"].getService(Ci.nsIUTF8ConverterService),
+  fromUTF8 : Cc["@mozilla.org/intl/scriptableunicodeconverter"].getService(Ci.nsIScriptableUnicodeConverter),
 
   _PROTO_ID : '2.0',
   _CLIENT_ID : 'ParamikoJS_',

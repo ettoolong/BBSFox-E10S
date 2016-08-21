@@ -3,13 +3,13 @@
 var uriColor='#FF6600'; // color used to draw URI underline
 
 function setTimer(repeat, func, timelimit) {
-    var timer = Components.classes["@mozilla.org/timer;1"]
-                  .createInstance(Components.interfaces.nsITimer);
+    var timer = Cc["@mozilla.org/timer;1"]
+                  .createInstance(Ci.nsITimer);
     timer.initWithCallback(
         { notify: function(timer) { func(); } },
         timelimit,
-        repeat  ? Components.interfaces.nsITimer.TYPE_REPEATING_SLACK
-                : Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+        repeat  ? Ci.nsITimer.TYPE_REPEATING_SLACK
+                : Ci.nsITimer.TYPE_ONE_SHOT);
     return timer;
 }
 
@@ -35,6 +35,9 @@ function TermView(colCount, rowCount) {
     this.input.setAttribute('BBSFoxInput', '0');
     this.input.setAttribute('BBSInputText', '');
     //this.wordtest = document.getElementById('BBSFoxFontTest');
+    this.spaceCharacterElem = document.getElementById('SpaceCharacterTest');
+    this.nbspCharacterElem = document.getElementById('NbspCharacterTest');
+    this.spaceCharacter = '&nbsp;';
     this.symtable = window.symboltable;
     this.bbsCursor = document.getElementById('cursor');
     this.trackKeyWordList = document.getElementById('TrackKeyWordList');
@@ -59,9 +62,7 @@ function TermView(colCount, rowCount) {
     this.compositionStart = false;
     this.dp = new DOMParser();
 
-    this.os = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
-    var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
-    this.FXVersion = parseFloat(appInfo.version);
+    this.os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
 
     this.BBSROW = new Array(rowCount);
     for(var i=0;i<rowCount;++i) {
@@ -72,7 +73,6 @@ function TermView(colCount, rowCount) {
       //this.BBSROW[i]=document.getElementById("row_"+i);
     }
     this.firstGrid = document.getElementById('row_0');
-    //this.findBar = null; //TODO: re-impl by termbuf
 
     this.input.addEventListener('compositionstart', this.composition_start.bind(this), false);
     this.input.addEventListener('compositionend', this.composition_end.bind(this), false);
@@ -90,10 +90,10 @@ function TermView(colCount, rowCount) {
     var tmp = [];
     tmp[0] = '<spen class="s">';
     for(var col=1; col<=colCount; ++col) {
-      tmp[col] = '<span style="color:#FFFFFF;background-color:#000000;">\u0020</span>';
+      tmp[col] = '<span style="color:#FFFFFF;background-color:#000000;">'+this.spaceCharacter+'</span>';
     }
     tmp[colCount+1] = '<br></spen>';
-    for (var row=0 ;row<rowCount ;++row)
+    for (var row=0; row < rowCount; ++row)
     {
       var doc = this.dp.parseFromString(tmp.join(''), "text/html");
       var n = this.BBSROW[row];
@@ -104,8 +104,7 @@ function TermView(colCount, rowCount) {
     }
     //init view - end
 
-    var _this=this;
-    this.blinkTimeout = setTimer(true, function(){_this.onBlink();}, 1000); //500
+    this.blinkTimeout = setTimer(true, () => {this.onBlink();}, 1000); //500
 
     this.highlightTimeout = null;
     this.highlighter = new Highlighter(this);
@@ -140,10 +139,8 @@ TermView.prototype={
     },
 
     showAlertMessageEx: function(blockByTime, showMsg, playSound, msg){
-      try{
-        if(this.alertWin)
-          this.alertWin.alert(blockByTime, showMsg, playSound, msg);
-      }catch(e){}
+      if(this.alertWin)
+        this.alertWin.alert(blockByTime, showMsg, playSound, msg);
     },
 
     //setBuf: function(buf) {
@@ -159,18 +156,6 @@ TermView.prototype={
         this.conn = conn;
         this.buf = buf;
         this.prefs = core.prefs;
-        /*
-        //TODO: re-impl by termbuf
-        var rw = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator).getMostRecentWindow("navigator:browser");
-        var browserIndex = rw.gBrowser.getBrowserIndexForDocument(document);
-
-        if (browserIndex > -1) {
-          if(rw.gFindBar && rw.gFindBar._highlightDoc)
-            this.findBar = rw.gFindBar;
-          else
-            this.findBar = null;
-        }
-        */
         this.alertWin = new AlertService(core, this, buf, conn);
     },
 
@@ -216,7 +201,7 @@ TermView.prototype={
           var tmp = [];
           tmp[0] = '<spen class="s">';
           for(var col=1; col<=cols; ++col)
-            tmp[col] = '<span style="color:#FFFFFF;background-color:#000000;">\u0020</span>';
+            tmp[col] = '<span style="color:#FFFFFF;background-color:#000000;">'+this.spaceCharacter+'</span>';
           tmp[cols+1] = '</spen>';
           var doc = this.dp.parseFromString(tmp.join(''), "text/html");
           if(newEle.firstChild)
@@ -412,9 +397,9 @@ TermView.prototype={
       if(bg==defbg && (fg == deffg || char1 <= ' ') && !ch.isBlink() )
       {
         if(char1 <= ' ') // only display visible chars to speed up
-          return s0+'\u0020'+s2;//return ' ';
+          return s0+this.spaceCharacter+s2;//return ' ';
         else if(char1 == '\x80') // 128, display ' ' or '?'
-          return s0+'\u0020'+s2;
+          return s0+this.spaceCharacter+s2;
         else if(char1 == '\x3c')
           return s0+'&lt;'+s2;
         else if(char1 == '\x3e')
@@ -428,9 +413,9 @@ TermView.prototype={
       {
         s1 +='<span '+ (ch.isPartOfURL()?'link="true" ':'') +'class="q' +fg+ ' b' +bg+ '">'+ (ch.isBlink()?'<x s="q'+fg+' b'+bg+'" h="qq'+bg+'"></x>':'');
         if(char1 <= ' ') // only display visible chars to speed up
-          s1 += '\u0020';
+          s1 += this.spaceCharacter;
         else if(char1 == '\x80') // 128, display ' ' or '?'
-          s1 += '\u0020';
+          s1 += this.spaceCharacter;
         else
           s1 += char1;
         s1 += '</span>';
@@ -662,7 +647,7 @@ TermView.prototype={
 
               //for (var j=0 ;j<cols ;++j)
               //  tmp[j] = outhtml[j].getHtml();
-              for (var j=0 ;j<cols ;++j)
+              for (var j=0; j < cols; ++j)
                 tmp.push(outhtml[j].getHtml());
 
               //if(doHighLight)
@@ -673,9 +658,9 @@ TermView.prototype={
               //
               if(this.prefs.loadURLInBG){
                 var allLinks = doc.getElementsByTagName('a');
-                for(var k=0;k<allLinks.length;++k) {
-                  if(!allLinks[k].getAttribute('aidc')) {
-                    allLinks[k].addEventListener('click', this.anchorClickHandler, true);
+                for(let link of allLinks) {
+                  if(!link.getAttribute('aidc')) {
+                    link.addEventListener('click', this.anchorClickHandler, true);
                   }
                 }
               }
@@ -717,24 +702,18 @@ TermView.prototype={
               lineChangeds[row] = false;
             }
         }
-        if(anylineUpdate) {
-          var allLinks = document.getElementsByTagName('a');
-          var haveLink = (allLinks.length > 0);
-          this.prefs.updateOverlayPrefs([{key:'haveLink', value:haveLink}]);
-        }
-
-        if(anylineUpdate && this.prefs.enableHighlightWords && this.prefs.highlightWords.length>0)
+        let highlightWords = this.prefs.highlightWords;
+        let highlightWords_local = this.prefs.highlightWords_local;
+        if(anylineUpdate && this.prefs.enableHighlightWords && (highlightWords.length>0 || highlightWords_local.length>0))
         {
           if(this.timerTrackKeyWord)
             this.timerTrackKeyWord.cancel();
           this.timerTrackKeyWord = setTimer(false, function(){
-            var highlightWords = this.prefs.highlightWords;
-            var highlightWords_local = this.prefs.highlightWords_local;
-            for(var i=0;i<highlightWords.length;++i){
-              this.highlighter.highlight(highlightWords[i], this.prefs.keyWordTrackCaseSensitive);
+            for(let highlightWord of highlightWords){
+              this.highlighter.highlight(highlightWord, this.prefs.keyWordTrackCaseSensitive);
             }
-            for(var i=0;i<highlightWords_local.length;++i){
-              this.highlighter.highlight(highlightWords_local[i], this.prefs.keyWordTrackCaseSensitive);
+            for(let highlightWord_local of highlightWords_local){
+              this.highlighter.highlight(highlightWord_local, this.prefs.keyWordTrackCaseSensitive);
             }
           }.bind(this), 1);
         }
@@ -787,30 +766,36 @@ TermView.prototype={
 
             if(e.ctrlKey && !e.altKey && !e.shiftKey) {
                 // Ctrl + @, NUL, is not handled here
+              if(this.os != 'Darwin') {
                 if( this.prefs.hotkeyCtrlW == 0 && (e.charCode == 87 || e.charCode == 119) ) {
+                    //close tab
                     return;
                 }
                 else if( this.prefs.hotkeyCtrlB == 0 && (e.charCode == 66 || e.charCode == 98) ) {
+                    //open bookmark
                     return;
                 }
                 else if( this.prefs.hotkeyCtrlL == 0 && (e.charCode == 76 || e.charCode == 108) ) {
+                    //focus to urlbar
                     return;
                 }
                 else if( this.prefs.hotkeyCtrlT == 0 && (e.charCode == 84 || e.charCode == 116) ) {
+                    //open new tab
                     return;
                 }
-                else if( e.charCode >= 65 && e.charCode <=90 ) { // A-Z
+              }
+              if( e.charCode >= 65 && e.charCode <=90 ) { // A-Z
                     conn.send( String.fromCharCode(e.charCode - 64) );
                     e.preventDefault();
                     e.stopPropagation();
                     return;
-                }
-                else if( e.charCode >= 97 && e.charCode <=122 ) { // a-z
+              }
+              else if( e.charCode >= 97 && e.charCode <=122 ) { // a-z
                     conn.send( String.fromCharCode(e.charCode - 96) );
                     e.preventDefault();
                     e.stopPropagation();
                     return;
-                }
+              }
             }
         }
         else if (!e.ctrlKey && !e.altKey && !e.shiftKey) {
@@ -833,12 +818,16 @@ TermView.prototype={
             case 27: //ESC
                 conn.send('\x1b');
                 break;
-            //case 33: //Page Up
-            //    conn.send('\x1b[5~');
-            //    break;
-            //case 34: //Page Down
-            //    conn.send('\x1b[6~');
-            //    break;
+            // case 33: //Page Up
+            //     conn.send('\x1b[5~');
+            //     e.preventDefault();
+            //     e.stopPropagation();
+            //     break;
+            // case 34: //Page Down
+            //     conn.send('\x1b[6~');
+            //     e.preventDefault();
+            //     e.stopPropagation();
+            //     break;
             case 35: //End
                 conn.send('\x1b[4~');
                 break;
@@ -851,18 +840,22 @@ TermView.prototype={
                 else
                   conn.send('\x1b[D');
                 break;
-            //case 38: //Arrow Up
-            //    conn.send('\x1b[A');
-            //    break;
+            // case 38: //Arrow Up
+            //     conn.send('\x1b[A');
+            //     e.preventDefault();
+            //     e.stopPropagation();
+            //     break;
             case 39: //Arrow Right
                 if(this.checkCurDB())
                   conn.send('\x1b[C\x1b[C');
                 else
                   conn.send('\x1b[C');
                 break;
-            //case 40: //Arrow Down
-            //    conn.send('\x1b[B');
-            //    break;
+            // case 40: //Arrow Down
+            //     conn.send('\x1b[B');
+            //     e.preventDefault();
+            //     e.stopPropagation();
+            //     break;
             case 45: //Insert
                 conn.send('\x1b[2~');
                 break;
@@ -922,7 +915,7 @@ TermView.prototype={
       this.mainDisplay.style.overflow = 'hidden';
       this.mainDisplay.style.textAlign = 'left';
       this.mainDisplay.style.width = this.chw*this.buf.cols + 'px';
-      for(var i=0;i<this.buf.rows;++i)
+      for(let i=0;i<this.buf.rows;++i)
         this.BBSROW[i].style.width=this.chw*this.buf.cols + 'px';
 
       if(this.prefs.verticalAlignCenter && this.chh*this.buf.rows < document.documentElement.clientHeight)
@@ -966,7 +959,7 @@ TermView.prototype={
       }
       this.cursorDiv.style.transform = this.mainDisplay.style.transform;
       this.bbsCursor.style.width = this.chw + 'px';
-      var curHeight = Math.floor(this.chh/6);
+      let curHeight = Math.floor(this.chh/6);
       if(curHeight<2) curHeight = 2;
       this.bbsCursor.style.height = curHeight + 'px';
 
@@ -974,32 +967,35 @@ TermView.prototype={
     },
 
     convertMN2XY: function (cx, cy){
-      var origin = [this.firstGrid.offsetLeft, 0];
-      if(this.scaleX==1 && this.scaleY==1){
-        origin[1] = this.firstGrid.offsetTop;
-      }
+      let {x, y} = { x: this.firstGrid.offsetLeft,
+                     y: (this.scaleX==1 && this.scaleY==1) ? this.firstGrid.offsetTop : 0
+                   };
 
-      var realX = origin[0] + (cx * this.chw);
-      var realY = origin[1] + (cy * this.chh);
-      return [realX, realY];
+      let realX = x + (cx * this.chw);
+      let realY = y + (cy * this.chh);
+      return {x: realX, y: realY};
     },
 
     convertMN2XYEx: function (cx, cy){
-      var origin;
-      if(this.prefs.horizontalAlignCenter && this.scaleX!=1)
-        origin = [((document.documentElement.clientWidth - (this.chw*this.buf.cols)*this.scaleX)/2), this.firstGrid.offsetTop];
-      else
-        origin = [this.firstGrid.offsetLeft, this.firstGrid.offsetTop];
-      var realX = origin[0] + (cx * this.chw) * this.scaleX;
-      var realY = origin[1] + (cy * this.chh) + 1 + parseInt(this.mainDisplay.style.marginTop, 10);
-      return [realX, realY];
+      let x, y;
+      if(this.prefs.horizontalAlignCenter && this.scaleX!=1) {
+        x = ((document.documentElement.clientWidth - (this.chw*this.buf.cols)*this.scaleX)/2);
+        y = this.firstGrid.offsetTop;
+      }
+      else {
+        x = this.firstGrid.offsetLeft;
+        y = this.firstGrid.offsetTop;
+      }
+      let realX = x + (cx * this.chw * this.scaleX);
+      let realY = y + (cy * this.chh * this.scaleY);
+      return {x: realX, y: realY};
     },
 
     checkLeftDB: function(){
       if(this.prefs.dbcsDetect && this.buf.cur_x>1){
-        var lines = this.buf.lines;
-        var line = lines[this.buf.cur_y];
-        var ch = line[this.buf.cur_x-2];
+        let lines = this.buf.lines;
+        let line = lines[this.buf.cur_y];
+        let ch = line[this.buf.cur_x-2];
         if(ch.isLeadByte)
           return true;
       }
@@ -1008,9 +1004,9 @@ TermView.prototype={
 
     checkCurDB: function(){
       if(this.prefs.dbcsDetect){// && this.buf.cur_x<this.buf.cols-2){
-        var lines = this.buf.lines;
-        var line = lines[this.buf.cur_y];
-        var ch = line[this.buf.cur_x];
+        let lines = this.buf.lines;
+        let line = lines[this.buf.cur_y];
+        let ch = line[this.buf.cur_x];
         if(ch.isLeadByte)
           return true;
       }
@@ -1019,18 +1015,18 @@ TermView.prototype={
 
     // Cursor
     updateCursorPos: function(){
-      var pos = this.convertMN2XY(this.buf.cur_x, this.buf.cur_y);
+      let {x, y} = this.convertMN2XY(this.buf.cur_x, this.buf.cur_y);
       if(this.buf.cur_y>=this.buf.rows || this.buf.cur_x>=this.buf.cols)
         return; //sometimes, the value of this.buf.cur_x is 80 :(
 
-      var lines = this.buf.lines;
-      var line = lines[this.buf.cur_y];
-      var ch = line[this.buf.cur_x];
-      var bg = ch.getBg();
+      let lines = this.buf.lines;
+      let line = lines[this.buf.cur_y];
+      let ch = line[this.buf.cur_x];
+      let bg = ch.getBg();
 
-      this.bbsCursor.style.left = pos[0] + 'px';
-      var h = this.chh - parseInt(this.bbsCursor.style.height);
-      this.bbsCursor.style.top = pos[1] + h + 'px';
+      this.bbsCursor.style.left = x + 'px';
+      let h = this.chh - parseInt(this.bbsCursor.style.height);
+      this.bbsCursor.style.top = y + h + 'px';
 
       // if you want to set cursor color by now background, use this.
       this.bbsCursor.setAttribute('cr', 'Iq'+bg);
@@ -1040,24 +1036,27 @@ TermView.prototype={
     updateInputBufferPos: function() {
       if(this.compositionStart)
       {
-        var pos = this.convertMN2XYEx(this.buf.cur_x, this.buf.cur_y);
+        let inputBufferHeight = this.chh * this.scaleY;
+        let {x, y} = this.convertMN2XYEx(this.buf.cur_x, this.buf.cur_y);
         if(!this.prefs.hideInputBuffer)
         {
           this.input.style.opacity = '1';
           this.input.style.border = 'double';
           if(this.prefs.inputBufferSizeType==0)
           {
+            inputBufferHeight = this.chh;
             this.input.style.width  = (this.chh-4)*10 + 'px';
             this.input.style.fontSize = this.chh-4 + 'px';
             //this.input.style.lineHeight = this.chh+4 + 'px';
-            this.input.style.height = this.chh + 'px';
+            this.input.style.height = inputBufferHeight + 'px';
           }
           else
           {
-            this.input.style.width  = ((this.prefs.defineInputBufferSize*2)-4)*10 + 'px';
-            this.input.style.fontSize = ((this.prefs.defineInputBufferSize*2)-4) + 'px';
+            inputBufferHeight = this.prefs.defineInputBufferSize*2;
+            this.input.style.width  = (inputBufferHeight-4)*10 + 'px';
+            this.input.style.fontSize = (inputBufferHeight-4) + 'px';
             //this.input.style.lineHeight = this.bbscore.inputBufferSize*2+4 + 'px';
-            this.input.style.height = this.prefs.defineInputBufferSize*2 + 'px';
+            this.input.style.height = inputBufferHeight + 'px';
           }
         }
         else
@@ -1069,28 +1068,22 @@ TermView.prototype={
           this.input.style.opacity = '0';
           //this.input.style.left = '-100000px';
         }
-        var bbswinheight = parseFloat(this.BBSWin.style.height);
-        var bbswinwidth = parseFloat(this.BBSWin.style.width);
-        if(bbswinheight < pos[1] + parseFloat(this.input.style.height) + this.chh)
-          this.input.style.top = (pos[1] - parseFloat(this.input.style.height) - this.chh)+ 4 +'px';
-        else
-          this.input.style.top = (pos[1] + this.chh) +'px';
+        let bbswinheight = parseFloat(this.BBSWin.style.height);
+        let bbswinwidth = parseFloat(this.BBSWin.style.width);
+        if(bbswinheight < y + inputBufferHeight + 10 + (this.chh * this.scaleY) ) {
+          this.input.style.top = (y - inputBufferHeight - 8) + 'px';
+        }
+        else {
+          this.input.style.top = (y + (this.chh * this.scaleY) + 1) +'px';
+        }
 
-        if(bbswinwidth < pos[0] + parseFloat(this.input.style.width))
+        if(bbswinwidth < x + parseFloat(this.input.style.width)) {
           this.input.style.left = bbswinwidth - parseFloat(this.input.style.width)- 10 +'px';
-        else
-          this.input.style.left = pos[0] +'px';
-
-        //this.input.style.left = pos[0] +'px';
+        }
+        else {
+          this.input.style.left = x +'px';
+        }
       }
-      //fix input buffer pos - start
-      //else
-      //{
-      //  var pos = this.convertMN2XY(this.buf.cur_x, this.buf.cur_y);
-      //  this.input.style.top = (pos[1] + this.chh) +'px';
-      //  this.input.style.left = pos[0] +'px';
-      //}
-      //fix input buffer pos - end
     },
 
     composition_start: function(e) {
@@ -1154,7 +1147,7 @@ TermView.prototype={
     {
       var row = 0;
       var col = 0;
-      if (nd.parentNode.className == 's' || nd.parentNode.getAttribute('hl')=='1')
+      if (nd.parentNode.classList.contains('s') || nd.parentNode.getAttribute('hl')=='1')
       {
         row = parseInt(nd.parentNode.parentNode.id.substr(4) );
         tmp = nd.previousSibling;
@@ -1162,15 +1155,15 @@ TermView.prototype={
       else
       {
         tmp = nd.parentNode;
-        if(tmp && tmp.parentNode && tmp.parentNode.className == 'y')
+        if(tmp && tmp.parentNode && tmp.parentNode.classList.contains('y'))
         {
           tmp = tmp.parentNode;
         }
-        if(!tmp.previousSibling && tmp.parentNode && tmp.parentNode.parentNode && tmp.parentNode.parentNode.className=='y')
+        if(!tmp.previousSibling && tmp.parentNode && tmp.parentNode.parentNode && tmp.parentNode.parentNode.classList.contains('y'))
         {
           tmp = tmp.parentNode.parentNode;
         }
-        if (tmp.parentNode && (tmp.parentNode.className == 's' || tmp.parentNode.getAttribute('hl')=='1') ) {
+        if (tmp.parentNode && (tmp.parentNode.classList.contains('s') || tmp.parentNode.getAttribute('hl')=='1') ) {
           row = parseInt(tmp.parentNode.parentNode.id.substr(4) );
         }
         tmp = tmp.previousSibling;
@@ -1180,15 +1173,15 @@ TermView.prototype={
         var textContent = tmp.textContent;
         textContent = textContent.replace(/\u00a0/g, " ");
         col += uaoConv.u2b(textContent).length;
-        if(tmp && tmp.parentNode && tmp.parentNode.className == 'y')
+        if(tmp && tmp.parentNode && tmp.parentNode.classList.contains('y'))
         {
           tmp = tmp.parentNode;
         }
-        if(!tmp.previousSibling && tmp.parentNode && tmp.parentNode.parentNode && tmp.parentNode.parentNode.className=='y')
+        if(!tmp.previousSibling && tmp.parentNode && tmp.parentNode.parentNode && tmp.parentNode.parentNode.classList.contains('y'))
         {
           tmp = tmp.parentNode.parentNode;
         }
-        if (tmp.parentNode && (tmp.parentNode.className == 's' || tmp.parentNode.getAttribute('hl')=='1') ) {
+        if (tmp.parentNode && (tmp.parentNode.classList.contains('s') || tmp.parentNode.getAttribute('hl')=='1') ) {
           row = parseInt(tmp.parentNode.parentNode.id.substr(4) );
         }
         tmp = tmp.previousSibling;
@@ -1216,7 +1209,7 @@ TermView.prototype={
         return selection;
       }
 
-      if (b.className == 's' || (b.nodeType==1 && b.getAttribute('hl')=='1')){
+      if ((b.classList &&  b.classList.contains('s')) || (b.nodeType==1 && b.getAttribute('hl')=='1')){
         if(tmpstr.substr(0,1) == '\r')
         {
           selection.start.row = parseInt(b.parentNode.id.substr(4))+1;
@@ -1229,7 +1222,7 @@ TermView.prototype={
         }
       }
 
-      if (e.className == 's' || (e.nodeType==1 && e.getAttribute('hl')=='1')){
+      if ((e.classList &&  e.classList.contains('s')) || (e.nodeType==1 && e.getAttribute('hl')=='1')){
         if(tmpstr.substr(tmpstr.length-1,1) == '\r')
         {
         }
@@ -1248,7 +1241,7 @@ TermView.prototype={
         selection.end = this.countChar(e);
       }
 
-      if (b.className == 's' || (b.nodeType==1 && b.getAttribute('hl')=='1')){
+      if ((b.classList &&  b.classList.contains('s')) || (b.nodeType==1 && b.getAttribute('hl')=='1')){
       }else{
         if (r.startOffset != 0) {
           var substr = b.substringData(0, r.startOffset);
@@ -1257,7 +1250,7 @@ TermView.prototype={
         }
       }
 
-      if (e.className == 's' || (e.nodeType==1 && e.getAttribute('hl')=='1')){
+      if ((e.classList &&  e.classList.contains('s')) || (e.nodeType==1 && e.getAttribute('hl')=='1')){
       }else{
         if (r.endOffset != 1) {
           var substr = e.substringData(0, r.endOffset);
@@ -1304,6 +1297,24 @@ TermView.prototype={
       return cssDefine;
     },
 
+    setFontDefine: function(font, enfont){
+      var node = document.getElementById('BBSFontDefine');
+      var newcss = '@font-face {';
+      newcss+='font-family: BBSFoxFont;';
+      newcss+='src: local('+font+');';
+      newcss+='}';
+      newcss+= '@font-face {';
+      newcss+='font-family: BBSFoxFont;';
+      newcss+='unicode-range: U+00-7F;';
+      newcss+='src: local('+enfont+');';
+      newcss+='}';
+      var tn = document.createTextNode(newcss);
+      if(node.firstChild)
+        node.replaceChild(tn ,node.firstChild);
+      else
+        node.appendChild(tn);
+    },
+
     setColorDefine: function(index){
       var setCSS = function(node, newcss){
         var tn = document.createTextNode(newcss);
@@ -1344,34 +1355,30 @@ TermView.prototype={
       this.setColorDefine();
     },
 
+    setSpaceCharacter: function(){
+      this.spaceCharacterElem.style.fontSize = '64px';
+      this.nbspCharacterElem.style.fontSize = '64px';
+      let spaceCharacter = this.spaceCharacterElem.offsetWidth == this.nbspCharacterElem.offsetWidth ? '&nbsp;' : '\u0020';
+      if(this.spaceCharacter != spaceCharacter) {
+        this.spaceCharacter = spaceCharacter;
+        this.update(true);
+      }
+    },
+
     cancelHighlightTimeout: function() {
-      if(this.highlightTimeout)
-      {
+      if(this.highlightTimeout) {
         this.highlightTimeout.cancel();
-        this.highlightTimeout=null;
+        this.highlightTimeout = null;
       }
     },
 
     setHighlightTimeout: function(cb) {
       this.cancelHighlightTimeout();
-      var _this=this;
-      var func=function() {
-        _this.highlightTimeout=null;
-        cb();
+      if(this.prefs.mouseBrowsingHlTime) {
+        this.highlightTimeout = setTimer(false,() => {
+          this.highlightTimeout = null;
+          cb();
+        }, this.prefs.mouseBrowsingHlTime);
       }
-      if(this.prefs.mouseBrowsingHlTime)
-        this.highlightTimeout = setTimer(false, func, this.prefs.mouseBrowsingHlTime);
     }
-    /*
-    myTimer: function(repeat, func_obj, timelimit) {
-      var timer = Components.classes["@mozilla.org/timer;1"]
-                      .createInstance(Components.interfaces.nsITimer);
-      timer.initWithCallback(
-         { notify: function(timer) { func_obj(); } },
-         timelimit,
-         repeat  ? Components.interfaces.nsITimer.TYPE_REPEATING_SLACK
-                 : Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-      return timer;
-    }
-    */
 };

@@ -1,8 +1,8 @@
 //reference:
-https://github.com/mozilla-services/services-central-legacy/blob/master/toolkit/content/widgets/findbar.xml
+//https://github.com/mozilla-services/services-central-legacy/blob/master/toolkit/content/widgets/findbar.xml
 
 function Highlighter(bbscore) {
-  this.nsISelectionController = Components.interfaces.nsISelectionController;
+  this.nsISelectionController = Ci.nsISelectionController;
   this._findSelection = this.nsISelectionController.SELECTION_FIND;
 }
 
@@ -19,7 +19,6 @@ Highlighter.prototype={
     if (!aWindow.innerWidth || !aWindow.innerHeight)
       return null;
 
-    var Ci = Components.interfaces;
     var docShell = aWindow.QueryInterface(Ci.nsIInterfaceRequestor)
                           .getInterface(Ci.nsIWebNavigation)
                           .QueryInterface(Ci.nsIDocShell);
@@ -51,9 +50,8 @@ Highlighter.prototype={
       var endPt = searchRange.cloneRange();
       endPt.collapse(false);
       var retRange = null;
-      var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"]
-                             .createInstance()
-                             .QueryInterface(Components.interfaces.nsIFind);
+      var finder = Cc["@mozilla.org/embedcomp/rangefind;1"].createInstance()
+                   .QueryInterface(Ci.nsIFind);
       finder.caseSensitive = caseSensitive;//this._shouldBeCaseSensitive(aWord);
       while ((retRange = finder.Find(aWord, searchRange, startPt, endPt))) {
         this._highlight(retRange, controller);

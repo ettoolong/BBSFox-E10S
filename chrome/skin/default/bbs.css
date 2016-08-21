@@ -1,6 +1,6 @@
 /*@font-face {
   font-family: "symmingliu";
-  src: url('resource://bbsfox/symmingliu.woff');
+  src: url('chrome://bbsfox/skin/symmingliu.woff');
 }*/
 
 #BBSWindow {
@@ -16,13 +16,21 @@
 }
 
 .y {
-  background-image:url(chrome://bbsfox/skin/link_line/http.bmp);
+  background-image:url("chrome://bbsfox/skin/link_line/http.bmp");
   background-repeat: repeat-x;
   background-position: 0% 90%;
 }
 
 .bluFade {
   opacity: 0.2;
+}
+
+.testElem {
+  white-space: pre;
+  left:-10000px;
+  top:-10000px;
+  position:absolute;
+  overflow: hidden;
 }
 
 .main {
@@ -39,7 +47,7 @@
 }
 
 a {
-  background-image:url(chrome://bbsfox/skin/link_line/http.bmp);
+  background-image:url("chrome://bbsfox/skin/link_line/http.bmp");
   background-repeat: repeat-x;
   background-position: 0% 90%;
   text-decoration:none;
@@ -182,7 +190,7 @@ span{margin: 0px;}
   text-shadow: 0 0 1px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #0000ff,0 0 7px #0000ff,0 0 8px #0000ff,0 0 10px #0000ff,0 0 15px #0000ff;
 }
 
-#YoutubeWindow, #YoutubeWindow2 {
+/*#YoutubeWindow, #YoutubeWindow2 {
   left: 10px;
   top: 10px;
   z-index: 3;
@@ -191,6 +199,19 @@ span{margin: 0px;}
   border:0px double #cccccc;
   border-radius:8px;
   cursor: default;
+}*/
+
+@keyframes minWin {
+  100% { width: 54px;height: 21px; }
+}
+
+.minWindiw {
+  animation-name: minWin;
+  animation-direction: normal;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
 }
 
 #PictureWindow {
@@ -198,9 +219,9 @@ span{margin: 0px;}
   top: 10px;
   z-index: 3;
   background-color: #ffffff;
-  padding: 3px 3px 3px 3px;
-  border:0px double #cccccc;
-  border-radius:8px;
+  padding: 3px;
+  border:0px;
+  border-radius:6px;
   cursor: default;
 }
 
@@ -254,7 +275,7 @@ span{margin: 0px;}
 .picturePreview {background:white; color:black; padding:0px;margin: 0px;}
 
 .sBtn{
-  font-family: MingLiu, monospace;
+  font-family: "MingLiU, Osaka-Mono, monospace";
   font-size: 12px;
   cursor: default;
   min-width: 26px;
@@ -262,4 +283,22 @@ span{margin: 0px;}
   margin-left:2px;
   margin-right:2px;
   margin-bottom:2px;
+}
+
+.colorBtn{
+  border-radius: 0px;
+  border-color: #FFF;
+  border-width: 2px;
+  border-style: solid;
+  width: 26px;
+  height: 22px;
+}
+
+.colorPreview{
+  width: 30px;
+  height: 30px;
+  color: #FFF;
+  background: #000;
+  margin: 2px 5px;
+  padding: 5px;
 }

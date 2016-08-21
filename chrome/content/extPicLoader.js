@@ -11,7 +11,7 @@ BBSFoxHttpReq.prototype={
     this.xmlhttp.onreadystatechange = function() {_this.onPageResponse(this);};
     this.xmlhttp.open("GET",url,true);
     if(!this.redirection)
-      this.xmlhttp.channel.QueryInterface(Components.interfaces.nsIHttpChannel).redirectionLimit = 0;
+      this.xmlhttp.channel.QueryInterface(Ci.nsIHttpChannel).redirectionLimit = 0;
     this.xmlhttp.send(null);
   },
   onPageResponse: function(xmlhttp) {
@@ -26,6 +26,8 @@ BBSFoxHttpReq.prototype={
     }
     catch(e)
     {
+      this.info.err = 'err';
+      this.callback(this.info);
       //alert('err');
     }
   }
@@ -33,8 +35,8 @@ BBSFoxHttpReq.prototype={
 
 function ExtPicLoader(listener) {
   this.bbscore = listener;
-  Components.utils.import("resource://bbsfox/picLoader_ppt.js");
-  Components.utils.import("resource://bbsfox/picLoader_imgur.js");
+  Cu.import("chrome://bbsfox/content/picLoader/picLoader_ppt.js");
+  Cu.import("chrome://bbsfox/content/picLoader/picLoader_imgur.js");
   this.dp = new DOMParser();
 
   //https://developer.mozilla.org/en-US/Add-ons/Code_snippets/HTML_to_DOM
@@ -42,7 +44,7 @@ function ExtPicLoader(listener) {
     var html = document.implementation.createDocument("http://www.w3.org/1999/xhtml", "html", null),
     body = document.createElementNS("http://www.w3.org/1999/xhtml", "body");
     html.documentElement.appendChild(body);
-    body.appendChild(Components.classes["@mozilla.org/feed-unescapehtml;1"].getService(Components.interfaces.nsIScriptableUnescapeHTML).parseFragment(aHTMLString, false, null, body));
+    body.appendChild(Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML).parseFragment(aHTMLString, false, null, body));
     return body;
   };
   this.pptPicLoader = new BBSPPTPicLoader(this, this.dp, BBSFoxHttpReq, htmlParser);
@@ -59,15 +61,21 @@ ExtPicLoader.prototype={
       this.locateCB = cb;
   },
 
+  query: function(url, callback){
+    if( this.imgurPicLoader.query(url, callback) ) return true;
+    if( this.pptPicLoader.query(url, callback) ) return true;
+    return false;
+  },
+
   show: function(url, owner){
     if( this.imgurPicLoader.show(url, owner) ) return true;
     if( this.pptPicLoader.show(url, owner) ) return true;
     return false;
   },
 
-  load: function(url){
-    if( this.imgurPicLoader.load(url) ) return true;
-    if( this.pptPicLoader.load(url) ) return true;
+  load: function(url, cb){
+    if( this.imgurPicLoader.load(url, cb) ) return true;
+    if( this.pptPicLoader.load(url, cb) ) return true;
     return false;
   },
 

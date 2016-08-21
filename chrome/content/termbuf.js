@@ -194,12 +194,12 @@ function TermBuf(cols, rows) {
 }
 
 TermBuf.prototype={
-    timerUpdate: Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer),
+    timerUpdate: Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer),
 
     // From: http://snippets.dzone.com/posts/show/452
     //uriRegEx: /(ftp|http|https|telnet):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/ig,
     //uriRegEx: /(ftp|http|https|telnet):\/\/([A-Za-z0-9_]+:{0,1}[A-Za-z0-9_]*@)?([A-Za-z0-9_#!:.?+=&%@!\-\/\$\^,;|*~'()]+)(:[0-9]+)?(\/|\/([A-Za-z0-9_#!:.?+=&%@!\-\/]))?/ig,
-    uriRegEx: /((ftp|http|https|telnet|ssh):\/\/([A-Za-z0-9_]+:{0,1}[A-Za-z0-9_]*@)?([A-Za-z0-9_#!:.?+=&%@!\-\/\$\^,;|*~'()]+)(:[0-9]+)?(\/|\/([A-Za-z0-9_#!:.?+=&%@!\-\/]))?)|(pid:\/\/(\d{1,10}))/ig,
+    uriRegEx: /((ftp|http|https|telnet|ssh):\/\/([A-Za-z0-9_]+:{0,1}[A-Za-z0-9_]*@)?([A-Za-z0-9_#!:.?+=&%@!\-\/\$\^,;|*~'()]+)(:[0-9]+)?(\/|\/([A-Za-z0-9_#!:.?+=&%@!\-\/]))?)|(pid:\/\/(\d{1,10}))|(about:config)/ig,
     aidRegEx: /#[\w\-]{8}/ig,
     aidWithBoardNameRegEx: /#[\w\-]{8}\(([\w\-]{2,12})\)/i,
     aidWithBoardNameRegEx2: /\u203B\u0020\u005B\u672C\u6587\u8F49\u9304\u81EA\u0020([\w\-]{2,12})\u0020\u770B\u677F\u0020(#[\w\-]{8})/,
@@ -348,12 +348,14 @@ TermBuf.prototype={
             var ch=str[i];
             switch(ch) {
             case '\x07':
-                if(bbsfox.selectStatus && this.prefs.notifyWhenBackground)
-                  continue;
-                if(this.prefs.notifyShowContent)
-                  this.view.showAlertMessageEx(false, this.prefs.notifyByMessage, this.prefs.notifyBySound, "");
-                else
-                  this.view.showAlertMessageEx(this.prefs.notifyBlockByTime, this.prefs.notifyByMessage, this.prefs.notifyBySound, this.severNotifyStr);
+                if(this.prefs.enableNotification) {
+                  if(bbsfox.selectStatus && this.prefs.notifyWhenBackground)
+                    continue;
+                  if(this.prefs.notifyShowContent)
+                    this.view.showAlertMessageEx(false, this.prefs.notifyByMessage, this.prefs.notifyBySound, "");
+                  else
+                    this.view.showAlertMessageEx(this.prefs.notifyBlockByTime, this.prefs.notifyByMessage, this.prefs.notifyBySound, this.severNotifyStr);
+                }
                 continue;
             case '\b':
                 this.back();
@@ -576,6 +578,8 @@ TermBuf.prototype={
                         //line[uri[0]].startOfURL=true;
                         if(urlTemp2.substr(0,6)=='pid://') {
                           line[uri[0]].fullurl='http://www.pixiv.net/member_illust.php?mode=big&illust_id='+urlTemp2.substr(6,15);
+                        } else if(urlTemp2 == 'about:config') {
+                          line[uri[0]].fullurl='about:config';
                         } else if(urlTemp.substr(0,1)=='#') {
                           //transfrom aid to url
                           var aidc = urlTemp.substr(1);
@@ -918,9 +922,9 @@ TermBuf.prototype={
     queueUpdate: function(directupdate) {
         this.timerUpdate.cancel();
         if(directupdate)
-          this.timerUpdate.initWithCallback(this, 1, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this.timerUpdate.initWithCallback(this, 1, Ci.nsITimer.TYPE_ONE_SHOT);
         else
-          this.timerUpdate.initWithCallback(this, this.prefs.viewBufferTimer, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+          this.timerUpdate.initWithCallback(this, this.prefs.viewBufferTimer, Ci.nsITimer.TYPE_ONE_SHOT);
     },
 
     notify: function(timer) {
@@ -938,7 +942,7 @@ TermBuf.prototype={
         return;
       }
       if(this.changed){ // content changed
-        if(this.prefs.useMouseBrowsing || this.prefs.testPttThread || this.prefs.aidAction!=0){
+        if(this.prefs.useMouseBrowsing || this.prefs.testPttThread || this.prefs.aidAction!=0 || (this.prefs.enableBlacklist && this.prefs.blacklistMenu) ){
           this.SetPageState();
           this.resetMousePos();
         }
@@ -970,10 +974,10 @@ TermBuf.prototype={
         this.view.blinkShow=!this.view.blinkShow;
         //
         var allBlinkSpan = document.getElementsByTagName('x');
-        for (var i = 0; i < allBlinkSpan.length; i++)
+        for (let blinkSpan of allBlinkSpan)
         {
-          var c = (this.view.blinkShow && this.view.doBlink)? allBlinkSpan[i].getAttribute("h") : allBlinkSpan[i].getAttribute("s");
-          allBlinkSpan[i].parentNode.setAttribute("class", c);
+          var c = (this.view.blinkShow && this.view.doBlink)? blinkSpan.getAttribute("h") : blinkSpan.getAttribute("s");
+          blinkSpan.parentNode.setAttribute("class", c);
         }
       }
       //}
@@ -1063,7 +1067,7 @@ TermBuf.prototype={
           if(col >=1 && line[col-1].isLeadByte) { // second byte of DBCS char
             var prevC = line[col-1];
             var b5 = prevC.ch + c.ch;
-            if((this.view && this.prefs.charset == 'UTF-8') || b5.length == 1)
+            if((this.view && this.prefs.charset.toLowerCase() == 'utf-8') || b5.length == 1)
               return b5;
             else
               return uaoConv.b2u(b5, charset);
@@ -1210,7 +1214,7 @@ TermBuf.prototype={
           }
 
           this.PageState = 3; // READING
-          if(this.prefs.testPttThread && this.isPttReading() && this.prefs.overlayPrefs.openThreadUrlMenu)
+          if(this.prefs.testPttThread && this.isPttReading() && this.prefs.status.openThreadUrlMenu)
             threadState = 1;
         }
       }
@@ -1218,9 +1222,9 @@ TermBuf.prototype={
         //document.getElementById('testdata1').innerHTML = "PageState = 0(NORMAL)";
       }
       if(threadState == 1) {
-        this.prefs.updateOverlayPrefs([{key:'openThreadUrlMenu', value:true}]);
+        this.prefs.status.openThreadUrlMenu = true;
       } else {
-        this.prefs.updateOverlayPrefs([{key:'openThreadUrlMenu', value:false}]);
+        this.prefs.status.openThreadUrlMenu = false;
       }
     },
 
@@ -1460,9 +1464,8 @@ TermBuf.prototype={
                       line[i].needUpdate = true;
                     this.updateCharAttr();
                     this.view.update(false);
-                    var _this = this;
-                    this.view.setHighlightTimeout(function(){
-                      _this.clearHighlight();
+                    this.view.setHighlightTimeout(() => {
+                      this.clearHighlight();
                     });
                   }
                   //document.getElementById('testdata4').innerHTML = "hightlight = "+trow;

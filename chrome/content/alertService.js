@@ -81,11 +81,13 @@ AlertService.prototype={
         var text = this.buf.getRowText(row, 0, this.buf.cols);
         return text.replace(/ +$/,"");
     },
+
     beep: function(msg) {
       this.core.sendCoreCommand({command: "fireNotifySound"}, true);
       //FIXME: support custum sound:
       //https://developer.mozilla.org/en/nsISound#play()
     },
+
     showPopups: function(caption, message, clickAlertAction) {
       this.core.sendCoreCommand({command: "showNotifyMessage",
                                  imageUrl: "chrome://bbsfox/skin/logo/logo.png",

@@ -37,9 +37,6 @@ const STATE_DO=4;
 const STATE_DONT=5;
 const STATE_SB=6;
 
-const Cc = Components.classes;
-const Ci = Components.interfaces;
-
 function ConnectCore(listener) {
     this.transport = null;
     this.inputStream = null;
@@ -163,7 +160,7 @@ ConnectCore.prototype={
     onDataAvailable: function(req, ctx, ins, off, count) {
         var data='';
         // dump(count + 'bytes available\n');
-        while(count > 0) {
+        while(this.inputStream && count > 0) {
             var s = this.inputStream.readBytes(count);
             count -= s.length;
             // dump(count + 'bytes remaining\n');

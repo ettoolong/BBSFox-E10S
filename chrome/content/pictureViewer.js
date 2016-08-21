@@ -1,104 +1,87 @@
 function PictureViewer(bbscore) {
-    this.bbscore = bbscore;
-    this.CmdHandler = document.getElementById('cmdHandler');
-    //this.opt = new Array(8);
+  this.bbscore = bbscore;
+  this.CmdHandler = document.getElementById("cmdHandler");
+  //this.opt = new Array(8);
 
-    var BBSWin = document.getElementById('BBSWindow');
-    var viewerDiv = document.createElementNS(XUL_NS, 'div');
-    BBSWin.appendChild(viewerDiv);
-    //playerDiv.setAttribute('align','left');
-    //viewerDiv.setAttribute('class','drag');
-    viewerDiv.classList.add('extUI');
-    viewerDiv.classList.add('dragUI');
-    viewerDiv.classList.add('drag');
-    viewerDiv.classList.add('picViewer');
+  let BBSWin = document.getElementById("BBSWindow");
+  let viewerDiv = document.createElementNS(XUL_NS, "div");
+  BBSWin.appendChild(viewerDiv);
+  viewerDiv.classList.add("extUI", "dragUI", "drag", "picViewer");
+  viewerDiv.style.left = "10px";
+  viewerDiv.style.top = "10px";
+  viewerDiv.addEventListener("mousedown", event => { this.mousedown(event); }, false);
+  viewerDiv.addEventListener("mouseup", event => { this.mouseup(event); } , false);
 
-    viewerDiv.style.left = '10px';
-    viewerDiv.style.top = '10px';
+  let box1 = document.createElementNS(XUL_NS, "vbox");
+  viewerDiv.appendChild(box1);
 
-    viewerDiv.addEventListener('mousedown', this.mousedown.bind(this), false);
-    viewerDiv.addEventListener('mouseup', this.mouseup.bind(this), false);
+  let box2 = document.createElementNS(XUL_NS, "hbox");
+  box1.appendChild(box2);
+  box2.classList.add("extUI", "dragUI", "nonspan");
 
-    var box1 = document.createElementNS(XUL_NS, 'vbox');
-    viewerDiv.appendChild(box1);
+  let spacer1 = document.createElementNS(XUL_NS, "spacer");
+  box2.appendChild(spacer1);
+  spacer1.setAttribute("flex", "1");
+  spacer1.classList.add("extUI", "dragUI", "nonspan");
 
-    var box2 = document.createElementNS(XUL_NS, 'hbox');
-    box1.appendChild(box2);
-    box2.classList.add('extUI');
-    box2.classList.add('dragUI');
-    box2.classList.add('nonspan');
+  let closeBtn = document.createElementNS(XUL_NS, 'image');
+  box2.appendChild(closeBtn);
+  closeBtn.setAttribute("width", "14px");
+  closeBtn.setAttribute("height", "14px");
+  closeBtn.classList.add("extUI", "buttonUI", "closeWindowBtn");
+  closeBtn.onclick = e => {
+    if(e.button==0) {
+      bbsfox.picViewerMgr.closePictureViewer(this);
+    }
+    else {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  };
 
-    var spacer1 = document.createElementNS(XUL_NS, 'spacer');
-    box2.appendChild(spacer1);
-    spacer1.setAttribute('flex','1');
-    spacer1.classList.add('extUI');
-    spacer1.classList.add('dragUI');
-    spacer1.classList.add('nonspan');
+  let clientDiv = document.createElementNS(XUL_NS, "div");
+  box1.appendChild(clientDiv);
+  let picDiv = document.createElement("div");
+  box1.appendChild(picDiv);
+  picDiv.style.display = "none";
 
-    var closeBtn = document.createElementNS(XUL_NS, 'image');
-    box2.appendChild(closeBtn);
-    closeBtn.setAttribute('width','14px');
-    closeBtn.setAttribute('height','14px');
-    closeBtn.classList.add('extUI');
-    closeBtn.classList.add('buttonUI');
-    closeBtn.classList.add('closeWindowBtn');
-    closeBtn.onclick = function(e){
-      if(e.button==0)
-        bbsfox.picViewerMgr.closePictureViewer(this);
-      else
-      {
-        e.stopPropagation();
-        e.preventDefault();
-      }
-    };
+  let loadingDiv = document.createElement("div");
+  box1.appendChild(loadingDiv);
 
-    var clientDiv = document.createElementNS(XUL_NS, 'div');
-    box1.appendChild(clientDiv);
-    var picDiv = document.createElement('div');
-    box1.appendChild(picDiv);
-    picDiv.style.display = 'none';
+  let loadingImage = document.createElement("img");
+  loadingDiv.appendChild(loadingImage);
+  loadingImage.setAttribute("src", "chrome://bbsfox/skin/state_icon/connecting.gif");
+  loadingDiv.style.display = "block";
 
-    var loadingDiv = document.createElement('div');
-    box1.appendChild(loadingDiv);
+  picDiv.classList.add("extUI", "dragUI", "floatWindowClientArea5");
+  //
+  this.box1 = box1;
+  this.viewerDiv = viewerDiv;
+  this.closeBtn = closeBtn;
+  this.clientDiv = clientDiv;
+  this.picDiv = picDiv;
+  this.loadingDiv = loadingDiv;
 
-    var loadingImage = document.createElement('img');
-    loadingDiv.appendChild(loadingImage);
-    loadingImage.setAttribute('src', 'chrome://bbsfox/skin/state_icon/connecting.gif');
-    //loadingDiv.innerHTML = '<img src="chrome://bbsfox/skin/state_icon/connecting.gif"/>';
-    loadingDiv.style.display = 'block';
+  //this.ptype = '';
+  //this.playerURL = playerURL;
 
-    picDiv.classList.add('extUI');
-    picDiv.classList.add('dragUI');
-    picDiv.classList.add('floatWindowClientArea5');
-    //
-    this.box1 = box1;
-    this.viewerDiv = viewerDiv;
-    this.closeBtn = closeBtn;
-    this.clientDiv = clientDiv;
-    this.picDiv = picDiv;
-    this.loadingDiv = loadingDiv;
-
-    //this.ptype = '';
-    //this.playerURL = playerURL;
-
-    this.offX = 0;
-    this.offY = 0;
-    this.tempCurX = 0;
-    this.tempCurY = 0;
+  this.offX = 0;
+  this.offY = 0;
+  this.tempCurX = 0;
+  this.tempCurY = 0;
 }
 
 PictureViewer.prototype={
 
   mousedown: function(event) {
-    if(event.target.classList.contains('buttonUI'))
+    if(event.target.classList.contains("buttonUI"))
        return;
 
     this.offX = event.pageX;
     this.offY = event.pageY;
-    var maxzindex;
+    let maxzindex;
 
-    if(event.button==0) //left button
-    {
+    if(event.button==0) {//left button
       //this.dragapproved = true;
       maxzindex = this.CmdHandler.getAttribute("MaxZIndex");
       ++maxzindex;
@@ -109,17 +92,14 @@ PictureViewer.prototype={
       //this.CmdHandler.setAttribute("DragingWindow", '1');
 
       this.CmdHandler.setAttribute("MaxZIndex", maxzindex);
-      if(event.target.classList.contains('dragUI'))
-      {
+      if(event.target.classList.contains("dragUI")) {
         bbsfox.picViewerMgr.dragingWindow = this;
       }
       event.preventDefault();
       return;
     }
-    else if(event.button==2) //right button
-    {
-      if(event.target.classList.contains('picturePreview'))
-      {
+    else if(event.button==2) {//right button
+      if(event.target.classList.contains("picturePreview")) {
         //switch this window to front
         maxzindex = this.CmdHandler.getAttribute("MaxZIndex");
         ++maxzindex;
@@ -130,35 +110,34 @@ PictureViewer.prototype={
         //this.CmdHandler.setAttribute("DragingWindow", '1');
 
         this.CmdHandler.setAttribute("MaxZIndex", maxzindex);
-        this.bbscore.prefs.updateOverlayPrefs([{key:'mouseOnPicWindow', value:true}]);
+        this.bbscore.prefs.status.mouseOnPicWindow = true;
       }
     }
   },
 
   mouseup: function(event) {
-    this.CmdHandler.setAttribute("DragingWindow",'0');
+    this.CmdHandler.setAttribute("DragingWindow", "0");
     bbsfox.picViewerMgr.dragingWindow = null;
   },
 
   openViewerWindow: function(purl) {
-    var image = document.createElement('img');
+    let image = document.createElement("img");
     this.picDiv.appendChild(image);
-    image.classList.add('extUI');
-    image.classList.add('dragUI');
-    image.classList.add('picturePreview');
-    image.onload = function(){
-      bbsfox.picViewerMgr.prePicResize(this);
+    image.classList.add("extUI", "dragUI", "picturePreview");
+
+    image.onload = () => {
+      bbsfox.picViewerMgr.prePicResize(image);
     };
-    image.onerror = function(){
+    image.onerror = () => {
       bbsfox.picViewerMgr.picLoaderror(this);
     };
-    image.setAttribute('src',purl);
+    image.setAttribute("src", purl);
   }
 };
 
 function PicViewerMgr(bbscore, extPicLoader) {
   this.bbscore = bbscore;
-  this.BBSWin = document.getElementById('BBSWindow');
+  this.BBSWin = document.getElementById("BBSWindow");
   this.dragingWindow = null;
   this.pviewers=[];
   this.previewCount = 0;
@@ -179,27 +158,26 @@ PicViewerMgr.prototype={
 
     //if(this.imgurPicLoader && this.imgurPicLoader.show(aurl, this, this.setPictureUrl))
     //  return;
-    var pictureRegEx = /(?:(?:\.(?:(?:bmp|gif|jpe?g|png)(?:\?[^\/]*)?)$)|(?:https?:\/\/pbs.twimg.com\/media\/[a-zA-Z0-9_]{15,15}\.(?:(?:bmp|gif|jpe?g|png)(?::[^\/]*)?)$))/i;
+    let pictureRegEx = /(?:(?:\.(?:(?:bmp|gif|jpe?g|png)(?:\?[^\/]*)?)$)|(?:https?:\/\/pbs.twimg.com\/media\/[a-zA-Z0-9_]{15,15}\.(?:(?:bmp|gif|jpe?g|png)(?::[^\/]*)?)$))/i;
     if(aurl.search(pictureRegEx) == -1)
       return;
 
     if(aurl.toLowerCase().indexOf("http://photo.xuite.net/")<0 &&
        aurl.toLowerCase().indexOf("http://simplest-image-hosting.net/")<0 &&
        aurl.toLowerCase().indexOf("http://screensnapr.com/")<0 &&
-       aurl.toLowerCase().indexOf("https://www.dropbox.com")<0)
-    {
+       aurl.toLowerCase().indexOf("https://www.dropbox.com")<0) {
       this.setPictureUrl(this, aurl);
     }
   },
 
   setPictureUrl: function(owner, aurl) {
-    var pictureViewer = new PictureViewer(this.bbscore);
+    let pictureViewer = new PictureViewer(this.bbscore);
     this.pviewers.push(pictureViewer);
 
-    pictureViewer.viewerDiv.display = 'none';
-    pictureViewer.viewerDiv.style.left = 10 + this.previewCount*10 + 'px';
-    pictureViewer.viewerDiv.style.top = 10 + this.previewCount*10 + 'px';
-    pictureViewer.viewerDiv.style.display = 'block';
+    pictureViewer.viewerDiv.display = "none";
+    pictureViewer.viewerDiv.style.left = 10 + this.previewCount*10 + "px";
+    pictureViewer.viewerDiv.style.top = 10 + this.previewCount*10 + "px";
+    pictureViewer.viewerDiv.style.display = "block";
     pictureViewer.openViewerWindow(aurl);
     this.previewCount=this.previewCount+1;
     if(this.previewCount>10)
@@ -207,54 +185,31 @@ PicViewerMgr.prototype={
   },
 
   prePicResize: function(img) {
-
-    var findflag = false;
-    var viewer = null;
-    for(var i=0;i<this.pviewers.length;++i)
-    {
-      if(this.pviewers[i].picDiv == img.parentNode)
-      {
-        viewer = this.pviewers[i];
-        findflag = true;
-        break;
-      }
-    }
-
-    if(findflag)
-    {
-      this.pviewers[i].loadingDiv.style.display = "none";
-      this.pviewers[i].picDiv.style.display = "block";
-      var imgWidth = parseFloat(document.defaultView.getComputedStyle(img, null).width);
-      var imgHeight = parseFloat(document.defaultView.getComputedStyle(img, null).height);
-      var scale = imgHeight / 150;
-      if(scale > 1) {
+    for(let pviewer of this.pviewers) {
+      if(pviewer.picDiv == img.parentNode) {
+        pviewer.loadingDiv.style.display = "none";
+        pviewer.picDiv.style.display = "block";
+        let imgWidth = parseFloat(document.defaultView.getComputedStyle(img, null).width);
+        let imgHeight = parseFloat(document.defaultView.getComputedStyle(img, null).height);
+        let scale = imgHeight / 150;
+        if(scale > 1) {
           img.style.width = imgWidth / scale + "px";
           img.style.height = imgHeight / scale + "px";
+        }
+        break;
       }
     }
   },
 
-  picLoaderror: function(img) {
-
-    var findflag = false;
-    var viewer = null;
-    for(var i=0;i<this.pviewers.length;++i)
-    {
-      if(this.pviewers[i].picDiv == img.parentNode)
-      {
-        viewer = this.pviewers[i];
-        findflag = true;
+  picLoaderror: function(target) {
+    for(let pviewer of this.pviewers) {
+      if(pviewer === target) {
+        let errImage = document.createElement("img");
+        this.removeAllChild(pviewer.loadingDiv);
+        pviewer.loadingDiv.appendChild(errImage);
+        errImage.setAttribute("src", "chrome://bbsfox/skin/state_icon/error.png");
         break;
       }
-    }
-
-    if(findflag)
-    {
-      var errImage = document.createElement('img');
-      this.removeAllChild(viewer.loadingDiv);
-      viewer.loadingDiv.appendChild(errImage);
-      errImage.setAttribute('src', 'chrome://bbsfox/skin/state_icon/error.png');
-      //this.pviewers[i].loadingDiv.innerHTML = '<img src="chrome://bbsfox/skin/state_icon/error.png"/>';
     }
   },
 
@@ -262,32 +217,20 @@ PicViewerMgr.prototype={
     while (n.firstChild) n.removeChild(n.firstChild);
   },
 
-  closePictureViewer: function(btn) {
-    var findflag = false;
-    var viewer = null;
-    for(var i=0;i<this.pviewers.length;++i)
-    {
-      if(this.pviewers[i].closeBtn == btn)
-      {
-        this.BBSWin.removeChild(this.pviewers[i].viewerDiv );
-        viewer = this.pviewers[i];
-        findflag = true;
-        break;
+  closePictureViewer: function(target) {
+    this.pviewers = this.pviewers.filter( pviewer => {
+      if(pviewer === target) {
+        this.BBSWin.removeChild(pviewer.viewerDiv );
+        return false;
+      } else {
+        return true;
       }
-    }
-
-    if(findflag)
-    {
-      for(var i=0,n=0;i<this.pviewers.length;++i)
-        if(this.pviewers[i]!=viewer)
-          this.pviewers[n++] = this.pviewers[i];
-      this.pviewers.length -= 1;
-    }
+    });
   },
 
   closeAllPictureViewer: function() {
-    for(var i=0;i<this.pviewers.length;++i)
-      this.BBSWin.removeChild(this.pviewers[i].viewerDiv );
+    for(let pviewer of this.pviewers)
+      this.BBSWin.removeChild(pviewer.viewerDiv );
     this.pviewers.length = 0;
   }
 };

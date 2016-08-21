@@ -751,13 +751,13 @@ paramikojs.SFTPClient.prototype = {
     try {
       fl = localFile.init(localpath);
       remoteSize = remoteSize == -1 ? 0 : remoteSize;
-      fileInstream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance();
-      fileInstream.QueryInterface(Components.interfaces.nsIFileInputStream);
+      fileInstream = Cc["@mozilla.org/network/file-input-stream;1"].createInstance();
+      fileInstream.QueryInterface(Ci.nsIFileInputStream);
       fileInstream.init(fl, 0x01, 0644, 0);
-      fileInstream.QueryInterface(Components.interfaces.nsISeekableStream);
+      fileInstream.QueryInterface(Ci.nsISeekableStream);
       fileInstream.seek(0, remoteSize);                                      // append or not to append
 
-      dataInstream = Components.classes["@mozilla.org/binaryinputstream;1"].createInstance(Components.interfaces.nsIBinaryInputStream);
+      dataInstream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(Ci.nsIBinaryInputStream);
       dataInstream.setInputStream(fileInstream);
     } catch (ex) {
       if(ssh_console.debug) console.debug(ex);
@@ -843,7 +843,7 @@ paramikojs.SFTPClient.prototype = {
     try {
       fl = localFile.init(localpath);
       localSize = localSize == -1 ? 0 : localSize;
-      fileOutstream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+      fileOutstream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
 
       if (localSize) {
         fileOutstream.init(fl, 0x04 | 0x10, 0644, 0);
@@ -851,7 +851,7 @@ paramikojs.SFTPClient.prototype = {
         fileOutstream.init(fl, 0x04 | 0x08 | 0x20, 0644, 0);
       }
 
-      binaryOutstream = Components.classes["@mozilla.org/binaryoutputstream;1"].createInstance(Components.interfaces.nsIBinaryOutputStream);
+      binaryOutstream = Cc["@mozilla.org/binaryoutputstream;1"].createInstance(Ci.nsIBinaryOutputStream);
       binaryOutstream.setOutputStream(fileOutstream);
     } catch (ex) {
       if(ssh_console.debug) console.debug(ex);

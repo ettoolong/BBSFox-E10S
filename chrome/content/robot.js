@@ -151,6 +151,8 @@ DownloadArticle.prototype={
             var text;
             if(saveMode == 2)
               text = '<span class="BBSLine">'+this.listener.view.BBSROW[row].innerHTML+'</span>';
+            else if(saveMode == 0)
+              text = this.listener.buf.getText(row, 0, this.listener.buf.cols, false, true, false);
             else
               text = this.ansi.getText(row, 0, this.listener.buf.cols, false);
             this.article.push(text);
@@ -173,31 +175,36 @@ DownloadArticle.prototype={
         if(!this.isLineFeed || buf.row < buf.rows-1 || buf.col < 40)
             return false; // not fully received
 
-        var text = this.ansi.getText(buf.rows-2, 0, buf.cols, false);
-        var html, lastlinehtml;
-        if(saveMode==2)
-          html = '<span class="BBSLine">'+this.listener.view.BBSROW[buf.rows-2].innerHTML+'</span>';
+        var text, lastline;
+        if(saveMode == 2) {
+          text = '<span class="BBSLine">'+this.listener.view.BBSROW[buf.rows-2].innerHTML+'</span>';
+          lastline = '<span class="BBSLine">'+this.listener.view.BBSROW[buf.rows-3].innerHTML+'</span>';
+        } else if(saveMode == 0) {
+          text = buf.getText(buf.rows-2, 0, buf.cols, false, true, false);
+          lastline = buf.getText(buf.rows-3, 0, buf.cols, false, true, false);
+        } else {
+          text = this.ansi.getText(buf.rows-2, 0, buf.cols, false);
+          lastline = this.ansi.getText(buf.rows-3, 0, buf.cols, false);
+        }
         // Hack for the double-line separator of PTT
         // Not always works, such as that repeated lines may not be detected
         // disabling double-line separator is recommended
         var downloaded = this.article[this.article.length-1];
-        var lastline = this.ansi.getText(buf.rows-3, 0, buf.cols, false);
-        if(saveMode==2)
-          lastlinehtml = '<span class="BBSLine">'+this.listener.view.BBSROW[buf.rows-3].innerHTML+'</span>';
         if(downloaded != lastline) {
-            var lastlastline = this.ansi.getText(buf.rows-4, 0, buf.cols, false);
+            var lastlastline;
+            if(saveMode == 2) {
+              lastlastline = '<span class="BBSLine">'+this.listener.view.BBSROW[buf.rows-4].innerHTML+'</span>';
+            } else if(saveMode == 0) {
+              lastlastline = buf.getText(buf.rows-4, 0, buf.cols, false, true, false);
+            } else {
+              lastlastline = this.ansi.getText(buf.rows-4, 0, buf.cols, false);
+            }
             if(downloaded == lastlastline)
             {
-              if(saveMode==2)
-                this.article.push(lastlinehtml);
-              else
-                this.article.push(lastline);
+              this.article.push(lastline);
             }
         }
-        if(saveMode==2)
-          this.article.push(html);
-        else
-          this.article.push(text);
+        this.article.push(text);
         this.isLineFeed = false;
         return true;
     },
@@ -206,8 +213,7 @@ DownloadArticle.prototype={
     checkFinish: function(saveMode) {
         var buf = this.listener.buf;
         var text = buf.getRowText(buf.rows-1, 0, buf.cols);
-        if(this.finishTest.test(text))
-        {
+        if(this.finishTest.test(text)) {
           if(text.indexOf("100%") < 0)
             return false;
         }
@@ -215,27 +221,50 @@ DownloadArticle.prototype={
         var text2;
         if(saveMode == 2)
           text2 = '<span class="BBSLine">'+this.listener.view.BBSROW[this.listener.buf.rows-1].innerHTML+'</span>';
-        else
-          text2 = this.ansi.getText(this.listener.buf.rows-1, 0, this.listener.buf.cols, false);
+        else if(saveMode == 0) {
+          text2 = buf.getText(buf.rows-1, 0, buf.cols, false, true, false);
+        } else
+          text2 = this.ansi.getText(buf.rows-1, 0, buf.cols, false);
         this.article.push(text2);
         this.listener.view.doBlink = true;
 
         var data = this.article.join('\r\n');
         this.stopDownload(true);
 
-        if(saveMode==0) {
-            data = data.replace(/\x1b\[[0-9;]*m/g, '');
-            if(this.listener.prefs.TrimTail)
-                data = data.replace(/ +\r\n/g, '\r\n');
-            if(this.listener.os != 'WINNT') // handle CRLF
-                data = data.replace(/\r\n/g, '\n');
+        if(saveMode == 0) {
+          data = data.replace(/\x1b\[[0-9;]*m/g, '');
+          if(this.listener.prefs.TrimTail)
+            data = data.replace(/ +\r\n/g, '\r\n');
+          if(this.listener.os != 'WINNT') // handle CRLF
+            data = data.replace(/\r\n/g, '\n');
+          this.callback(data);
+        } else if(saveMode == 1) {
+          this.callback(data);
         }
-        if(saveMode==2)
+        else if(saveMode == 2)
         {
-          data = this.getHtmlHeader() + data + this.getHtmlTail();
+          var doc = (new DOMParser()).parseFromString(data, "text/html");
+          var queueCount = 0;
+          var done = function() {
+            if(queueCount>0)
+              queueCount--;
+            if(queueCount === 0) {
+              data = this.getHtmlHeader() + doc.body.innerHTML + this.getHtmlTail();
+              this.callback(data);
+            }
+          };
+          var allLinks = doc.getElementsByTagName("a");
+          for(let anchorNode of allLinks) {
+            if(this.prefs.easyReadingWithImg) {
+              queueCount += this.createImageTag(doc, anchorNode, done.bind(this));
+            }
+            if(this.prefs.easyReadingWithVideo) {
+              this.createVideoTag(doc, anchorNode);
+            }
+          }
+          if(queueCount === 0)
+            done.bind(this)();
         }
-        this.callback(data);
-
         return true;
     },
 
@@ -286,32 +315,17 @@ DownloadArticle.prototype={
       selstr += '#BBSWindow{position:relative;}';
       selstr += this.listener.getMainCssDefine();
       selstr += '</style>';
-      if(this.prefs.easyReadingWithImg || this.prefs.easyReadingWithVideo || this.prefs.preventNewTongWenAutoConv)
+      if(this.prefs.easyReadingWithImg ||this.prefs.preventNewTongWenAutoConv)
       {
         selstr += '<script type="text/javascript">function loadpage(){';
         if(this.prefs.preventNewTongWenAutoConv)
           selstr +='var tongwen=document.getElementById("tongwen_font");if(tongwen!=null)tongwen.parentNode.removeChild(tongwen);';
-        if(this.prefs.easyReadingWithImg || this.prefs.easyReadingWithVideo)
-          selstr += 'var allLinks=document.getElementsByTagName("a");';
-        if(this.prefs.easyReadingWithVideo)
-          selstr += 'var youtubeRegEx1 = new RegExp("(https?:\\\\/\\\\/www\\\\.youtube\\\\.com\\\\/watch\\\\?.*(v=[A-Za-z0-9._%-]*))","i");var youtubeRegEx2 = new RegExp("(https?:\\\\/\\\\/youtu\\\\.be\\\\/([A-Za-z0-9._%-]*))","i");var youtubeRegEx3 = new RegExp("(https?:\\\\/\\\\/m\\\\.youtube\\\\.com\\\\/watch\\\\?.*(v=[A-Za-z0-9._%-]*))","i");';
-        if(this.prefs.easyReadingWithImg || this.prefs.easyReadingWithVideo)
-          selstr += 'for(var i=0;i<allLinks.length;i++){var url = allLinks[i].getAttribute("href");var hrel = allLinks[i].getAttribute("rel");if(hrel){';
         if(this.prefs.easyReadingWithImg)
-          selstr +='if(hrel.toLowerCase()=="p" && url.toLowerCase().indexOf("http://photo.xuite.net/")<0 && url.toLowerCase().indexOf("http://simplest-image-hosting.net/")<0 && url.toLowerCase().indexOf("http://screensnapr.com/")<0){var parentDiv = allLinks[i].parentNode;while(parentDiv.className!="BBSLine")parentDiv=parentDiv.parentNode;createImageTag(parentDiv.parentNode, parentDiv, url);};';
-        if(this.prefs.easyReadingWithVideo)
-          selstr +='if(youtubeRegEx1.test(url)){var splits = url.split(youtubeRegEx1);for(var j = 0; j < splits.length; ++j){if(splits[j].length>2){if(splits[j].substr(0,2)=="v="){url = splits[j].substring(2, splits[j].length);var parentDiv = allLinks[i].parentNode;while(parentDiv.className!="BBSLine")parentDiv=parentDiv.parentNode;createVideoTag(parentDiv.parentNode, parentDiv, url);break;}}}}else if(youtubeRegEx2.test(url)){url=url.substring(16, url.length);url=url.replace(/\\//, "");var parentDiv = allLinks[i].parentNode;while(parentDiv.className!="BBSLine")parentDiv=parentDiv.parentNode;createVideoTag(parentDiv.parentNode, parentDiv, url);}else if(youtubeRegEx3.test(url)){var splits = url.split(youtubeRegEx3);for(var j = 0; j < splits.length; ++j){if(splits[j].length>2){if(splits[j].substr(0,2)=="v="){url = splits[j].substring(2, splits[j].length);var parentDiv = allLinks[i].parentNode;while(parentDiv.className!="BBSLine")parentDiv=parentDiv.parentNode;createVideoTag(parentDiv.parentNode, parentDiv, url);break;}}}}';
-        if(this.prefs.easyReadingWithImg || this.prefs.easyReadingWithVideo)
-          selstr +='}}';
-        selstr +='}';
-        if(this.prefs.easyReadingWithImg)
-          selstr +='var switchSize = {view: this, handleEvent: function(e) {if(e.target.getAttribute("class")=="scale"){e.target.setAttribute("class", "max");}else{e.target.setAttribute("class", "scale");}}};function createImageTag(pn, srcdom, code){var node = srcdom.nextSibling;var div;if(node.className!="AddLine"){div = document.createElement("div");div.setAttribute("class","AddLine");pn.insertBefore(div, srcdom.nextSibling);}else{div = node;}var br = document.createElement("BR");div.appendChild(br);var img = document.createElement("img");div.appendChild(img);img.setAttribute("src", code);img.setAttribute("class", "scale");img.addEventListener("click", switchSize, false);}';
-        if(this.prefs.easyReadingWithVideo)
-          selstr +='function createVideoTag(pn, srcdom, code){var node = srcdom.nextSibling;var div;if(node.className!="AddLine"){div = document.createElement("div");div.setAttribute("class","AddLine");pn.insertBefore(div, srcdom.nextSibling);}else{div = node;}var br = document.createElement("BR");div.appendChild(br);var iframe = document.createElement("iframe");div.appendChild(iframe);iframe.setAttribute("class","youtube-player");iframe.setAttribute("type","text/html");iframe.setAttribute("frameborder",0);var scrstr = "http://www.youtube.com/embed/"+code+"?hl=zh_TW&fs=1&rel=0&loop=0&autoplay=0";iframe.setAttribute("width",352);iframe.setAttribute("height",288);iframe.setAttribute("src",scrstr);}';
-         selstr +='</script>';
+          selstr +='var switchSize = {view:this,handleEvent: function(e) {if(e.target.getAttribute("class")=="scale"){e.target.setAttribute("class", "max");}else{e.target.setAttribute("class", "scale");}}};var allLinks = document.querySelectorAll("img.scale");for(let anchorNode of allLinks) {anchorNode.addEventListener("click", switchSize, false);}';
+        selstr +='}</script>';
       }
       selstr += '</head><body';
-      if(this.prefs.easyReadingWithImg || this.prefs.easyReadingWithVideo || this.prefs.preventNewTongWenAutoConv)
+      if(this.prefs.easyReadingWithImg || this.prefs.preventNewTongWenAutoConv)
         selstr += ' onload="loadpage()"';
       selstr += '><div id="BBSWindow"><div id="main" class="main">';
       return selstr;
@@ -319,5 +333,105 @@ DownloadArticle.prototype={
 
     getHtmlTail: function() {
       return '</div></div>' + this.prefs.easyReadingWithImg ? '<div id="bbsfox_em" style="display:none"/>' : '' + '</body></html>';
+    },
+
+    createImageTag: function(doc, anchorNode, done) {
+        var url = anchorNode.getAttribute("href");
+        var hrel = anchorNode.getAttribute("rel");
+        var ignoreList = ['http://photo.xuite.net/',
+                          'http://simplest-image-hosting.net/',
+                          'http://screensnapr.com/',
+                          'https://www.dropbox.com'];
+
+        if(!hrel)
+          return 0;
+        if(bbsfox.extPicLoader.query(url)) {
+          //
+        } else if(hrel.toLowerCase() !== "p") {
+          return 0;
+        }
+
+        for(let i of ignoreList) {
+          if(url.toLowerCase().indexOf(i) !== -1) {
+            return 0;
+          }
+        }
+
+        var srcdom = anchorNode.parentNode;
+        while(!srcdom.classList.contains('BBSLine')) {
+          srcdom = srcdom.parentNode;
+        }
+        var pn = srcdom.parentNode;
+        var node = srcdom.nextSibling.nextSibling;
+        var div;
+        if( !node.classList.contains("AddLine") ) {
+          div = doc.createElement("div");
+          div.setAttribute("class", "AddLine");
+          pn.insertBefore(div, srcdom.nextSibling);
+        } else {
+          div = node;
+        }
+        var br = doc.createElement("BR");
+        div.appendChild(br);
+        var img = doc.createElement("img");
+        div.appendChild(img);
+        img.setAttribute("class", "scale");
+        if(bbsfox.extPicLoader.query(url, function(realUrl){img.setAttribute("src", realUrl);done();})) {
+          return 1;
+        } else {
+          img.setAttribute("src", url);
+          return 0;
+        }
+    },
+
+    createVideoTag: function(doc, anchorNode) {
+      var url = anchorNode.getAttribute("href");
+      var youtubeRegEx1 = /https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)/i;
+      var youtubeRegEx2 = /https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*)/i;
+      var vSizeArr = [{w:425, h:344},
+                      {w:480, h:385},
+                      {w:640, h:505},
+                      {w:960, h:745},
+                      {w:560, h:340},
+                      {w:640, h:385},
+                      {w:853, h:505},
+                      {w:1280, h:745}];
+
+      var code;
+      if(youtubeRegEx1.test(url)) {
+        var res = youtubeRegEx1.exec(url);
+        code = res[1];
+      } else if(youtubeRegEx2.test(url)) {
+        var res = youtubeRegEx2.exec(url);
+        code = res[1];
+      } else {
+        return;
+      }
+      var srcdom = anchorNode.parentNode;
+      while(!srcdom.classList.contains('BBSLine')) {
+        srcdom = srcdom.parentNode;
+      }
+      var pn = srcdom.parentNode;
+      var node = srcdom.nextSibling.nextSibling;
+      var div;
+      if( !node.classList.contains("AddLine") ) {
+        div = document.createElement("div");
+        div.setAttribute("class","AddLine");
+        pn.insertBefore(div, srcdom.nextSibling);
+      } else {
+        div = node;
+      }
+      var br = document.createElement("BR");
+      div.appendChild(br);
+      var iframe = document.createElement("iframe");
+      div.appendChild(iframe);
+      iframe.setAttribute("class","youtube-player");
+      iframe.setAttribute("type","text/html");
+      iframe.setAttribute("frameborder",0);
+
+      var scrstr = "https://www.youtube.com/embed/"+code+"?hl=zh_TW&fs=1&rel=0&loop=0&autoplay=0";
+      iframe.setAttribute("width",vSizeArr[this.prefs.embeddedPlayerSize].w);
+      iframe.setAttribute("height",vSizeArr[this.prefs.embeddedPlayerSize].h);
+      iframe.setAttribute("src",scrstr);
     }
 };

@@ -123,7 +123,6 @@ paramikojs.HostKeys.prototype = {
     @raise IOError: if there was an error reading the file
   */
   load : function(filename) {
-    if ((Components && Components.classes)) { // Mozilla
       //console.log('localFile.init('+filename+')');
       var file = localFile.init(filename);
       if (!file.exists()) {
@@ -131,21 +130,14 @@ paramikojs.HostKeys.prototype = {
         return;
       }
 
-      var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+      var fstream = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileInputStream);
       fstream.init(file, -1, 0, 0);
 
       var charset = "UTF-8";
-      var is = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
+      var is = Cc["@mozilla.org/intl/converter-input-stream;1"].createInstance(Ci.nsIConverterInputStream);
       is.init(fstream, charset, 1024, 0xFFFD);
-      is.QueryInterface(Components.interfaces.nsIUnicharLineInputStream);
+      is.QueryInterface(Ci.nsIUnicharLineInputStream);
       this.loadHelper(is);
-    }/* else {  // Chrome
-      var self = this;
-      chrome.storage.local.get("host_keys", function(value) {
-        is = value.host_keys || '';
-        self.loadHelper(is);
-      });
-    }*/
   },
   load_from_line : function(lines) {
     if(!lines || lines.length==0){
@@ -166,15 +158,8 @@ paramikojs.HostKeys.prototype = {
     var cont;
     do {
       line = {};
-      if ((Components && Components.classes)) { // Mozilla
-        cont = is.readLine(line);
-        line = line.value.trim();
-      }/* else {  // Chrome
-        line = is.substring(0, is.indexOf('\n'));
-        is = is.substring(line.length + 1);
-        line = line.trim();
-        cont = line.length;
-      }*/
+      cont = is.readLine(line);
+      line = line.value.trim();
       if (!line.length || line[0] == '#') {
         continue;
       }
@@ -185,9 +170,7 @@ paramikojs.HostKeys.prototype = {
       // Now you can do something with line.value
     } while (cont);
 
-    if ((Components && Components.classes)) {
-      is.close();
-    }
+    is.close();
   },
 
   /*

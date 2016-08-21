@@ -1,34 +1,3 @@
-﻿<!ENTITY menu_test.label "BBSFox test">
-<!ENTITY menu_copy.label "Copy">
-<!ENTITY menu_ansiCopy.label "Copy with ANSI Color">
-<!ENTITY menu_paste.label "Paste">
-<!ENTITY menu_selAll.label "Select All">
-<!ENTITY menu_search.label "Search">
-<!ENTITY menu_ansicopy.label "AnsiCopy">
-<!ENTITY menu_embeddedplayer.label "Enable Embedded Player">
-<!ENTITY menu_previewpicture.label "Show Preview Image">
-<!ENTITY menu_screenkeyboard.label "Enable Punctuation Window">
-<!ENTITY menu_ansicolortool.label "Open Ansi Color Tool Window">
-<!ENTITY menu_openalllink.label "Open All Links">
-<!ENTITY menu_easyread.label "Easy Reading Mode">
-<!ENTITY menu_pushthread.label "Push Thread Tool">
-<!ENTITY menu_openthreadurl.label "Open Thread URL">
-<!ENTITY menu_changecolortable.label "Switch Normal/Highlight Display">
-<!ENTITY menu_replyrobot.label "Auto Input Text">
-<!ENTITY menu_downloadpost.label "Download Post">
-<!ENTITY menu_downtext.label "Text">
-<!ENTITY menu_downansi.label "AnsiColor">
-<!ENTITY menu_downhtml.label "HTML">
-<!ENTITY menu_loadfile.label "Load File">
-<!ENTITY menu_addtoblacklist.label "Add to Blacklist">
-<!ENTITY menu_removefromblacklist.label "Remove from Blacklist">
-<!ENTITY menu_addtrack.label "Add To Keyword Pool">
-<!ENTITY menu_deltrack.label "Cancel This Keyword">
-<!ENTITY menu_cleartrack.label "Clear Pp Keyword Pool">
-<!ENTITY menu_delaypaste.label "Paste One Char Per Second">
-<!ENTITY menu_copyhtml.label "Copy As HTML">
-<!ENTITY menu_mousebrowsing.label "Mouse Browsing On/Off">
-<!ENTITY menu_switchbgdisplay.label "Background Image Display On/Off">
 <!ENTITY emailImageCmd.label "Send Image…">
 <!ENTITY emailImageCmd.accesskey "n">
 <!ENTITY pushthread_title.label "Push thread tool">
@@ -46,7 +15,7 @@
 <!ENTITY addsite_cancel.label "Cancel">
 <!ENTITY options_backup.label "Backup">
 <!ENTITY options_recover.label "Restore">
-<!ENTITY options_help.label "Help">
+<!ENTITY options_help.label "User Manual">
 <!ENTITY options_apply.label "Apply">
 <!ENTITY options_default.label "Default">
 <!ENTITY options_bbsfoxoptions.label "BBSFox Options">
@@ -104,7 +73,8 @@
 <!ENTITY options_linewrap2.label "(0 = disabled)">
 <!ENTITY options_linefeed.label "If text is longer than screen line feeds">
 <!ENTITY options_fixunicodedisplay.label "Fix AsciiArt Display">
-<!ENTITY options_foneface.label "Font face">
+<!ENTITY options_foneface.label "Font face:">
+<!ENTITY options_enfoneface.label "English Font face:">
 <!ENTITY options_fontsize.label "Font size">
 <!ENTITY options_codepage.label "Codepage:">
 <!ENTITY options_testkey.label "中">
@@ -254,9 +224,7 @@
 <!ENTITY options_hotkeydowntext.label "Text">
 <!ENTITY options_hotkeydownansi.label "AnsiCopy">
 <!ENTITY options_hotkeydownhtml.label "HTML">
-<!ENTITY options_usehttpcontextmenu.label "Use web page context menu">
 <!ENTITY options_bbsfoxcontextmenu.label "BBSFox context menu">
-<!ENTITY options_savepagemenu.label "Enable item [Save Page As...]">
 <!ENTITY options_ansicopymenu.label "Enable item [Copy with ANSI Color]">
 <!ENTITY options_embeddedplayermenu.label "Enable item [Enable Embedded Player](only support Youtube/USTREAM)">
 <!ENTITY options_previewpicturemenu.label "Enable item [Show Preview Image]">
@@ -276,15 +244,14 @@
 <!ENTITY options_blacklistemenu.label "Enable item [Blacklist]">
 <!ENTITY options_onlyforpttsite.label "(only for ptt.cc site)">
 <!ENTITY options_changecolortablemenu.label "Enable item [Switch Normal/Highlight Display]">
-<!ENTITY options_usesubmenuforsearchengine.label "Use sub-menu for search engine.">
 <!ENTITY options_submenuforsearchenginenote.label "This item only for BBS context menu.For web context you can install add-on [Context Search]">
 <!ENTITY options_firefoxcontextmenu.label "Firefox context menu">
 <!ENTITY options_optionnote0.label "The following context menu items are working properly for pcmanfx,">
 <!ENTITY options_optionnote1.label "For infrequent items, the users could hide them as they like.">
 <!ENTITY options_hidebookmarklinkmenu.label "Hide item [Add link to bookmark] in context menu when at BBS page">
 <!ENTITY options_hidesendlinkmenu.label "Hide item [Send link] in context menu when at BBS page">
-<!ENTITY options_hidebookmarkpagemenu.label "Hide item [Add page to bookmark] in context menu when at BBS page">
 <!ENTITY options_hidesendpagemenu.label "Hide item [Send page] in context menu when at BBS page">
+<!ENTITY options_hideviewsourcemenu.label "Hide item [View source] in context menu when at BBS page">
 <!ENTITY options_hideviewinfomenu.label "Hide item [View info] in context menu when at BBS page">
 <!ENTITY options_hideinspectmenu.label "Hide item [Inspect Element] in context menu when at BBS page">
 <!ENTITY options_downloadlinedelay.label "Line delay in download post">
@@ -307,6 +274,7 @@
 <!ENTITY options_needGrowl1.label "To use this function, You need install">
 <!ENTITY options_needGrowl2.label "Growl">
 <!ENTITY options_needGrowl3.label "">
+<!ENTITY options_enablenotification.label "Enable Notification">
 <!ENTITY options_notifywhenbackground.label "Notify when not at current page">
 <!ENTITY options_notifybysound.label "Notify by sound">
 <!ENTITY options_notifybymessage.label "Notify by message">
@@ -495,6 +463,8 @@
 <!ENTITY SHOWALLTAB "[Popup] List all tabs (Preview Mode)">
 <!ENTITY CLOSEDTABSPOPUP "[Popup] Recently Closed Tabs">
 <!ENTITY WEBSEARCHPOPUP "[Popup] Search for Selection with...">
+<!ENTITY ALLSCRIPTSPOPUP "[Popup] All User Scripts">
+<!ENTITY OPENPANELUI "[Popup] Open menu">
 <!ENTITY HYBRIDS "--Hybrid Type--">
 <!ENTITY HYBRIDBOOKMARK "[Hybrid] Bookmark (Link / Frame / Page)">
 <!ENTITY HYBRIDSAVE "[Hybrid] Save As... (Link / Image / Frame / Page)">

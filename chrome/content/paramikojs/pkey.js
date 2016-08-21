@@ -158,7 +158,7 @@ paramikojs.PKey.prototype = {
     object.  If the private key is encrypted and C{password} is not C{None},
     the given password will be used to decrypt the key (otherwise
     L{PasswordRequiredException} is thrown).
-    
+
     @param file_obj: the file to read from
     @type file_obj: file
     @param password: an optional password to use to decrypt the key, if it's
@@ -166,7 +166,7 @@ paramikojs.PKey.prototype = {
     @type password: str
     @return: a new key object based on the given private key
     @rtype: L{PKey}
-    
+
     @raise IOError: if there was an error reading the key
     @raise PasswordRequiredException: if the private key file is encrypted,
         and C{password} is C{None}
@@ -196,12 +196,12 @@ paramikojs.PKey.prototype = {
   /*
     Write private key contents into a file (or file-like) object.  If the
     password is not C{None}, the key is encrypted before writing.
-    
+
     @param file_obj: the file object to write into
     @type file_obj: file
     @param password: an optional password to use to encrypt the key
     @type password: str
-    
+
     @raise IOError: if there was an error writing to the file
     @raise SSHException: if the key is invalid
   */
@@ -233,19 +233,15 @@ paramikojs.PKey.prototype = {
   */
   _read_private_key_file : function(tag, filename, password) {
     //console.log('localFile.init('+filename+')');
-    var file = !Components ? filename : localFile.init(filename);
+    var file = localFile.init(filename);
     var data = this._read_private_key(tag, file, password);
     return data;
   },
 
   _read_private_key : function(tag, f, password) {
-    var lines;
-    if (!(Components && Components.classes)) {  // Chrome
-      lines = gKeys[f];
-    } else {
-      lines = "";
-      var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-      var cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"].createInstance(Components.interfaces.nsIConverterInputStream);
+    var lines = "";
+      var fstream = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileInputStream);
+      var cstream = Cc["@mozilla.org/intl/converter-input-stream;1"].createInstance(Ci.nsIConverterInputStream);
       fstream.init(f, -1, 0, 0);
       cstream.init(fstream, "UTF-8", 0, 0); // you can use another encoding here if you wish
 
@@ -256,7 +252,6 @@ paramikojs.PKey.prototype = {
         lines += str.value;
       } while (read != 0);
       cstream.close(); // this closes fstream
-    }
 
     lines = lines.indexOf('\r\n') != -1 ? lines.split('\r\n') : lines.split('\n');
 
@@ -501,13 +496,10 @@ paramikojs.PKey.prototype = {
   },
 
   _write_private_key : function(tag, f, data, password) {
-    if(!(Components && Components.classes)) {
-      throw new Error("Unable to write files without Mozilla's Components.classes"); //FIXME
-    }
-    
-    var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);  
-    foStream.init(f, 0x02 | 0x08 | 0x20, 0600, 0);  
-    var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);  
+
+    var foStream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
+    foStream.init(f, 0x02 | 0x08 | 0x20, 0600, 0);
+    var converter = Cc["@mozilla.org/intl/converter-output-stream;1"].createInstance(Ci.nsIConverterOutputStream);
     converter.init(foStream, "UTF-8", 0, 0);
 
     converter.writeString('-----BEGIN ' + tag + ' PRIVATE KEY-----\n');

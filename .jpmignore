@@ -1,0 +1,13 @@
+# Ignore .DS_Store files created by mac
+.DS_Store
+.git
+.jpmignore
+.gitignore
+
+# Ignore any zip or xpi files
+*.zip
+*.xpi
+
+# other
+data/js/optionsDlg.js
+data/js/optionsDlg-cs.js

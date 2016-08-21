@@ -1,15 +1,11 @@
 // Main Program
 
 function BBSFox() {
-    this.os = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
-    var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
-    this.FXVersion = parseFloat(appInfo.version);
-
-    Components.utils.import("resource://bbsfox/uao.js");
+    this.os = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
 
     this.CmdHandler = document.getElementById('cmdHandler');
     this.CmdHandler.setAttribute('bbsfox', true);
-    this.CmdHandler.setAttribute('UpdateIcon', 'chrome://bbsfox/skin/logo/logo.png');
+    //this.CmdHandler.setAttribute('UpdateIcon', 'chrome://bbsfox/skin/logo/logo.png');
     this.CmdHandler.setAttribute('useTextDragAndDrop', '0'); // ?
     this.CmdHandler.setAttribute('DragingWindow', '0');
     this.CmdHandler.setAttribute('MaxZIndex', 11);
@@ -91,12 +87,12 @@ function BBSFox() {
     this.mbTimer = null;
     this.timerOnsec = null;
 
-    //window.controllers.insertControllerAt(0, this.documentControllers);            // to override default commands for window, can't working in E10S
+    window.controllers.insertControllerAt(0, this.documentControllers);            // to override default commands for window, can't working in E10S
     this.DocInputArea.controllers.insertControllerAt(0, this.documentControllers); // to override default commands for inputbox, can't working in E10S
 }
 
 BBSFox.prototype={
-    _bundle: Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService)
+    _bundle: Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService)
             .createBundle("chrome://bbsfox/locale/bbsfox.properties"),
 
     youtubeRegEx: /(https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)|https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))/i,
@@ -227,8 +223,8 @@ BBSFox.prototype={
         this.connectState = 1;
         this.updateTabIcon('connect');
         this.unusedTime = 0;
-        this.timerOnsec = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-        this.timerOnsec.initWithCallback(this, 1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
+        this.timerOnsec = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+        this.timerOnsec.initWithCallback(this, 1000, Ci.nsITimer.TYPE_REPEATING_SLACK);
     },
 
     onData: function(conn, data) {
@@ -236,7 +232,7 @@ BBSFox.prototype={
     },
 
     onClose: function(conn) {
-        this.UnregExitAlert();
+        this.unregExitAlert();
 
         this.connectState = 2;
         this.unusedTime = 0;
@@ -259,12 +255,11 @@ BBSFox.prototype={
         //issue: if (!this.reconnectDelay) && (this.reconnectCount==0), will try reconnect VERY quickly. when your network is not ready, that will make some problem!
         if(this.prefs.reconnectCount == 0) //always reconnect
         {
-          var _this = this;
-          this.reconnectTimer = setTimer(false, function() {
-            _this.buf.clear(2);
-            _this.buf.attr.resetAttr();
-            _this.reconnectTimer = null;
-            _this.conn.connect();
+          this.reconnectTimer = setTimer(false, () => {
+            this.buf.clear(2);
+            this.buf.attr.resetAttr();
+            this.reconnectTimer = null;
+            this.conn.connect();
           }, 500);
         }
         else
@@ -274,12 +269,11 @@ BBSFox.prototype={
           this.conn.connect();
         }
       } else {
-        var _this = this;
-        this.reconnectTimer = setTimer(false, function() {
-          _this.buf.clear(2);
-          _this.buf.attr.resetAttr();
-          _this.reconnectTimer = null;
-          _this.conn.connect();
+        this.reconnectTimer = setTimer(false, () => {
+          this.buf.clear(2);
+          this.buf.attr.resetAttr();
+          this.reconnectTimer = null;
+          this.conn.connect();
         }, this.prefs.reconnectDelay * 1000);
       }
     },
@@ -320,12 +314,10 @@ BBSFox.prototype={
 
     setMbTimer: function() {
       this.cancelMbTimer();
-      var _this=this;
-      var func=function() {
-        _this.mbTimer=null;
-        _this.CmdHandler.setAttribute('SkipMouseClick','0');
-      };
-      this.mbTimer = setTimer(false, func, 100);
+      this.mbTimer = setTimer(false, () => {
+        this.mbTimer = null;
+        this.CmdHandler.setAttribute('SkipMouseClick','0');
+      }, 100);
     },
 
     cancelDblclickTimer: function(enableEvent) {
@@ -342,12 +334,10 @@ BBSFox.prototype={
     setDblclickTimer: function() {
       this.cancelDblclickTimer();
       this.view.BBSWin.style.MozUserSelect = 'none';
-      var _this=this;
-      var func=function() {
-        _this.dblclickTimer=null;
-        _this.view.BBSWin.style.MozUserSelect = 'text';
-      };
-      this.dblclickTimer = setTimer(false, func, 400);
+      this.dblclickTimer = setTimer(false, () => {
+        this.dblclickTimer = null;
+        this.view.BBSWin.style.MozUserSelect = 'text';
+      }, 400);
     },
 
     cancelMouseDownTimer: function() {
@@ -373,13 +363,11 @@ BBSFox.prototype={
         this.dblclickTimer.cancel();
         this.dblclickTimer=null;
       }
-      var _this=this;
-      var func=function() {
-        _this.inputAreaFocusTimer.cancel();
-        _this.inputAreaFocusTimer=null;
-        _this.setInputAreaFocus();
-      };
-      this.inputAreaFocusTimer = setTimer(false, func, 1);
+      this.inputAreaFocusTimer = setTimer(false, () => {
+        this.inputAreaFocusTimer.cancel();
+        this.inputAreaFocusTimer = null;
+        this.setInputAreaFocus();
+      }, 1);
     },
 
     redraw: function() {
@@ -395,7 +383,7 @@ BBSFox.prototype={
     },
 
     doCopy: function(str) {
-      var clipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
+      var clipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIClipboardHelper);
       if(this.prefs.deleteSpaceWhenCopy)
         str = str.replace(/[ \t\f]+$/gm,'');
       clipboardHelper.copyString(str);
@@ -454,15 +442,14 @@ BBSFox.prototype={
     },
 
     doDelayPasteText: function() {
-      var clip = Components.classes["@mozilla.org/widget/clipboard;1"]
-                            .getService(Components.interfaces.nsIClipboard);
+      var clip = Cc["@mozilla.org/widget/clipboard;1"].getService(Ci.nsIClipboard);
       if(clip)
       {
-        var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+        var trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
         if (trans){
-          var loadContext = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                  .getInterface(Components.interfaces.nsIWebNavigation)
-                  .QueryInterface(Components.interfaces.nsILoadContext);
+          var loadContext = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                  .getInterface(Ci.nsIWebNavigation)
+                  .QueryInterface(Ci.nsILoadContext);
           trans.init(loadContext);
           trans.addDataFlavor("text/unicode");
           clip.getData(trans, clip.kGlobalClipboard);
@@ -470,7 +457,7 @@ BBSFox.prototype={
           var len={};
           trans.getTransferData("text/unicode", data, len);
           if(data && data.value) {
-            var s = data.value.QueryInterface(Components.interfaces.nsISupportsString);
+            var s = data.value.QueryInterface(Ci.nsISupportsString);
             s = s.data.substring(0, len.value / 2);
             s = s.replace(/\r\n/g, '\r');
             s = s.replace(/\n/g, '\r');
@@ -501,14 +488,14 @@ BBSFox.prototype={
     doPaste: function(extbuf) {
         if(this.conn) {
             // From: https://developer.mozilla.org/en/Using_the_Clipboard
-            var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
+            var clip = Cc["@mozilla.org/widget/clipboard;1"].getService(Ci.nsIClipboard);
             if(!clip)
                 return false;
-            var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+            var trans = Cc["@mozilla.org/widget/transferable;1"].createInstance(Ci.nsITransferable);
             if (!trans) return false;
-            var loadContext = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                  .getInterface(Components.interfaces.nsIWebNavigation)
-                  .QueryInterface(Components.interfaces.nsILoadContext);
+            var loadContext = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                  .getInterface(Ci.nsIWebNavigation)
+                  .QueryInterface(Ci.nsILoadContext);
             trans.init(loadContext);
             trans.addDataFlavor("text/unicode");
             clip.getData(trans, clip.kGlobalClipboard);
@@ -523,7 +510,7 @@ BBSFox.prototype={
               return;
             }
             if(data && data.value) {
-                var s=data.value.QueryInterface(Components.interfaces.nsISupportsString);
+                var s=data.value.QueryInterface(Ci.nsISupportsString);
                 s = s.data.substring(0, len.value / 2);
                 s = s.replace(/\r\n/g, '\r');
                 s = s.replace(/\n/g, '\r');
@@ -548,8 +535,7 @@ BBSFox.prototype={
     },
 
     doCopyHtml: function() {
-      var clipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"]
-                                       .getService(Components.interfaces.nsIClipboardHelper);
+      var clipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIClipboardHelper);
       clipboardHelper.copyString(this.getPageSourceCode());
     },
 
@@ -558,7 +544,7 @@ BBSFox.prototype={
     },
 
     saveDialog: function(data) {
-      var nsIFilePicker = Components.interfaces.nsIFilePicker;
+      var nsIFilePicker = Ci.nsIFilePicker;
       this.sendCoreCommand({command: "openFilepicker",
                             title: null,
                             mode: nsIFilePicker.modeSave,
@@ -570,10 +556,21 @@ BBSFox.prototype={
     },
 
     getCssData: function(filename) {
-      var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-      var channel = ioService.newChannel('chrome://bbsfox/skin/'+filename+'.css', null, null);
+      var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+      //var channel = ioService.newChannel('chrome://bbsfox/skin/'+filename+'.css', null, null);
+      var ssm = Cc["@mozilla.org/scriptsecuritymanager;1"].getService(Ci.nsIScriptSecurityManager);
+      var sp = ssm.getSystemPrincipal();
+      var channel = ioService.newChannel2("chrome://bbsfox/skin/"+filename+".css", //aSpec
+                                          null, //aOriginCharset
+                                          null, //aBaseURI
+                                          null, //aLoadingNode
+                                          sp, //aLoadingPrincipal
+                                          null, //aTriggeringPrincipal
+                                          Ci.nsILoadInfo.SEC_NORMAL, //aSecurityFlags
+                                          Ci.nsIContentPolicy.TYPE_OTHER); //aContentPolicyType
+
       var ins = channel.open();
-      var scriptableStream=Components.classes["@mozilla.org/scriptableinputstream;1"].getService(Components.interfaces.nsIScriptableInputStream);
+      var scriptableStream = Cc["@mozilla.org/scriptableinputstream;1"].getService(Ci.nsIScriptableInputStream);
       scriptableStream.init(ins);
       var str=scriptableStream.read(ins.available());
       scriptableStream.close();
@@ -654,19 +651,9 @@ BBSFox.prototype={
       return selstr;
     },
 
-    getIndexOf: function(arr, str) {
-      str = str.toLowerCase();
-      for(var i=0;i<arr.length;++i) {
-        if(arr[i].toLowerCase() == str)
-          return i;
-      }
-      return -1;
-    },
-
     doClearTrack: function() {
       this.prefs.highlightWords_local = [];
       this.redraw();
-      this.prefs.updateOverlayPrefs([{key:'highlightWords', value:''}]);
     },
 
     doAddTrack: function() {
@@ -678,11 +665,15 @@ BBSFox.prototype={
       if(selstr != '') {
         highlightWords_local.push(selstr);
         this.redraw();
-        this.prefs.updateOverlayPrefs([{key:'highlightWords', value:this.prefs.highlightWords_local.join('\n')}]);
       }
     },
 
     doDelTrack: function() {
+      let getIndexOf = function(arr, str) {
+        str = str.toLowerCase();
+        arr = arr.map( item => item.toLowerCase() );
+        return arr.indexOf(str);
+      };
       var selstr = window.getSelection().toString().replace('\r\n','\n');
       var strArray = selstr.split('\n');
 
@@ -698,23 +689,23 @@ BBSFox.prototype={
             idx = highlightWords_local.indexOf(selstr);
           }
         } else {
-          idx = this.getIndexOf(highlightWords_local, selstr);
+          idx = getIndexOf(highlightWords_local, selstr);
           while( idx != -1) {
             highlightWords_local.splice(idx, 1);
-            idx = this.getIndexOf(highlightWords_local, selstr);
+            idx = getIndexOf(highlightWords_local, selstr);
           }
         }
         this.redraw();
-        this.prefs.updateOverlayPrefs([{key:'highlightWords', value:this.prefs.highlightWords_local.join('\n')}]);
       }
     },
 
     doOpenAllLink: function() {
       var allLinks = document.getElementsByTagName('a');
       var urls = [];
+      for(let link of allLinks) {
+        urls.push(link.getAttribute("href"));
+      }
       var charset = document.characterSet;
-      for (var i = 0; i < allLinks.length; i++)
-        urls.push(allLinks[i].getAttribute("href"));
       this.sendCoreCommand({command: "openNewTabs", charset: charset, ref: null, loadInBg: true, urls:urls});
     },
 
@@ -746,7 +737,7 @@ BBSFox.prototype={
     },
 
     switchBgDisplay: function() {
-      if(this.prefs.overlayPrefs.enableBackground)
+      if(this.prefs.enableBackground)
         this.bbsbg.SwitchBgDisplay();
     },
 
@@ -823,13 +814,18 @@ BBSFox.prototype={
           icon =  'chrome://bbsfox/skin/state_icon/connecting.gif';
         default:
       }
-      this.CmdHandler.setAttribute('UpdateIcon', icon);
-      this.prefs.updateOverlayPrefs([{key:'tabIcon', value:icon}]);
+      this.prefs.status.tabIcon = icon;
+      //this.CmdHandler.setAttribute('UpdateIcon', icon);
+      //this.prefs.updateEventPrefs([{key:'tabIcon', value:icon}]);
       this.sendCoreCommand({command: "updateTabIcon", icon: icon});
     },
 
-    setSelectStatus: function(selectStatus) {
+    setSelectStatus: function(selectStatus) { //TODO: check this. why we need it?
       this.selectStatus = selectStatus;
+    },
+
+    tabReady: function(cb){
+      //this.loadLoginData();
     },
 
     setFrameScript: function(cb) {
@@ -838,7 +834,6 @@ BBSFox.prototype={
         this.FrameScriptCb = cb;
         if(this.prefs) {
           this.prefs.updateEventPrefs(); //force update
-          this.prefs.updateOverlayPrefs(); //force update
           this.loadLoginData();
         } else {
         }
@@ -846,10 +841,14 @@ BBSFox.prototype={
       } else {
         this.FrameScriptCb = cb;
         this.prefs.updateEventPrefs(); //force update
-        this.prefs.updateOverlayPrefs(); //force update
-        this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.overlayPrefs.tabIcon});
+        this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.status.tabIcon});
         return false;
       }
+    },
+
+    updateTabInfo: function() {
+      this.prefs.updateEventPrefs(); //force update
+      this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.status.tabIcon});
     },
 
     sendCoreCommand: function(command, async) {
@@ -1043,23 +1042,21 @@ BBSFox.prototype={
       if(bbsfox.isDefaultPref != browserutils.isDefaultPref)
       {
         bbsfox.prefListener.unregister();
+        bbsfox.isDefaultPref = browserutils.isDefaultPref;
+        bbsfox.siteAuthInfo = browserutils.siteAuthInfo;
         bbsfox.prefListener = browserutils.prefListener(function(branch, name) {
           bbsfox.prefs.onPrefChange(bbsfox, branch, name);
         }, bbsfox.prefs);
-        bbsfox.isDefaultPref = browserutils.isDefaultPref;
-        bbsfox.siteAuthInfo = browserutils.siteAuthInfo;
       }
     },
 
     doSiteSettingCheck: function(t) {
-        if(this.settingCheckTimer)
-          this.settingCheckTimer.cancel();
-        var _this=this;
-        var func=function() {
-                _this.settingCheckTimer = null;
-                _this.siteSettingCheck();
-        };
-        this.settingCheckTimer = setTimer(false, func, t);
+      if(this.settingCheckTimer)
+        this.settingCheckTimer.cancel();
+      this.settingCheckTimer = setTimer(false, () => {
+        this.settingCheckTimer = null;
+        this.siteSettingCheck();
+      }, t);
     },
 
     cancelDownloadAndPaste: function() {
@@ -1134,9 +1131,8 @@ BBSFox.prototype={
         if(this.prefs.useMouseBrowsing) {
           this.setDblclickTimer();
         }
-        if(event.target && event.target.getAttribute("link")=='true')
+        if(event.target && event.target.getAttribute("link")=='true') //TODO: check target type.
         {
-          var defaultAction = true;
           //try to find out ancher node and get boardName.
           //if boardName == current boardname, jump to other board
           if(this.prefs.aidAction!=0 && this.prefs.aidAction!=1) {
@@ -1163,15 +1159,10 @@ BBSFox.prototype={
                 this.conn.send(sendCode);
                 event.stopPropagation();
                 event.preventDefault();
-                defaultAction = false;
               }
             }
           } else if(this.prefs.aidAction==1 && this.prefs.loadURLInBG){
-              defaultAction = false;
               this.bgtab(event);
-          }
-          if(defaultAction){
-              this.fgtab(event);
           }
           return;
         }
@@ -1183,9 +1174,11 @@ BBSFox.prototype={
             if(event.target.className)
               if(event.target.classList.contains('extUI'))
                 doMouseCommand = false;
-            if(event.target.tagName)
-              if(event.target.tagName.indexOf("menuitem") >= 0 )
+            if(event.target.tagName) {
+              //if(event.target.tagName.indexOf("menuitem") >= 0 )
+              if(event.target.tagName === 'SELECT' || event.target.tagName === 'OPTION')
                 doMouseCommand = false;
+            }
             if(skipMouseClick)
             {
               doMouseCommand = false;
@@ -1219,7 +1212,7 @@ BBSFox.prototype={
     mouse_down_init: function(event) {
       if(event.button == 2) {//right button
         this.lastEventTarget = event.originalTarget;
-        this.prefs.updateOverlayPrefs([{key:'mouseOnPicWindow', value:false}]);
+        this.prefs.status.mouseOnPicWindow = false;
       }
     },
 
@@ -1236,21 +1229,22 @@ BBSFox.prototype={
         if(event.target.className)
           if(event.target.classList.contains('extUI'))
             onbbsarea = false;
-        if(event.target.tagName)
-          if(event.target.tagName.indexOf("menuitem") >= 0 )
+        if(event.target.tagName) {
+          //if(event.target.tagName.indexOf("menuitem") >= 0)
+          if(event.target.tagName === "SELECT" || event.target.tagName === "OPTION") {
             onbbsarea = false;
+          }
+        }
         // Press left key for 1 sec
         this.cancelMouseDownTimer();
         //this.mouseDownTimeout = false;
         if(window.getSelection().isCollapsed && this.prefs.useMouseBrowsing && this.prefs.useMouseBrowseSendEnter && onbbsarea) {
-          var _this = this;
-          var func = function() {
-            if(_this.mouseLeftButtonDown && window.getSelection().isCollapsed)
-              _this.conn.send(_this.prefs.EnterChar);
-            _this.mouseDownTimer = null;
-            _this.CmdHandler.setAttribute('SkipMouseClick','1');
-          };
-          this.mouseDownTimer = setTimer(false, func, 1000);
+          this.mouseDownTimer = setTimer(false, () => {
+            if(this.mouseLeftButtonDown && window.getSelection().isCollapsed)
+              this.conn.send(this.prefs.EnterChar);
+            this.mouseDownTimer = null;
+            this.CmdHandler.setAttribute('SkipMouseClick','1');
+          }, 1000);
         }
       }
       else if(event.button==2)
@@ -1262,40 +1256,10 @@ BBSFox.prototype={
       //0=left button, 1=middle button, 2=right button
       if(event.button==0)
       {
-        var prefs = this.prefs;
         this.cancelMouseDownTimer();
         this.setMbTimer();
         //this.CmdHandler.setAttribute('MouseLeftButtonDown', '0');
         this.mouseLeftButtonDown = false;
-        if(!window.getSelection().isCollapsed && prefs.enableBlacklist && prefs.overlayPrefs.blacklistMenu) {
-
-          //check blacklist id
-          var selstr = window.getSelection().toString().toLowerCase();
-          if(selstr && selstr.indexOf('\n') == -1) {
-            selstr = selstr.replace(/^\s+|\s+$/g,'');
-            var userid = '';
-            var selection = this.view.getSelectionColRow();
-            //if(selection.start.row)
-            var rowText = this.buf.getRowText(selection.start.row, 0, this.buf.cols);
-            if (this.buf.PageState == 3 && this.isPTT()) {
-              userid = parsePushthreadForUserId(rowText);
-            } else if (this.buf.PageState == 2) {
-              userid = parseThreadForUserId(rowText);
-            }
-            var addToBlacklist = false;
-            var removeFromBlacklist = false;
-            if (userid && selstr == userid) {
-              if( prefs.blacklistedUserIds.indexOf(userid) == -1 ) {
-                //not in blacklist, show item 'add to blacklist'
-                addToBlacklist = true;
-              } else {
-                //in blacklist, show item 'remove from blacklist'
-                removeFromBlacklist = true;
-              }
-            }
-            prefs.updateOverlayPrefs([{key:'addToBlacklist', value:addToBlacklist}, {key:'removeFromBlacklist', value:removeFromBlacklist}]);
-          }
-        }
       }
       else if(event.button==2)
       {
@@ -1309,19 +1273,25 @@ BBSFox.prototype={
             if(this.prefs.useMouseBrowsing)
               this.onMouse_move(event.clientX, event.clientY);
 
-            this.setInputAreaFocus();
+            var setFocus = true;
             if(event.button==0)
             {
               var preventDefault = true;
               if(event.target.className)
                 if(event.target.classList.contains('extUI'))
                   preventDefault = false;
-              if(event.target.tagName)
-                if(event.target.tagName.indexOf("menuitem") >= 0 )
+              if(event.target.tagName) {
+                //if(event.target.tagName.indexOf("menuitem") >= 0)
+                if(event.target.tagName === "SELECT" || event.target.tagName === "OPTION") {
                   preventDefault = false;
+                  setFocus = false;
+                }
+              }
               if(preventDefault)
                 event.preventDefault();
             }
+            if(setFocus)
+              this.setInputAreaFocus();
           }
           else //something has be select
           {
@@ -1344,6 +1314,8 @@ BBSFox.prototype={
     },
 
     mouse_move: function(event) {
+      if(event.target && (event.target.tagName === 'SELECT' || event.target.tagName === 'OPTION') )
+        return;
       this.view.tempPicX = event.clientX;
       this.view.tempPicY = event.clientY;
       //if we draging window, pass all detect.
@@ -1493,6 +1465,8 @@ BBSFox.prototype={
     },
 
     mouse_over: function(event) {
+      if(event.target && (event.target.tagName === 'SELECT' || event.target.tagName === 'OPTION') )
+        return;
       if(window.getSelection().isCollapsed && !this.mouseLeftButtonDown)
         this.setInputAreaFocus();
     },
@@ -1528,7 +1502,7 @@ BBSFox.prototype={
       else if(isFile)
       {
         var file = dt.mozGetDataAt("application/x-moz-file", 0);
-        if (file instanceof Components.interfaces.nsIFile)
+        if (file instanceof Ci.nsIFile)
         {
           //do default action(or we check 'xpi' for install, other for upload);
         }
@@ -1655,12 +1629,12 @@ BBSFox.prototype={
           event.preventDefault();
           event.stopPropagation();
         }
-        /* Adblock plus eat my key press event! move the event listener to overlay.
+        // Adblock plus eat my key press event! move the event listener to overlay.
         else if(event.ctrlKey && !event.altKey && event.shiftKey && (event.charCode == 118 || event.charCode == 86) && this.prefs.hokeyForPaste) { //Shift + ^V, do paste
           this.doPaste();
           event.preventDefault();
           event.stopPropagation();
-        }*/
+        }
         else if(event.ctrlKey && !event.altKey && event.shiftKey && (event.charCode == 113 || event.charCode == 81) && this.prefs.hokeyOpenThreadUrl) { //Shift + ^Q, do open thread url
           this.OpenThreadUrl();
           event.preventDefault();
@@ -1799,36 +1773,17 @@ BBSFox.prototype={
       return document.title;
     },
 
-    RegExitAlert: function(){
-      this.UnregExitAlert();
+    regExitAlert: function(){
+      this.unregExitAlert();
       this.alertBeforeUnload = true;
       window.addEventListener('beforeunload', this.window_beforeunload, false);
     },
 
-    UnregExitAlert: function(){
+    unregExitAlert: function(){
       // clear alert for closing tab
       if(this.alertBeforeUnload) {
         this.alertBeforeUnload = false;
         window.removeEventListener('beforeunload', this.window_beforeunload, false);
-      }
-    },
-
-    fgtab: function (event){
-      if(event.target && event.target.getAttribute("link")=='true')
-      {
-        var aNode = event.target;
-        if(aNode.parentNode && aNode.parentNode.nodeName == 'A') {
-          aNode = aNode.parentNode;
-        } else if(aNode.parentNode && aNode.parentNode.parentNode && aNode.parentNode.parentNode.nodeName == 'A') {
-          aNode = aNode.parentNode.parentNode;
-        } else {
-          aNode = null;
-        }
-        if(aNode) {
-          this.sendCoreCommand({command: "openNewTabs", charset: this.prefs.charset, ref: null, loadInBg: false, urls:[aNode.href]}, true);
-          event.stopPropagation();
-          event.preventDefault();
-        }
       }
     },
 
@@ -1837,19 +1792,19 @@ BBSFox.prototype={
       {
         if(event.target && event.target.getAttribute("link")=='true')
         {
-          var aNode = event.target;
-          if(aNode.parentNode && aNode.parentNode.nodeName == 'A') {
-            aNode = aNode.parentNode;
-          } else if(aNode.parentNode && aNode.parentNode.parentNode && aNode.parentNode.parentNode.nodeName == 'A') {
-            aNode = aNode.parentNode.parentNode;
-          } else {
-            aNode = null;
-          }
-          if(aNode) {
-            this.sendCoreCommand({command: "openNewTabs", charset: this.prefs.charset, ref: null, loadInBg: true, urls:[aNode.href]});
-            event.stopPropagation();
-            event.preventDefault();
-          }
+            var aNode = event.target;
+            if(aNode.parentNode && aNode.parentNode.nodeName == 'A') {
+              aNode = aNode.parentNode;
+            } else if(aNode.parentNode && aNode.parentNode.parentNode && aNode.parentNode.parentNode.nodeName == 'A') {
+              aNode = aNode.parentNode.parentNode;
+            } else {
+              aNode = null;
+            }
+            if(aNode) {
+              this.sendCoreCommand({command: "openNewTabs", charset: this.prefs.charset, ref: null, loadInBg: true, urls:[aNode.href]});
+              event.stopPropagation();
+              event.preventDefault();
+            }
         }
       }
     },
@@ -1881,27 +1836,20 @@ BBSFox.prototype={
     },
 
     doPushThread: function(){
-      if(this.isPTT())
-      {
-        var EMURL = "chrome://bbsfox/content/pushThread.xul";
-        var EMFEATURES = "chrome, dialog=yes, resizable=yes, modal=yes, centerscreen";
-        var retVals = { exec: false, pushText: this.pushTextTemp, lineLength: this.prefs.pushThreadLineLength};
-        var retVals2 = [];
-        window.openDialog(EMURL, "", EMFEATURES, retVals, retVals2);
-        if(retVals.exec)
+      if(this.isPTT()) {
+        this.sendCoreCommand({command: "pushThreadDlg", pushText: this.pushTextTemp, lineLength: this.prefs.pushThreadLineLength});
+      }
+    },
+
+    sendPushThreadText: function(sendText, temp){
+      if(sendText) {
+        for(var i = 0; i < sendText.length; ++i)
         {
-          for(var i =0;i<retVals2.length;++i)
-          {
-            this.conn.convSend(retVals2[i], this.prefs.charset);
-            this.conn.send(this.prefs.EnterChar+'y'+this.prefs.EnterChar);
-          }
-          this.pushTextTemp = '';
-        }
-        else
-        {
-          this.pushTextTemp = retVals.pushText;
+          this.conn.convSend(sendText[i], this.prefs.charset);
+          this.conn.send(this.prefs.EnterChar+'y'+this.prefs.EnterChar);
         }
       }
+      this.pushTextTemp = temp;
     },
 
     OpenThreadUrl: function(){
@@ -1974,12 +1922,5 @@ BBSFox.prototype={
           this.view.BBSROW[i].style.display='inline';
       }
       this.view.update(true);
-    },
-
-    observe: function(subject, topic, data){
-      if(topic == "alertclickcallback")
-      {
-        //TODO:switch to notify tab
-      }
     }
 };
