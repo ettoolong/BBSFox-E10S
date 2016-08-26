@@ -50,7 +50,7 @@ function PictureViewer(bbscore) {
 
   let loadingImage = document.createElement("img");
   loadingDiv.appendChild(loadingImage);
-  loadingImage.setAttribute("src", "chrome://bbsfox/skin/state_icon/connecting.gif");
+  loadingImage.setAttribute("src", ICON_CONNECTING);
   loadingDiv.style.display = "block";
 
   picDiv.classList.add("extUI", "dragUI", "floatWindowClientArea5");
@@ -207,7 +207,7 @@ PicViewerMgr.prototype={
         let errImage = document.createElement("img");
         this.removeAllChild(pviewer.loadingDiv);
         pviewer.loadingDiv.appendChild(errImage);
-        errImage.setAttribute("src", "chrome://bbsfox/skin/state_icon/error.png");
+        errImage.setAttribute("src", ICON_ERROR);
         break;
       }
     }

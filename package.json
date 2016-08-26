@@ -2,7 +2,7 @@
   "title": "BBSFox",
   "name": "bbsfox",
   "id": "{86095750-AD15-46d8-BF32-C0789F7E6A32}",
-  "version": "5.0.8",
+  "version": "5.0.9",
   "description": "Telnet client extension specifically designed for BBS browsing.",
   "main": "data/js/addon-script.js",
   "author": "ettoolong@hotmail.com",
@@ -94,11 +94,15 @@
     "mayuyu (ptt.cc)",
     "orange0319 (ptt.cc)",
     "doom3 (ptt.cc)",
+    "dudeboy (ptt.cc)",
+    "natsugo (ptt.cc)",
+    "topgunguy (ptt.cc)",
     "exam1 (bbs.gamer.com.tw)",
     "zendic (bbs.gamer.com.tw)",
     "a11221 (bbs.gamer.com.tw)",
     "tottoko (bbs.gamer.com.tw)",
     "icearea (bbs.gamer.com.tw)",
-    "legnaleurc (github.com)"
+    "legnaleurc (github.com)",
+    "polar2031 (github.com)"
   ]
 }

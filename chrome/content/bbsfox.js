@@ -798,20 +798,20 @@ BBSFox.prototype={
     },
 
     updateTabIcon: function(aStatus) {
-      var icon = 'chrome://bbsfox/skin/logo/logo.png';
+      var icon = ICON_LOGO;
       switch (aStatus) {
         case 'connect':
-          icon =  'chrome://bbsfox/skin/state_icon/connect.png';
+          icon = ICON_CONNECT;
           this.setInputAreaFocus();
           break;
         case 'disconnect':
-          icon =  'chrome://bbsfox/skin/state_icon/disconnect.png';
+          icon = ICON_DISCONNECT;
           break;
         case 'newmessage':  // Not used yet
-          icon =  'chrome://bbsfox/skin/state_icon/connect.png';
+          icon = ICON_CONNECT;
           break;
         case 'connecting':  // Not used yet
-          icon =  'chrome://bbsfox/skin/state_icon/connecting.gif';
+          icon = ICON_CONNECTING;
         default:
       }
       this.prefs.status.tabIcon = icon;
@@ -1442,7 +1442,7 @@ BBSFox.prototype={
         while (this.view.picturePreview.firstChild) this.view.picturePreview.removeChild(this.view.picturePreview.firstChild);
         this.view.picturePreview.style.display = "none";
         this.view.pictureInfoLabel.style.display = "none";
-        this.view.picLoadingImage.src="chrome://bbsfox/skin/state_icon/connecting.gif";
+        this.view.picLoadingImage.src = ICON_CONNECTING;
         this.view.picturePreviewLoading.style.display = "block";
         this.CmdHandler.setAttribute('LastPicAddr', linkUrl);
         var image = document.createElement('img');
@@ -1699,7 +1699,7 @@ BBSFox.prototype={
     picLoaderror: function(img) {
       if(this.view.pictureWindow.style.display == "block")
       {
-        this.view.picLoadingImage.src="chrome://bbsfox/skin/state_icon/error.png";
+        this.view.picLoadingImage.src = ICON_ERROR;
         this.view.picturePreviewLoading.style.display = "block";
         this.view.picturePreview.style.display = "none";
         this.view.tempIamgeWidth = 40;

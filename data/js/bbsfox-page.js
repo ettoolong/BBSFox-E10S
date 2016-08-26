@@ -13,6 +13,7 @@ let notifications = require("sdk/notifications");
 let soundService = Cc["@mozilla.org/sound;1"].createInstance(Ci.nsISound);
 let bbsfoxAPI = require("./bbsfox-api.js");
 
+//bbsfoxPage: handle keyboard, mouse, scroll and context menu event for telnet/ssh page
 let bbsfoxPage = {
   tempFiles: [],
   eventMap: new Map(),
@@ -24,8 +25,9 @@ let bbsfoxPage = {
   globalMouseLBtnDown: false,
   mouseLBtnDown: false,
 
-  test: function (msg){
-    console.log('test: ' + msg);
+  isBBSPage: function(url) {
+    //check if this page protocol is telnet/ssh
+    return this.urlCheck.test(url);
   },
 
   handleCoreCommand: function(message) {
@@ -295,7 +297,7 @@ let bbsfoxPage = {
   setBBSCmdEx: function(commandSet, target) {
     if(!target) {
       let tab = tabs.activeTab;
-      if(this.urlCheck.test(tab.url)) { // telnet:// or ssh://
+      if(this.isBBSPage(tab.url)) { // telnet:// or ssh://
         let xulTab = tabUtils.getTabForId(tab.id);
         target = tabUtils.getBrowserForTab(xulTab);
       }
@@ -309,7 +311,7 @@ let bbsfoxPage = {
   setBBSCmd: function(command, target) {
     if(!target) {
       let tab = tabs.activeTab;
-      if(tab && this.urlCheck.test(tab.url)) { // telnet:// or ssh://
+      if(tab && this.isBBSPage(tab.url)) { // telnet:// or ssh://
         let xulTab = tabUtils.getTabForId(tab.id);
         target = tabUtils.getBrowserForTab(xulTab);
       }
@@ -333,7 +335,7 @@ let bbsfoxPage = {
   handle_mouse_scroll: function (params) {
     let {event, tab, e10s} = params;
     let uri = tabUtils.getURI(tab);
-    if(!this.urlCheck.test(uri)) {
+    if(!this.isBBSPage(uri)) {
       return;
     }
 
@@ -414,7 +416,7 @@ let bbsfoxPage = {
     let xulTab = tabUtils.getTabForId(tab.id);
     //let tab = event.target.mCurrentTab;
     let uri = tabUtils.getURI(xulTab);
-    if(!this.urlCheck.test(uri))
+    if(!this.isBBSPage(uri))
       return;
 
     let eventPrefs = xulTab.eventPrefs;
@@ -453,7 +455,7 @@ let bbsfoxPage = {
     let tab = tabs.activeTab;
     let xulTab = tabUtils.getTabForId(tab.id);
     let uri = tabUtils.getURI(xulTab);
-    if(!this.urlCheck.test(uri))
+    if(!this.isBBSPage(uri))
       return;
 
     if(event.button==2) {
@@ -478,7 +480,7 @@ let bbsfoxPage = {
     let tab = tabs.activeTab;
     let xulTab = tabUtils.getTabForId(tab.id);
     let uri = tabUtils.getURI(xulTab);
-    if(!this.urlCheck.test(uri))
+    if(!this.isBBSPage(uri))
       return;
 
     let eventPrefs = xulTab.eventPrefs;
@@ -515,7 +517,7 @@ let bbsfoxPage = {
       return;
 
     let uri = tabUtils.getURI(xulTab);
-    if(!this.urlCheck.test(uri))
+    if(!this.isBBSPage(uri))
       return;
 
     let browser = event.target.mCurrentBrowser;
@@ -635,7 +637,7 @@ let bbsfoxPage = {
     let tab = tabs.activeTab;
     let tabId = tab.id;
     let xulTab = tabUtils.getTabForId(tabId);
-    if(this.urlCheck.test(tab.url)) {
+    if(this.isBBSPage(tab.url)) {
       let eventPrefs = xulTab.eventPrefs;
       if(eventPrefs) {
         //console.log(event.target);
@@ -840,7 +842,7 @@ let bbsfoxPage = {
 
   unloadTab: function(xulTab) {
     let url = modelFor(xulTab).url;
-    if(this.urlCheck.test(url)) {
+    if(this.isBBSPage(url)) {
       let target = tabUtils.getBrowserForTab(xulTab);
       this.setBBSCmd("unload", target);
     }

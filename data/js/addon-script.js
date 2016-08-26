@@ -40,7 +40,8 @@ tabs.on("open", tab => {
   bbsfoxPage.tabOpen(tab);
 });
 
-//context-menu-item-ansiCopy
+// context menu items - start
+// These context menu items only for telnet page
 cm.Item({
   label: _("cm_ansiCopy"),
   context: cm.SelectionContext(),
@@ -48,7 +49,6 @@ cm.Item({
   data: "bbsfox_menu-ansiCopy"
 });
 
-//context-menu-item-openAllLink
 cm.Item({
   label: _("cm_openAllLink"),
   contentScriptFile: data.url("js/context-menu/openAllLink.js"),
@@ -58,7 +58,6 @@ cm.Item({
   }
 });
 
-//bbsfox_menu-viewimage
 cm.Item({
   label: _("cm_viewimage"),
   contentScriptFile: data.url("js/context-menu/viewImage.js"),
@@ -68,7 +67,6 @@ cm.Item({
   }
 });
 
-//context-menu-item-previewPicture
 cm.Item({
   label: _("cm_previewPicture"),
   context: cm.PredicateContext(function(context){
@@ -84,7 +82,6 @@ cm.Item({
   }
 });
 
-//context-menu-item-embeddedPlayer
 cm.Item({
   label: _("cm_embeddedPlayer"),
   context: cm.PredicateContext(function(context){
@@ -101,7 +98,6 @@ cm.Item({
   }
 });
 
-//context-menu-item-ansiColorTool
 cm.Item({
   label: _("cm_ansiColorTool"),
   context: cm.PredicateContext(function(context){
@@ -111,7 +107,6 @@ cm.Item({
   data: "bbsfox_menu-ansiColorTool"
 });
 
-//context-menu-item-screenKeyboard
 cm.Item({
   label: _("cm_screenKeyboard"),
   context: cm.PredicateContext(function(context){
@@ -121,7 +116,6 @@ cm.Item({
   data: "bbsfox_menu-screenKeyboard"
 });
 
-//context-menu-item-addTrack
 cm.Item({
   label: _("cm_addTrack"),
   context: cm.SelectionContext(),
@@ -140,7 +134,6 @@ cm.Item({
   data: "bbsfox_menu-clearTrack"
 });
 
-//context-menu-item-mouseBrowsing
 cm.Item({
   label: _("cm_mouseBrowsing"),
   context: cm.PredicateContext(function(context){
@@ -150,7 +143,6 @@ cm.Item({
   data: "bbsfox_menu-mouseBrowsing"
 });
 
-//context-menu-item-switchBgDisplay
 cm.Item({
   label: _("cm_switchBgDisplay"),
   context: cm.PredicateContext(function(context){
@@ -160,7 +152,6 @@ cm.Item({
   data: "bbsfox_menu-BgDisplay"
 });
 
-//context-menu-item-easyRead
 cm.Item({
   label: _("cm_easyRead"),
   context: cm.PredicateContext(function(context){
@@ -170,7 +161,6 @@ cm.Item({
   data: "bbsfox_menu-easyRead"
 });
 
-//context-menu-item-pushThread
 cm.Item({
   label: _("cm_pushThread"),
   context: cm.PredicateContext(function(context){
@@ -180,7 +170,6 @@ cm.Item({
   data: "bbsfox_menu-pushThread"
 });
 
-//context-menu-item-openThreadUrl
 cm.Item({
   label: _("cm_openThreadUrl"),
   context: cm.PredicateContext(function(context){
@@ -190,7 +179,6 @@ cm.Item({
   data: "bbsfox_menu-openThreadUrl"
 });
 
-//context-menu-item-changeColorTable
 cm.Item({
   label: _("cm_changeColorTable"),
   context: cm.PredicateContext(function(context){
@@ -200,7 +188,6 @@ cm.Item({
   data: "bbsfox_menu-changeColorTable"
 });
 
-//context-menu-item-downloadPost
 cm.Menu({
   label: _("cm_downloadPost"),
   context: cm.PredicateContext(function(context){
@@ -222,7 +209,6 @@ cm.Menu({
   }
 });
 
-//context-menu-item-loadFile
 cm.Item({
   label: _("cm_loadFile"),
   context: cm.PredicateContext(function(context){
@@ -232,7 +218,6 @@ cm.Item({
   data: "bbsfox_menu-fileIo"
 });
 
-//context-menu-item-addToBlacklist
 cm.Item({
   label: _("cm_addToBlacklist"),
   context: cm.SelectionContext(),
@@ -243,7 +228,6 @@ cm.Item({
   data: "bbsfox_menu-addToBlacklist"
 });
 
-//context-menu-item-removeFromBlacklist
 cm.Item({
   label: _("cm_removeFromBlacklist"),
   context: cm.SelectionContext(),
@@ -253,6 +237,7 @@ cm.Item({
   ],
   data: "bbsfox_menu-removeFromBlacklist"
 });
+// context menu items - end
 
 exports.main = function (options, callbacks) {
   bbsPrefs.initDefaultPrefs(data);
