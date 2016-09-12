@@ -568,12 +568,12 @@ let bbsfoxPage = {
             event.preventDefault();
           }
           else if((event.charCode==98 || event.charCode==66) && eventPrefs.hotkeyCtrlB == 1) {
-            this.setBBSCmdEx({command:"sendCharCode", charCode:20}, browser);
+            this.setBBSCmdEx({command:"sendCharCode", charCode:2}, browser);
             event.stopPropagation();
             event.preventDefault();
           }
           else if((event.charCode==108 || event.charCode==76) && eventPrefs.hotkeyCtrlL == 1) {
-            this.setBBSCmdEx({command:"sendCharCode", charCode:23}, browser);
+            this.setBBSCmdEx({command:"sendCharCode", charCode:12}, browser);
             event.stopPropagation();
             event.preventDefault();
           }

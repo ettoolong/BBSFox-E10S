@@ -1841,6 +1841,10 @@ BBSFox.prototype={
       }
     },
 
+    setFullScreen: function(){
+      document.getElementById('topwin').requestFullscreen();
+    },
+
     sendPushThreadText: function(sendText, temp){
       if(sendText) {
         for(var i = 0; i < sendText.length; ++i)

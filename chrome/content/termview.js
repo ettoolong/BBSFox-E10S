@@ -747,16 +747,20 @@ TermView.prototype={
         var conn = this.conn;
         if(e.charCode){
             // Control characters
-            if(this.os=='Darwin')
-            {
+            if(this.os=='Darwin') {
               if(e.metaKey && !e.altKey && !e.shiftKey && (e.charCode == 61 || e.charCode == 45)) {
                 e.preventDefault();
                 e.stopPropagation();
                 return;
               }
+              if(e.metaKey && e.ctrlKey && e.altKey && !e.shiftKey && e.charCode == 102) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.bbscore.setFullScreen();
+                return;
+              }
             }
-            else
-            {
+            else {
               if(e.ctrlKey && !e.altKey && !e.shiftKey && (e.charCode == 61 || e.charCode == 45)) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -784,17 +788,19 @@ TermView.prototype={
                     return;
                 }
               }
-              if( e.charCode >= 65 && e.charCode <=90 ) { // A-Z
-                    conn.send( String.fromCharCode(e.charCode - 64) );
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return;
-              }
-              else if( e.charCode >= 97 && e.charCode <=122 ) { // a-z
-                    conn.send( String.fromCharCode(e.charCode - 96) );
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return;
+              if(this.os != 'Darwin' || !e.metaKey) {
+                if( e.charCode >= 65 && e.charCode <=90 ) { // A-Z
+                  conn.send( String.fromCharCode(e.charCode - 64) );
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                else if( e.charCode >= 97 && e.charCode <=122 ) { // a-z
+                  conn.send( String.fromCharCode(e.charCode - 96) );
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
               }
             }
         }
