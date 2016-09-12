@@ -41,6 +41,7 @@ function startup(aData, aReason) {
   let globalMM = Cc["@mozilla.org/globalmessagemanager;1"].getService(Ci.nsIFrameScriptLoader);
   globalMM.addMessageListener("bbsfox@ettoolong:bbsfox-globalCommand", exec);
   globalMM.loadFrameScript(addonBaseUrl + "data/js/frame-script.js", true);
+  globalMM.broadcastAsyncMessage("bbsfox@ettoolong:bbsfox-globalCommand", {name:"load"});
 }
 
 function shutdown(aData, aReason) {
@@ -49,5 +50,5 @@ function shutdown(aData, aReason) {
     return;
   let globalMM = Cc["@mozilla.org/globalmessagemanager;1"].getService(Ci.nsIMessageBroadcaster);
   // send message. it's time to unload frame-script.
-  globalMM.broadcastAsyncMessage("bbsfox@ettoolong:bbsfox-globalCommand");
+  globalMM.broadcastAsyncMessage("bbsfox@ettoolong:bbsfox-globalCommand", {name:"unload"});
 }

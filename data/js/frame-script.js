@@ -107,8 +107,7 @@ function regAll() {
     this.wrappedJSObject = this;
   }
 
-  SshProtocol.prototype =
-  {
+  SshProtocol.prototype = {
     classDescription: "SSH Protocol",
     classID: Cid("dbc42190-21eb-11e0-ac64-0800200c9a66"),
     contractID: kSSH_CONTRACTID,
@@ -262,8 +261,13 @@ function run() {
 }
 
 addMessageListener("bbsfox@ettoolong:bbsfox-globalCommand", function(message) {
-  unregAll();
-  sendSyncMessage("bbsfox@ettoolong:bbsfox-globalCommand", {name:"unload"});
+  if(message.data.name === "load") {
+    run();
+  }
+  else if (message.data.name === "unload") {
+    unregAll();
+    sendSyncMessage("bbsfox@ettoolong:bbsfox-globalCommand", {name:"unload"});
+  }
 });
 
 run();
