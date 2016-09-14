@@ -1797,6 +1797,7 @@ BBSFox.prototype={
       }
     },
 
+    //workaround for this issue: https://bugzil.la/1256249
     fgtab: function (event){
       if(event.target && event.target.getAttribute("link")=='true') {
         var aNode = event.target;
