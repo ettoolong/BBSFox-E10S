@@ -828,17 +828,21 @@ BBSFox.prototype={
       //this.loadLoginData();
     },
 
-    setFrameScript: function(cb) {
+    setFrameScript: function(cb, init) {
       if(!this.FrameScriptCb) {
-        //Update Overlay Prefs and Event Prefs
-        this.FrameScriptCb = cb;
-        if(this.prefs) {
-          this.prefs.updateEventPrefs(); //force update
-          this.loadLoginData();
-        } else {
+        if(init) {
+          //Update Overlay Prefs and Event Prefs
+          this.FrameScriptCb = cb;
+          if(this.prefs) {
+            this.prefs.updateEventPrefs(); //force update
+            this.loadLoginData();
+          }
         }
         return true;
       } else {
+        if(this.FrameScriptCb !== cb) {
+          this.sendCoreCommand({command: "disableScript"});
+        }
         this.FrameScriptCb = cb;
         this.prefs.updateEventPrefs(); //force update
         this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.status.tabIcon});
@@ -1133,6 +1137,7 @@ BBSFox.prototype={
         }
         if(event.target && event.target.getAttribute("link")=='true') //TODO: check target type.
         {
+          var defaultAction = true;
           //try to find out ancher node and get boardName.
           //if boardName == current boardname, jump to other board
           if(this.prefs.aidAction!=0 && this.prefs.aidAction!=1) {
@@ -1159,10 +1164,15 @@ BBSFox.prototype={
                 this.conn.send(sendCode);
                 event.stopPropagation();
                 event.preventDefault();
+                defaultAction = false;
               }
             }
           } else if(this.prefs.aidAction==1 && this.prefs.loadURLInBG){
+              defaultAction = false;
               this.bgtab(event);
+          }
+          if(defaultAction){
+              this.fgtab(event);
           }
           return;
         }
@@ -1784,6 +1794,24 @@ BBSFox.prototype={
       if(this.alertBeforeUnload) {
         this.alertBeforeUnload = false;
         window.removeEventListener('beforeunload', this.window_beforeunload, false);
+      }
+    },
+
+    fgtab: function (event){
+      if(event.target && event.target.getAttribute("link")=='true') {
+        var aNode = event.target;
+        if(aNode.parentNode && aNode.parentNode.nodeName == 'A') {
+          aNode = aNode.parentNode;
+        } else if(aNode.parentNode && aNode.parentNode.parentNode && aNode.parentNode.parentNode.nodeName == 'A') {
+          aNode = aNode.parentNode.parentNode;
+        } else {
+          aNode = null;
+        }
+        if(aNode) {
+          this.sendCoreCommand({command: "openNewTabs", charset: this.prefs.charset, ref: null, loadInBg: false, urls:[aNode.href]}, true);
+          event.stopPropagation();
+          event.preventDefault();
+        }
       }
     },
 
