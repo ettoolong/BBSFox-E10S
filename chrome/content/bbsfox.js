@@ -1172,7 +1172,11 @@ BBSFox.prototype={
               this.bgtab(event);
           }
           if(defaultAction){
+            if((this.os == 'Darwin' && event.metaKey) || (this.os != 'Darwin' && event.ctrlKey)) {
+              this.bgtab(event);
+            } else {
               this.fgtab(event);
+            }
           }
           return;
         }

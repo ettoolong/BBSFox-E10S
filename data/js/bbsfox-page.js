@@ -269,9 +269,21 @@ let bbsfoxPage = {
     //https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/tabs
     //TODO: check private-browsing use case.
     for(let url of urls) {
+      /*
+      // We need 'relatedToCurrent' to make new tab at right position,
+      // it base on about:config -> browser.tabs.insertRelatedAfterCurrent setting.
+      // sdk/tabs don't support this feature
       tabs.open({
         url: url,
         inBackground: loadInBg
+      });
+      */
+      let gBrowser = winUtils.getMostRecentBrowserWindow().gBrowser;
+      gBrowser.loadOneTab(url, {
+        referrerURI: null,
+        charset: null,
+        inBackground: loadInBg,
+        relatedToCurrent: true
       });
     }
   },
