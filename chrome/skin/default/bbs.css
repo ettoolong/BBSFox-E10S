@@ -22,7 +22,7 @@
 }
 
 .bluFade {
-  opacity: 0.2;
+  opacity: var(--blacklist);
 }
 
 .testElem {
@@ -82,6 +82,7 @@ body{color: white;background-color: var(--bbscolor-0);margin: 0px;overflow:hidde
 span [link="true"]{margin: 0px; background-image: inherit; background-repeat: inherit; background-position: inherit;}
 span{margin: 0px;}
 .drag{display: none; position: absolute; cursor: default; z-index: 11;}
+
 .symbolInput{
   z-index: 3;
   left: 10px;
@@ -93,6 +94,7 @@ span{margin: 0px;}
   cursor: default;
   display: block;
 }
+
 .ansiColorTool{
   z-index: 3;
   left: 10px;
@@ -105,15 +107,7 @@ span{margin: 0px;}
   cursor: default;
   display: block;
 }
-.embedPlayer{
-  z-index: 5;
-  left: 10px;
-  top: 10px;
-  background-color: #ffbbbb;
-  padding: 3px;
-  border: 1px double #ff0000;
-  cursor: default;
-}
+
 .picViewer{
   z-index: 5;
   left: 10px;
@@ -145,73 +139,9 @@ span{margin: 0px;}
   background-image: url("chrome://bbsfox/skin/window_icon/close-a.png");
 }
 
-.minWindowBtn {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-repeat: no-repeat;
-  cursor: default;
-  background-image: url("chrome://bbsfox/skin/window_icon/min.png");
-}
-
-.minWindowBtn:hover {
-  background-image: url("chrome://bbsfox/skin/window_icon/min-h.png");
-}
-
-.minWindowBtn:active {
-  background-image: url("chrome://bbsfox/skin/window_icon/min-a.png");
-}
-
-.restoreWindowBtn {
-  margin-top:0px;
-  margin-left:0px;
-  margin-right:0px;
-  margin-bottom:0px;
-  border: 0px;
-  padding: 1px 1px;
-  background-repeat: no-repeat;
-  cursor: default;
-  background-image: url("chrome://bbsfox/skin/window_icon/restore.png");
-}
-
-.restoreWindowBtn:hover {
-  background-image: url("chrome://bbsfox/skin/window_icon/restore-h.png");
-}
-
-.restoreWindowBtn:active {
-  background-image: url("chrome://bbsfox/skin/window_icon/restore-a.png");
-}
-
 #PicturePreviewInfo{
   color : #fff;
   text-shadow: 0 0 1px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #0000ff,0 0 7px #0000ff,0 0 8px #0000ff,0 0 10px #0000ff,0 0 15px #0000ff;
-}
-
-/*#YoutubeWindow, #YoutubeWindow2 {
-  left: 10px;
-  top: 10px;
-  z-index: 3;
-  background-color: #ffbbbb;
-  padding: 3px 3px 3px 3px;
-  border:0px double #cccccc;
-  border-radius:8px;
-  cursor: default;
-}*/
-
-@keyframes minWin {
-  100% { width: 54px;height: 21px; }
-}
-
-.minWindiw {
-  animation-name: minWin;
-  animation-direction: normal;
-  animation-duration: 0.2s;
-  animation-iteration-count: 1;
-  animation-timing-function: ease;
-  animation-fill-mode: forwards;
 }
 
 #PictureWindow {
@@ -232,26 +162,6 @@ span{margin: 0px;}
   margin-right:3px;
   margin-bottom:3px;
   border: 1px solid #000000;
-  cursor: default;
-}
-
-.floatWindowClientArea2 {
-  background-color: #ffbbbb;
-  margin-top:22px;
-  margin-left:3px;
-  margin-right:3px;
-  margin-bottom:0px;
-  border: 0px solid #000000;
-  cursor: default;
-}
-
-.floatWindowClientArea3 {
-  background-color: #ffbbbb;
-  margin-top:0px;
-  margin-left:3px;
-  margin-right:3px;
-  margin-bottom:3px;
-  border: 0px solid #000000;
   cursor: default;
 }
 

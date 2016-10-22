@@ -12,8 +12,7 @@ const apiKeys = [
   "switchBgDisplay", "easyReading", "pushThread",
   "openThreadUrl", "changeColorTable", "doDownloadPost",
   "doLoadFile", "switchSymbolInput", "switchAnsiColorTool",
-  "openPlayerWindowEx", "minimizeEmbeddedPlayer", "previewPicture",
-  "closePictureViewer", "closeEmbeddedPlayer", "sendCodeStr"
+  "previewPicture", "closePictureViewer", "sendCodeStr"
 ];
 
 const setBBSCmdEx = (commandSet) => {

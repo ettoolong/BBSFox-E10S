@@ -29,7 +29,6 @@
 <!ENTITY options_display.label "顯示">
 <!ENTITY options_site.label "站台">
 <!ENTITY options_mouse.label "滑鼠">
-<!ENTITY options_emdeddplayer.label "影片視窗">
 <!ENTITY options_hotkey.label "熱鍵">
 <!ENTITY options_contextmenu.label "快顯功能表">
 <!ENTITY options_other.label "雜項">
@@ -170,7 +169,7 @@
 <!ENTITY options_mousebrowsinghltime2.label "ms (0=永久持續)">
 <!ENTITY options_mousebrowsinghandpointer.label "滑鼠瀏覽文章/看板列表使用手指狀游標">
 <!ENTITY options_mousebrowseex.label "啟用進階滑鼠瀏覽(更新文章、同標題第一篇 / 上一篇 / 下一篇 / 最後一篇)">
-<!ENTITY options_dropToPaste.label "當拖放 文字/鏈結/圖片 到BBS視窗時貼上 文字/鏈結/圖片網址">
+<!ENTITY options_dropToPaste.label "當拖放 文字/鏈結/圖片 到 BBS 視窗時貼上 文字/鏈結/圖片網址">
 <!ENTITY options_dontgotonewtab.label "BBS畫面點擊鏈結後不要自動跳到新的分頁(不建議使用)">
 <!ENTITY options_clearcopiedsel.label "複製完畢自動取消選取">
 <!ENTITY options_showlink.label "偵測鏈結">
@@ -180,24 +179,11 @@
 <!ENTITY options_aidread.label "按滑鼠左鍵閱讀文章">
 <!ENTITY options_aidnewtab.label "按滑鼠左鍵開啟網頁版">
 <!ENTITY options_mousegestures.label "滑鼠手勢">
-<!ENTITY options_needfiregesture.label "需安裝FireGestures套件才能使用此功能">
-<!ENTITY options_firegesturescript.label "安裝FireGestures套件">
-<!ENTITY options_firegestureoption.label "設定FireGestures">
-<!ENTITY options_embeddedplayersize.label "浮動影片視窗的大小">
-<!ENTITY options_embeddedplayersize1.label "425x344 (4:3)">
-<!ENTITY options_embeddedplayersize2.label "480x385 (4:3)">
-<!ENTITY options_embeddedplayersize3.label "640x505 (4:3)">
-<!ENTITY options_embeddedplayersize4.label "960x745 (4:3)">
-<!ENTITY options_embeddedplayersize5.label "560x340 (16:9)">
-<!ENTITY options_embeddedplayersize6.label "640x385 (16:9)">
-<!ENTITY options_embeddedplayersize7.label "853x505 (16:9)">
-<!ENTITY options_embeddedplayersize8.label "1280x745 (16:9)">
-<!ENTITY options_embeddedplayeroption.label "影片視窗設定">
-<!ENTITY options_epautoplay.label "自動開始播放影片">
-<!ENTITY options_eploop.label "自動重複播放影片">
-<!ENTITY options_epautousehq.label "優先使用高畫質播放">
-<!ENTITY options_epcopyurlbutton.label "顯示[複製網址]按鈕">
-<!ENTITY options_epwhendroplink.label "當拖放一個影片網址到BBS視窗時開啟播放窗">
+<!ENTITY options_installpopupvideo.label "取得 Popup Video 套件">
+<!ENTITY options_needfiregesture.label "需安裝 FireGestures 套件才能使用此功能">
+<!ENTITY options_firegesturescript.label "取得 FireGestures 套件">
+<!ENTITY options_firegestureoption.label "設定 FireGestures">
+<!ENTITY options_epwhendroplink.label "當拖放一個影片網址到 BBS 視窗時開啟播放窗">
 <!ENTITY options_hotkeyctrlw.label "熱鍵Ctrl+W">
 <!ENTITY options_hotkeyclosetab.label "瀏覽器預設動作-關閉頁籤">
 <!ENTITY options_hotkeysendcharw.label "BBS預設動作-送出Ctrl+W">
@@ -226,7 +212,6 @@
 <!ENTITY options_hotkeydownhtml.label "HTML">
 <!ENTITY options_bbsfoxcontextmenu.label "BBSFox快顯功能表">
 <!ENTITY options_ansicopymenu.label "啟用 [複製(包含ANSI色碼)] 項目">
-<!ENTITY options_embeddedplayermenu.label "啟用 [在浮動視窗中顯示影片] 項目(此功能目前僅支援Youtube/USTREAM)">
 <!ENTITY options_previewpicturemenu.label "啟用 [顯示縮圖] 項目">
 <!ENTITY options_mousebrowsemenu.label "啟用 [滑鼠瀏覽切換] 項目">
 <!ENTITY options_switchbgdisplaymenu.label "啟用 [背景圖片顯示切換] 項目">
@@ -271,6 +256,8 @@
 <!ENTITY options_highlight.label "關鍵字">
 <!ENTITY options_blacklistid.label "黑名單">
 <!ENTITY options_enableblacklist.label "啟用黑名單">
+<!ENTITY options_blacklistalpha.label "透明度">
+<!ENTITY options_blacklistalpha2.label "(100 = 完全透明)">
 <!ENTITY options_needGrowl1.label "您可能需要安裝">
 <!ENTITY options_needGrowl2.label "Growl">
 <!ENTITY options_needGrowl3.label "才能使此功能正常使用">
@@ -356,9 +343,6 @@
 <!ENTITY LOADFILE "載入檔案">
 <!ENTITY OPENSYMBOLINPUT "開啟符號輸入視窗／關閉符號輸入視窗">
 <!ENTITY OPENANSICOLORTOOL "開啟色彩輸入工具／關閉色彩輸入工具">
-<!ENTITY OPENEP "在浮動視窗中顯示影片">
-<!ENTITY CLOSEEP "關閉影片浮動視窗">
-<!ENTITY MINEP "最小化影片浮動視窗／還原影片浮動視窗">
 <!ENTITY OPENPV "顯示鍵結縮圖">
 <!ENTITY CLOSEPV "關閉所有縮圖">
 <!ENTITY SENDSTR "送出字串">

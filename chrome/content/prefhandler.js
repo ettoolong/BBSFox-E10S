@@ -93,6 +93,7 @@ function bbsfoxPrefHandler(listener) {
     this.keepFontAspectRatio=false;
     this.hokeyChangeColorTable=false;
     this.fixUnicodeDisplay=false;
+    this.dynamicRenderTest=false;
     this.bbsColor=['#000000','#800000','#008000','#808000',
                    '#000080','#800080','#008080','#c0c0c0',
                    '#808080','#ff0000','#00ff00','#ffff00',
@@ -100,7 +101,6 @@ function bbsfoxPrefHandler(listener) {
 
     //overlay pref
     this.ansiCopyMenu = true;
-    this.embeddedPlayerMenu = true;
     this.previewPictureMenu = false;
     this.mouseBrowseMenu = false;
     this.switchBgDisplayMenu = false;
@@ -153,6 +153,11 @@ bbsfoxPrefHandler.prototype={
       try {
         var CiStr = Ci.nsISupportsString;
         switch (name) {
+        case "DynamicRenderTest":
+          _this.dynamicRenderTest = branch.getBoolPref(name);
+          bbsCore.view.fontResize();
+          bbsCore.view.updateCursorPos();
+          break;
         case "MouseWheelFunc1":
           _this.updateEventPrefs([{key:'mouseWheelFunc1', value:branch.getIntPref(name)}]);
           break;
@@ -357,12 +362,16 @@ bbsfoxPrefHandler.prototype={
           if(!_this.fontFace)
             _this.fontFace='monospace';
           if(!_this.fontFaceEn) {
+            bbsCore.view.lineTest.style.fontFamily = _this.fontFace;
+            bbsCore.view.cursorTest.style.fontFamily = _this.fontFace;
             bbsCore.view.mainDisplay.style.fontFamily = _this.fontFace;
             bbsCore.view.cursorDiv.style.fontFamily = _this.fontFace;
             bbsCore.view.spaceCharacterElem.style.fontFamily = _this.fontFace;
             bbsCore.view.nbspCharacterElem.style.fontFamily = _this.fontFace;
           } else {
             bbsCore.view.setFontDefine(_this.fontFace, _this.fontFaceEn);
+            bbsCore.view.lineTest.style.fontFamily = 'BBSFoxFont';
+            bbsCore.view.cursorTest.style.fontFamily = 'BBSFoxFont';
             bbsCore.view.mainDisplay.style.fontFamily = 'BBSFoxFont';
             bbsCore.view.cursorDiv.style.fontFamily = 'BBSFoxFont';
             bbsCore.view.spaceCharacterElem.style.fontFamily = _this.fontFaceEn;
@@ -548,9 +557,6 @@ bbsfoxPrefHandler.prototype={
         case "AnsiCopyMenu":
           _this.ansiCopyMenu = branch.getBoolPref(name);
           break;
-        case "EmbeddedPlayerMenu":
-          _this.embeddedPlayerMenu = branch.getBoolPref(name);
-          break;
         case "PreviewPictureMenu":
           _this.previewPictureMenu = branch.getBoolPref(name);
           break;
@@ -600,47 +606,26 @@ bbsfoxPrefHandler.prototype={
           _this.fileIoMenu = branch.getBoolPref(name);
           break;
         case "DownloadLineDelay":
-          _this.downloadLineDelay=branch.getIntPref(name);
+          _this.downloadLineDelay = branch.getIntPref(name);
           break;
         case "DownloadFullPost":
-          _this.downloadFullPost=branch.getBoolPref(name);
+          _this.downloadFullPost = branch.getBoolPref(name);
           break;
         case "SaveAfterDownload":
-          _this.saveAfterDownload=branch.getBoolPref(name);
+          _this.saveAfterDownload = branch.getBoolPref(name);
           break;
         case "EasyReadingWithImg":
-          _this.easyReadingWithImg=branch.getBoolPref(name);
+          _this.easyReadingWithImg = branch.getBoolPref(name);
           break;
         case "EasyReadingWithVideo":
-          _this.easyReadingWithVideo=branch.getBoolPref(name);
+          _this.easyReadingWithVideo = branch.getBoolPref(name);
           break;
         case "ScreenKeyboardAlpha":
           if(bbsCore.symbolinput)
             bbsCore.symbolinput.setWindowAlpha(branch.getIntPref(name));
           break;
-        case "EmbeddedPlayerSize":
-          _this.embeddedPlayerSize = branch.getIntPref(name);
-          if(bbsCore.playerMgr)
-            bbsCore.playerMgr.setDefaultWindowSize( _this.embeddedPlayerSize );
-          break;
-        case "EPAutoPlay":
-          if(bbsCore.playerMgr)
-            bbsCore.playerMgr.epAutoPlay = branch.getBoolPref(name);
-          break;
-        case "EPLoop":
-          if(bbsCore.playerMgr)
-            bbsCore.playerMgr.epLoop = branch.getBoolPref(name);
-          break;
-        case "EPAutoUseHQ":
-          if(bbsCore.playerMgr)
-            bbsCore.playerMgr.epAutoUseHQ = branch.getBoolPref(name);
-          break;
-        case "EPCopyUrlButton":
-          if(bbsCore.playerMgr)
-          {
-            bbsCore.playerMgr.epCopyUrlButton = branch.getBoolPref(name);
-            bbsCore.playerMgr.setAllEmbededPlayerUrlBtn(bbsCore.playerMgr.epCopyUrlButton);
-          }
+        case "BlacklistAlpha":
+          bbsCore.view.setBlacklistAlpha(branch.getIntPref(name));
           break;
         case "EPWhenDropLink":
           _this.epWhenDropLink = branch.getBoolPref(name);

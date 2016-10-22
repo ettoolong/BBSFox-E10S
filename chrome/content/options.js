@@ -1,4 +1,4 @@
-const { classes: Cc, interfaces: Ci, Constructor: Co } = Components;
+const { classes: Cc, interfaces: Ci, Constructor: Co, utils: Cu } = Components;
 
 function BBSFoxSiteSetting(opt, siteaddr, sitename, newsite) {
     this.opt = opt;
@@ -1045,6 +1045,16 @@ function load() {
   //document.getElementById('textspan').hidden=true;
   //document.getElementById('textedit').hidden=true;
 
+  try {
+    // Firefox 4 and later; Mozilla 2 and later
+    Cu.import("resource://gre/modules/AddonManager.jsm");
+    AddonManager.getAddonByID("@popup-video", addon => {
+      if(!addon) {
+        document.getElementById('InstallPopupVideo').hidden=false;
+      }
+    });
+  } catch(ex){}
+
   var firegestureSrv = Cc["@xuldev.org/firegestures/service;1"];
   if(!firegestureSrv)
   {
@@ -1220,8 +1230,13 @@ function openURL(aURL){
   else
     window.open(aURL);
 }
+
 function fireGesturesScript(){
   openURL('https://addons.mozilla.org/zh-TW/firefox/addon/firegestures/');
+}
+
+function getPopupVideoAddon(){
+  openURL('https://addons.mozilla.org/zh-TW/firefox/addon/popup-video/');
 }
 
 function fireGesturesOption(){
@@ -1325,18 +1340,7 @@ function createScript()
   //  cmdstr+='  if(eventStatus) eventStatus.resetFocus = false;\r';
   //}
 
-  if(document.getElementById('bbsScript').value == 'OpenEmbeddedPlayer')
-  {
-    cmdstr+='  var srcNode = FireGestures.sourceNode;\r';
-    cmdstr+='  var url = FireGestures.getLinkURL(srcNode);\r';
-    cmdstr+='  if(url){\r';
-    cmdstr+='    BBSFox_API.setBBSCmd("checkFireGestureKey");\r';
-    cmdstr+='    BBSFox_API.setBBSCmdEx({command:"openPlayerWindowEx", videoUrl:url});\r';
-    cmdstr+='  } else {\r';
-    cmdstr+='    throw FireGestures._getLocaleString("ERROR_NOT_ON_LINK");\r';
-    cmdstr+='  }\r';
-  }
-  else if(document.getElementById('bbsScript').value == 'OpenPictureViewer')
+  if(document.getElementById('bbsScript').value == 'OpenPictureViewer')
   {
     cmdstr+='  var srcNode = FireGestures.sourceNode;\r';
     cmdstr+='  var url = FireGestures.getLinkURL(srcNode);\r';

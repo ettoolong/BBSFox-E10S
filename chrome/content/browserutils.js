@@ -1,25 +1,44 @@
 // Browser utilities, including preferences API access, site-depedent setting through Places API
 
 // From https://developer.mozilla.org/en/Code_snippets/Preferences
-function BBSFoxPrefListener(branchName, func, prefsHandler) {
+function BBSFoxPrefListener(rootName, branchName, func, prefsHandler) {
   var prefService = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
   var branch = prefService.getBranch(branchName);
+  var rootBranch = prefService.getBranch(rootName);
+
   if(prefsHandler) {
     prefsHandler.branchName = branchName;
   }
   branch.QueryInterface(Ci.nsIPrefBranch);
+  rootBranch.QueryInterface(Ci.nsIPrefBranch);
+
   this.register = function() {
-    branch.addObserver("", this, false);
+    branch.addObserver("", this.branchObserve, false);
     branch.getChildList("", { })
           .forEach(function (name) { func(branch, name); });
+
+    rootBranch.addObserver("DynamicRenderTest", this.rootObserve, false);
+    rootBranch.getChildList("", { })
+          .forEach(function (name) { func(rootBranch, name); });
   };
   this.unregister = function unregister() {
     if (branch)
-      branch.removeObserver("", this);
+      branch.removeObserver("", this.branchObserve);
+
+    if (rootBranch)
+      rootBranch.removeObserver("DynamicRenderTest", this.rootObserve, false);
   };
-  this.observe = function(subject, topic, data) {
-    if (topic == "nsPref:changed")
-      func(branch, data);
+  this.branchObserve = {
+    observe:function(subject, topic, data) {
+      if (topic == "nsPref:changed")
+        func(branch, data);
+    },
+  };
+  this.rootObserve ={
+    observe:function(subject, topic, data) {
+      if (topic == "nsPref:changed")
+        func(rootBranch, data);
+    }
   };
 }
 
@@ -81,7 +100,7 @@ BBSFoxBrowserUtils.prototype = {
   },
 
   prefListener: function(func, prefsHandler) {
-    var listener = new BBSFoxPrefListener(this._prefBranch.root + 'host_' + this.siteAddr + '.', func, prefsHandler);
+    var listener = new BBSFoxPrefListener(this._prefBranch.root, this._prefBranch.root + 'host_' + this.siteAddr + '.', func, prefsHandler);
     listener.register();
     return listener;
   },

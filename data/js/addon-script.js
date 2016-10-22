@@ -83,22 +83,6 @@ cm.Item({
 });
 
 cm.Item({
-  label: _("cm_embeddedPlayer"),
-  context: cm.PredicateContext(function(context){
-    bbsfoxPage.contextLink = context.linkURL;
-    let vtRegex = /(https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)|https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))/i;
-    let vtRegex2 = /(http:\/\/www\.ustream\.tv\/(channel|channel-popup)\/([A-Za-z0-9._%-]*))/i;
-    let vtRegex3 = /(http:\/\/www\.ustream\.tv\/recorded\/([0-9]{5,10}))/i;
-    return (context.linkURL && ( vtRegex.test(context.linkURL) || vtRegex2.test(context.linkURL) || vtRegex3.test(context.linkURL)));
-  }),
-  contentScriptFile: data.url("js/context-menu/embeddedPlayer.js"),
-  data: "bbsfox_menu-embeddedPlayer",
-  onMessage: () => {
-    bbsfoxPage.setBBSCmdEx({command:"openPlayerWindowEx", videoUrl: bbsfoxPage.contextLink});
-  }
-});
-
-cm.Item({
   label: _("cm_ansiColorTool"),
   context: cm.PredicateContext(function(context){
     return !context.selectionText;

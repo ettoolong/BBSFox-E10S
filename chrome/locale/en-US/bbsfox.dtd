@@ -29,7 +29,6 @@
 <!ENTITY options_display.label "Display">
 <!ENTITY options_site.label "Site">
 <!ENTITY options_mouse.label "Mouse">
-<!ENTITY options_emdeddplayer.label "Video">
 <!ENTITY options_hotkey.label "Hotkeys">
 <!ENTITY options_contextmenu.label "Context menu">
 <!ENTITY options_other.label "Misc">
@@ -180,24 +179,11 @@
 <!ENTITY options_aidread.label "Mouse click read thread">
 <!ENTITY options_aidnewtab.label "Mouse click open thread link">
 <!ENTITY options_mousegestures.label "Mouse gesture">
+<!ENTITY options_installpopupvideo.label "Install Popup Video">
 <!ENTITY options_needfiregesture.label "For this function, you need install FireGestures Add-on">
 <!ENTITY options_firegesturescript.label "Install FireGestures">
 <!ENTITY options_firegestureoption.label "FireGestures Options">
-<!ENTITY options_embeddedplayersize.label "Embedded player size">
-<!ENTITY options_embeddedplayersize1.label "425x344 (4:3)">
-<!ENTITY options_embeddedplayersize2.label "480x385 (4:3)">
-<!ENTITY options_embeddedplayersize3.label "640x505 (4:3)">
-<!ENTITY options_embeddedplayersize4.label "960x745 (4:3)">
-<!ENTITY options_embeddedplayersize5.label "560x340 (16:9)">
-<!ENTITY options_embeddedplayersize6.label "640x385 (16:9)">
-<!ENTITY options_embeddedplayersize7.label "853x505 (16:9)">
-<!ENTITY options_embeddedplayersize8.label "1280x745 (16:9)">
-<!ENTITY options_embeddedplayeroption.label "Embedded player options">
-<!ENTITY options_epautoplay.label "Auto play">
-<!ENTITY options_eploop.label "Loop">
-<!ENTITY options_epautousehq.label "Higher priority for HQ video">
-<!ENTITY options_epcopyurlbutton.label "Display [Copy URL] button">
-<!ENTITY options_epwhendroplink.label "Open embedded player when drop a video URL on BBS view">
+<!ENTITY options_epwhendroplink.label "Open video player when drop a video URL on BBS view">
 <!ENTITY options_hotkeyctrlw.label "Hotkey [Ctrl+W]">
 <!ENTITY options_hotkeyclosetab.label "Browser Default - Close Tab">
 <!ENTITY options_hotkeysendcharw.label "BBS Default - Send Ctrl+W">
@@ -226,7 +212,6 @@
 <!ENTITY options_hotkeydownhtml.label "HTML">
 <!ENTITY options_bbsfoxcontextmenu.label "BBSFox context menu">
 <!ENTITY options_ansicopymenu.label "Enable item [Copy with ANSI Color]">
-<!ENTITY options_embeddedplayermenu.label "Enable item [Enable Embedded Player](only support Youtube/USTREAM)">
 <!ENTITY options_previewpicturemenu.label "Enable item [Show Preview Image]">
 <!ENTITY options_mousebrowsemenu.label "Enable item [Mouse Browsing On/Off]">
 <!ENTITY options_switchbgdisplaymenu.label "Enable item [Background Image Display On/Off]">
@@ -271,6 +256,8 @@
 <!ENTITY options_highlight.label "Highlight">
 <!ENTITY options_blacklistid.label "Blacklist">
 <!ENTITY options_enableblacklist.label "Enable Blacklist">
+<!ENTITY options_blacklistalpha.label "Transparency">
+<!ENTITY options_blacklistalpha2.label "(100 = Transparent)">
 <!ENTITY options_needGrowl1.label "To use this function, You need install">
 <!ENTITY options_needGrowl2.label "Growl">
 <!ENTITY options_needGrowl3.label "">
@@ -356,9 +343,6 @@
 <!ENTITY LOADFILE "Load File">
 <!ENTITY OPENSYMBOLINPUT "Open/Close Punctuation Window">
 <!ENTITY OPENANSICOLORTOOL "Open/Close Ansi Color Tool Window">
-<!ENTITY OPENEP "Enable embedded player">
-<!ENTITY CLOSEEP "Close embedded player">
-<!ENTITY MINEP "Minimize embedded player/Restore embedded player">
 <!ENTITY OPENPV "Show link image preview">
 <!ENTITY CLOSEPV "Close all link image preview">
 <!ENTITY SENDSTR "Send Strings">

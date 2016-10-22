@@ -55,7 +55,6 @@
                   <tab label="&options_mouse.label;"/>
                   <tab label="&options_hotkey.label;"/>
                   <tab label="&options_contextmenu.label;"/>
-                  <tab label="&options_emdeddplayer.label;"/>
                   <tab label="&options_picturepreview.label;"/>
                   <tab label="&options_servernotify.label;"/>
                   <tab label="&options_highlight.label;"/>
@@ -591,6 +590,10 @@
                             </hbox>
                             <checkbox id="LoadUrlInBG" label="&options_dontgotonewtab.label;" hidden="true"/>
                             <checkbox id="DropToPaste" label="&options_dropToPaste.label;"/>
+                            <hbox align="center">
+                              <checkbox id="EPWhenDropLink" label="&options_epwhendroplink.label;"/>
+                              <button id="InstallPopupVideo" label="&options_installpopupvideo.label;" oncommand="getPopupVideoAddon();" hidden="true"/>
+                            </hbox>
                             <checkbox id="ClearCopiedSel" label="&options_clearcopiedsel.label;"/>
                             <checkbox id="DetectLink" label="&options_showlink.label;"/>
                             <hbox align="center" id="DetectAid" hidden="true">
@@ -687,7 +690,6 @@
                           <tabpanel>
                             <vbox>
                               <checkbox id="AnsiCopyMenu" label="&options_ansicopymenu.label;"/>
-                              <checkbox id="EmbeddedPlayerMenu" label="&options_embeddedplayermenu.label;"/>
                               <checkbox id="PreviewPictureMenu" label="&options_previewpicturemenu.label;"/>
                               <checkbox id="MouseBrowseMenu" label="&options_mousebrowsemenu.label;"/>
                               <checkbox id="SwitchBgDisplayMenu" label="&options_switchbgdisplaymenu.label;"/>
@@ -726,42 +728,6 @@
                           </tabpanel>
                         </tabpanels>
                       </tabbox>
-                    </vbox>
-                  </tabpanel>
-
-                  <tabpanel>
-                    <vbox>
-                      <groupbox>
-                        <caption label="&options_embeddedplayersize.label;"/>
-                        <radiogroup id="EmbeddedPlayerSize">
-                          <hbox>
-                            <vbox>
-                              <radio value="0" label="&options_embeddedplayersize1.label;"/>
-                              <radio value="4" label="&options_embeddedplayersize5.label;"/>
-                            </vbox>
-                            <vbox>
-                              <radio value="1" label="&options_embeddedplayersize2.label;"/>
-                              <radio value="5" label="&options_embeddedplayersize6.label;"/>
-                            </vbox>
-                            <vbox>
-                              <radio value="2" label="&options_embeddedplayersize3.label;"/>
-                              <radio value="6" label="&options_embeddedplayersize7.label;"/>
-                            </vbox>
-                            <vbox>
-                              <radio value="3" label="&options_embeddedplayersize4.label;"/>
-                              <radio value="7" label="&options_embeddedplayersize8.label;"/>
-                            </vbox>
-                          </hbox>
-                        </radiogroup>
-                      </groupbox>
-                      <groupbox>
-                        <caption label="&options_embeddedplayeroption.label;"/>
-                        <checkbox id="EPAutoPlay" label="&options_epautoplay.label;"/>
-                        <checkbox id="EPLoop" label="&options_eploop.label;"/>
-                        <checkbox id="EPAutoUseHQ" label="&options_epautousehq.label;"/>
-                        <checkbox id="EPCopyUrlButton" label="&options_epcopyurlbutton.label;"/>
-                        <checkbox id="EPWhenDropLink" label="&options_epwhendroplink.label;"/>
-                      </groupbox>
                     </vbox>
                   </tabpanel>
 
@@ -860,7 +826,12 @@
                       <groupbox flex="1">
                         <caption label="&options_blacklistid.label;" id="blacklistid" hidden="true"/>
                         <vbox flex="1">
-                          <checkbox id="EnableBlacklist" label="&options_enableblacklist.label;"/>
+                          <hbox align="center">
+                            <checkbox id="EnableBlacklist" label="&options_enableblacklist.label;"/>
+                            <label control="BlacklistAlpha" value="&options_blacklistalpha.label;"/>
+                            <textbox id="BlacklistAlpha" size="3" type="number" min="50" max="100" increment="1" decimalplaces="0"/>
+                            <label control="BlacklistAlpha" value="&options_blacklistalpha2.label;"/>
+                          </hbox>
                           <textbox id="BlacklistedUserIds" multiline="true" flex="1"/>
                         </vbox>
                       </groupbox>
@@ -907,9 +878,6 @@
                   <menuitem value='BBSFox_API.setBBSCmd("doLoadFile");' label='&LOADFILE;'/>
                   <menuitem value='BBSFox_API.setBBSCmd("switchSymbolInput");' label='&OPENSYMBOLINPUT;'/>
                   <menuitem value='BBSFox_API.setBBSCmd("switchAnsiColorTool");' label='&OPENANSICOLORTOOL;'/>
-                  <menuitem value='OpenEmbeddedPlayer' label='&OPENEP;'/>
-                  <menuitem value='BBSFox_API.setBBSCmd("minimizeEmbeddedPlayer");' label='&MINEP;'/>
-                  <menuitem value='BBSFox_API.setBBSCmd("closeEmbeddedPlayer");' label='&CLOSEEP;'/>
                   <menuitem value='OpenPictureViewer' label='&OPENPV;'/>
                   <menuitem value='BBSFox_API.setBBSCmd("closePictureViewer");' label='&CLOSEPV;'/>
                   <menuitem value='SendString' label='&SENDSTR;'/>

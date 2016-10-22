@@ -388,14 +388,6 @@ DownloadArticle.prototype={
       var url = anchorNode.getAttribute("href");
       var youtubeRegEx1 = /https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)/i;
       var youtubeRegEx2 = /https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*)/i;
-      var vSizeArr = [{w:425, h:344},
-                      {w:480, h:385},
-                      {w:640, h:505},
-                      {w:960, h:745},
-                      {w:560, h:340},
-                      {w:640, h:385},
-                      {w:853, h:505},
-                      {w:1280, h:745}];
 
       var code;
       if(youtubeRegEx1.test(url)) {
@@ -430,8 +422,8 @@ DownloadArticle.prototype={
       iframe.setAttribute("frameborder",0);
 
       var scrstr = "https://www.youtube.com/embed/"+code+"?hl=zh_TW&fs=1&rel=0&loop=0&autoplay=0";
-      iframe.setAttribute("width",vSizeArr[this.prefs.embeddedPlayerSize].w);
-      iframe.setAttribute("height",vSizeArr[this.prefs.embeddedPlayerSize].h);
+      iframe.setAttribute("width",560);
+      iframe.setAttribute("height",340);
       iframe.setAttribute("src",scrstr);
     }
 };

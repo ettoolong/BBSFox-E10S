@@ -146,21 +146,9 @@ BBSOverlayCmdListener.prototype={
             if(bbscore.cancelDownloadAndPaste())
               return;
             break;
-          case "openPlayerWindowEx":
-            if(bbscore.playerMgr)
-              bbscore.playerMgr.openVideoWindow(data.videoUrl);
-            break;
-          case "minimizeEmbeddedPlayer":
-            if(bbscore.playerMgr)
-              bbscore.playerMgr.minimizeAllEmbededPlayer();
-            break;
           case "closePictureViewer":
             if(bbscore.picViewerMgr)
               bbscore.picViewerMgr.closeAllPictureViewer();
-            break;
-          case "closeEmbeddedPlayer":
-            if(bbscore.playerMgr)
-              bbscore.playerMgr.closeAllEmbededPlayer();
             break;
           case "previewPicture":
             if(bbscore.picViewerMgr)

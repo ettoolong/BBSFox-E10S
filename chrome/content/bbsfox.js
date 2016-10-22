@@ -16,9 +16,6 @@ function BBSFox() {
     this.conn = new ConnectCore(this);
     this.view = new TermView(80, 24);
     this.buf = new TermBuf(80, 24);
-    this.playerMgr = new EmbeddedPlayerMgr(this);
-    //this.pptPicLoader = new BBSPPTPicLoader(this);
-    //this.imgurPicLoader = new BBSImgurPicLoader(this);
     this.extPicLoader = new ExtPicLoader(this);
     this.extPicLoader.setCallback("load", this.showPicPreview.bind(this) );
     this.extPicLoader.setCallback("locate", this.setPicLocation.bind(this) );
@@ -96,8 +93,8 @@ BBSFox.prototype={
             .createBundle("chrome://bbsfox/locale/bbsfox.properties"),
 
     youtubeRegEx: /(https?:\/\/(?:www|m)\.youtube\.com\/watch\?.*v=([A-Za-z0-9._%-]*)|https?:\/\/youtu\.be\/([A-Za-z0-9._%-]*))/i,
-    ustreamRegEx: /(http:\/\/www\.ustream\.tv\/(channel|channel-popup)\/([A-Za-z0-9._%-]*))/i,
-    urecordRegEx: /(http:\/\/www\.ustream\.tv\/recorded\/([0-9]{5,10}))/i,
+    twitchRegEx: /https:\/\/(?:www\.)twitch\.tv\//i,
+    vimeoRegEx: /https:\/\/vimeo\.com\/([0-9]{1,10})/i,
     PttRegEx: /^(?:(?:(?:bbs\.)?ptt(?:2|3)?\.cc)|(?:ptt(?:2|3)?\.twbbs\.org))$/i,
     //there are some problem: http://www.ustream.tv/xxx -> http://www.ustream.tv/channel/xxx
 
@@ -1334,23 +1331,7 @@ BBSFox.prototype={
       this.view.tempPicY = event.clientY;
       //if we draging window, pass all detect.
       var dW = null;
-      if(this.playerMgr && this.playerMgr.dragingWindow)
-      {
-        dW = this.playerMgr.dragingWindow;
-        if(this.CmdHandler.getAttribute("DragingWindow")=='1') {
-          dW.playerDiv.style.left = dW.tempCurX + (event.pageX - dW.offX) + 'px';
-          dW.playerDiv.style.top = dW.tempCurY + (event.pageY - dW.offY) + 'px';
-          event.preventDefault();
-          return;
-        }
-        else if(this.CmdHandler.getAttribute("DragingWindow")=='2') {
-          dW.playerDiv2.style.left = dW.tempCurX + (event.pageX - dW.offX) + 'px';
-          dW.playerDiv2.style.top = dW.tempCurY + (event.pageY - dW.offY) + 'px';
-          event.preventDefault();
-          return;
-        }
-      }
-      else if(this.picViewerMgr && this.picViewerMgr.dragingWindow)
+      if(this.picViewerMgr && this.picViewerMgr.dragingWindow)
       {
         dW = this.picViewerMgr.dragingWindow;
         dW.viewerDiv.style.left = dW.tempCurX + (event.pageX - dW.offX) + 'px';
@@ -1547,25 +1528,10 @@ BBSFox.prototype={
           str = dt.getData("text/plain");
         if(this.prefs.epWhenDropLink)
         {
-          if(this.youtubeRegEx.test(str))
-          {
-            this.playerMgr.openYoutubeWindow(str);
+          if(this.youtubeRegEx.test(str) || this.twitchRegEx.test(str) || this.vimeoRegEx.test(str) ) {
             event.preventDefault();
             this.setDelayInputAreaFocus();
-            return;
-          }
-          else if(this.ustreamRegEx.test(str))
-          {
-            this.playerMgr.openUstreamWindow(str);
-            event.preventDefault();
-            this.setDelayInputAreaFocus();
-            return;
-          }
-          else if(this.urecordRegEx.test(str))
-          {
-            this.playerMgr.openUrecordWindow(str);
-            event.preventDefault();
-            this.setDelayInputAreaFocus();
+            this.sendCoreCommand({command: "popupVideoWindow", url: str});
             return;
           }
         }

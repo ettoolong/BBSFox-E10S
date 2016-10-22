@@ -85,6 +85,9 @@ let bbsfoxPage = {
       case "fireNotifySound":
         this.playNotifySound();
         break;
+      case "popupVideoWindow":
+        this.popupVideoWindow(data.url, message.target);
+        break;
       default:
         break;
     }
@@ -177,6 +180,14 @@ let bbsfoxPage = {
       }
     }
     notifications.notify(msg);
+  },
+
+  popupVideoWindow: function(url, target) {
+    let xulTab = tabUtils.getTabForBrowser( target );
+    let chromeWindow = tabUtils.getOwnerWindow(xulTab);
+    let aDOMWindow = chromeWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
+    if(aDOMWindow.PopupVideo_API)
+      aDOMWindow.PopupVideo_API.popupVideo(url);
   },
 
   playNotifySound: function(){

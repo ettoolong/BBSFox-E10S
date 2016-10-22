@@ -2,13 +2,13 @@
   "title": "BBSFox",
   "name": "bbsfox",
   "id": "{86095750-AD15-46d8-BF32-C0789F7E6A32}",
-  "version": "5.0.14",
+  "version": "5.0.16",
   "description": "Telnet client extension specifically designed for BBS browsing.",
   "main": "data/js/addon-script.js",
   "author": "ettoolong@hotmail.com",
   "homepage": "https://addons.mozilla.org/zh-TW/firefox/user/ett-chung/",
   "engines": {
-    "firefox": "45.0 - 50.*"
+    "firefox": "45.0 - 51.*"
   },
   "license": "MIT",
   "keywords": [
@@ -103,6 +103,7 @@
     "tottoko (bbs.gamer.com.tw)",
     "icearea (bbs.gamer.com.tw)",
     "legnaleurc (github.com)",
-    "polar2031 (github.com)"
+    "polar2031 (github.com)",
+    "ngoo5tsong5sik (github.com)"
   ]
 }
