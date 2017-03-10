@@ -155,7 +155,7 @@
     "bbsfox2.DevVersion": false,
     "bbsfox1.SshSupport": false,
     "bbsfox2.DynamicRenderTest": false,
-    "bbsfox1.RefererRule": true,
+    "bbsfox1.Update": false,
     "bbsfox2.locale": "chrome://bbsfox/locale/bbsfox.properties"
   }
 }

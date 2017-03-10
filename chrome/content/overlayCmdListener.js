@@ -218,7 +218,7 @@ BBSOverlayCmdListener.prototype={
             break;
           case "unload":
             bbscore.unregExitAlert();
-            window.close();
+            //window.close();
             break;
           case "setAlert":
             //bbscore.view.showAlertMessageEx(false, true, false, data.alertMessage);

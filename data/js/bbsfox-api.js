@@ -1,8 +1,6 @@
 "use strict";
 
 const tabs = require("sdk/tabs");
-const tabUtils = require("sdk/tabs/utils");
-
 const apiKeys = [
   "checkFireGestureKey", "doPageUp", "doPageDown",
   "doEnd", "doHome", "doArrowLeft",
@@ -14,19 +12,31 @@ const apiKeys = [
   "doLoadFile", "switchSymbolInput", "switchAnsiColorTool",
   "previewPicture", "closePictureViewer", "sendCodeStr"
 ];
+const urlCheck = /(^(telnet|ssh):\/\/)/i;
+
+let callback = null;
+
+const setCallback = (cb) => {
+  callback = cb;
+}
 
 const setBBSCmdEx = (commandSet) => {
-    if(commandSet.command && apiKeys.indexOf(commandSet.command) !== -1 ) { //only allow command that list in apiKeys
-      let tab = tabs.activeTab;
-      let xulTab = tabUtils.getTabForId(tab.id);
-      let target = tabUtils.getBrowserForTab(xulTab);
-      let browserMM = target.messageManager;
-      browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
-    }
+  console.log(commandSet);
+  if(commandSet.command && apiKeys.indexOf(commandSet.command) !== -1 ) { //only allow command that list in apiKeys
+    if(callback)
+      callback(commandSet);
+  }
 };
-exports.setBBSCmdEx = setBBSCmdEx;
 
 const setBBSCmd = (command) => {
-    setBBSCmdEx({command: command});
+  setBBSCmdEx({command: command});
 };
-exports.setBBSCmd = setBBSCmd;
+
+const isBBSPage = () => {
+  return urlCheck.test(tabs.activeTab.url);
+};
+
+exports.setAPICallback = setCallback;
+exports.bbsfoxAPI = {setBBSCmdEx: setBBSCmdEx,
+                     setBBSCmd: setBBSCmd,
+                     isBBSPage: isBBSPage};

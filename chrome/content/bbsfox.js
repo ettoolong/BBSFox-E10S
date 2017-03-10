@@ -218,7 +218,7 @@ BBSFox.prototype={
 
     onConnect: function(conn) {
         this.connectState = 1;
-        this.updateTabIcon('connect');
+        this.setInputAreaFocus();
         this.unusedTime = 0;
         this.timerOnsec = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
         this.timerOnsec.initWithCallback(this, 1000, Ci.nsITimer.TYPE_REPEATING_SLACK);
@@ -233,8 +233,6 @@ BBSFox.prototype={
 
         this.connectState = 2;
         this.unusedTime = 0;
-        //alert(this.stringBundle.getString("alert_conn_close"));
-        this.updateTabIcon('disconnect');
 
         if(this.timerOnsec)
         {
@@ -794,29 +792,6 @@ BBSFox.prototype={
       }
     },
 
-    updateTabIcon: function(aStatus) {
-      var icon = ICON_LOGO;
-      switch (aStatus) {
-        case 'connect':
-          icon = ICON_CONNECT;
-          this.setInputAreaFocus();
-          break;
-        case 'disconnect':
-          icon = ICON_DISCONNECT;
-          break;
-        case 'newmessage':  // Not used yet
-          icon = ICON_CONNECT;
-          break;
-        case 'connecting':  // Not used yet
-          icon = ICON_CONNECTING;
-        default:
-      }
-      this.prefs.status.tabIcon = icon;
-      //this.CmdHandler.setAttribute('UpdateIcon', icon);
-      //this.prefs.updateEventPrefs([{key:'tabIcon', value:icon}]);
-      this.sendCoreCommand({command: "updateTabIcon", icon: icon});
-    },
-
     setSelectStatus: function(selectStatus) { //TODO: check this. why we need it?
       this.selectStatus = selectStatus;
     },
@@ -825,36 +800,27 @@ BBSFox.prototype={
       //this.loadLoginData();
     },
 
-    setFrameScript: function(cb, init) {
-      if(!this.FrameScriptCb) {
-        if(init) {
-          //Update Overlay Prefs and Event Prefs
-          this.FrameScriptCb = cb;
-          if(this.prefs) {
-            this.prefs.updateEventPrefs(); //force update
-            this.loadLoginData();
-          }
+    setContentScript: function(cb) {
+      if(!this.contentScriptCb) {
+        this.contentScriptCb = cb;
+        if(this.prefs) {
+          this.prefs.updateEventPrefs(); //force update
+          this.loadLoginData();
         }
         return true;
       } else {
-        if(this.FrameScriptCb !== cb) {
-          this.sendCoreCommand({command: "disableScript"});
-        }
-        this.FrameScriptCb = cb;
-        this.prefs.updateEventPrefs(); //force update
-        this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.status.tabIcon});
-        return false;
+        this.contentScriptCb = null;
       }
     },
 
     updateTabInfo: function() {
       this.prefs.updateEventPrefs(); //force update
-      this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.status.tabIcon});
+      //this.sendCoreCommand({command: "updateTabIcon", icon: this.prefs.status.tabIcon});
     },
 
     sendCoreCommand: function(command, async) {
-      if(this.FrameScriptCb)
-        return this.FrameScriptCb(command, async);
+      if(this.contentScriptCb)
+        return this.contentScriptCb(command, async);
     },
 
     /*

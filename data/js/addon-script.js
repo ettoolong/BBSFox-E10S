@@ -225,7 +225,7 @@ cm.Item({
 
 exports.main = function (options, callbacks) {
   bbsPrefs.initDefaultPrefs(data);
-  bbsfoxPage.init();
+  bbsfoxPage.init(data);
 
   bbsfoxPage.startListenEvent(options.loadReason);
 
@@ -248,7 +248,6 @@ exports.main = function (options, callbacks) {
   bbsfoxBg.mount();
 
   // notify all telnet page
-  bbsfoxPage.sendAddonEvent(options.loadReason);
 };
 
 exports.onUnload = function (reason) {
@@ -261,7 +260,6 @@ exports.onUnload = function (reason) {
     bbsfoxBg.unmount();
 
     // notify all telnet page
-    bbsfoxPage.sendAddonEvent(reason);
     bbsfoxPage.closePreferencesPage();
   }
 

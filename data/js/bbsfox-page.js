@@ -1,17 +1,123 @@
 "use strict";
 
+const ICON_LOGO = "chrome://bbsfox/skin/logo/logo.png";
+const ICON_CONNECT = "chrome://bbsfox/skin/state_icon/connect.png";
+const ICON_DISCONNECT = "chrome://bbsfox/skin/state_icon/disconnect.png";
+const ICON_CONNECTING = "chrome://bbsfox/skin/state_icon/connecting.gif";
+const ICON_ERROR = "chrome://bbsfox/skin/state_icon/error.png";
+
 const {Cc, Ci} = require("chrome");
 let {viewFor} = require("sdk/view/core");
 let {modelFor} = require("sdk/model/core");
+
+const pageMod = require("sdk/page-mod");
+let { PrefsTarget } = require("sdk/preferences/event-target");
 
 let tabs = require("sdk/tabs");
 let tabUtils = require("sdk/tabs/utils");
 let winUtils = require("sdk/window/utils");
 
 let system = require("sdk/system");
+let { setTimeout } = require("sdk/timers");
 let notifications = require("sdk/notifications");
 let soundService = Cc["@mozilla.org/sound;1"].createInstance(Ci.nsISound);
-let bbsfoxAPI = require("./bbsfox-api.js");
+let { bbsfoxAPI, setAPICallback } = require("./bbsfox-api.js");
+
+require("sdk/system/events").on("http-on-modify-request", event => {
+  let channel = event.subject.QueryInterface(Ci.nsIHttpChannel);
+  let targetURI = channel.URI;
+  //ONLY override referrer string for target http://ppt.cc/
+  //example: http://ppt.cc/gFtO@.jpg -> http://ppt.cc/gFtO
+  let urlStr = decodeURI(targetURI.spec);
+  if(urlStr.search(/^(http:\/\/ppt\.cc\/).{4,6}@\.(bmp|gif|jpe?g|png)$/i) != -1) {
+    let ref = urlStr.split(/@/i);
+    let override = false;
+    if(!targetURI.hasRef) {
+      override = true;
+    }
+    else if(targetURI.hasRef && targetURI.ref != ref[0]) {
+      override = true;
+    }
+    if(override) {
+      channel.setRequestHeader("Referer", ref[0], false);
+    }
+  }
+});
+
+//
+function BBSConnection (owner, worker, host, port, proxy) {
+  // this.transport = null;
+  // this.inputStream = null;
+  // this.outputStream = null;
+  // this._inputStream = null;
+  // this.ipump = null;
+  this.alive = true;
+  this.icon = ICON_LOGO;
+  this.owner = owner;
+  this.worker = worker;
+  let proxyInfo = null;
+  if (proxy.type != "") {// use a proxy
+    proxyInfo = this.ps.newProxyInfo(proxy.type, proxy.host, proxy.port, Ci.nsIProxyInfo.TRANSPARENT_PROXY_RESOLVES_HOST, 30, null);
+  }
+  this.transport = this.ts.createTransport(null, 0, host, port, proxyInfo);
+  this._inputStream = this.transport.openInputStream(0,0,0);
+  this.outputStream = this.transport.openOutputStream(0,0,0);
+  this.inputStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(Ci.nsIBinaryInputStream);
+  this.inputStream.setInputStream(this._inputStream);
+  this.pump = Cc["@mozilla.org/network/input-stream-pump;1"].createInstance(Ci.nsIInputStreamPump);
+  this.pump.init(this._inputStream, -1, -1, 0, 0, false);
+  this.pump.asyncRead(this, null);
+}
+
+BBSConnection.prototype = {
+  ts: Cc["@mozilla.org/network/socket-transport-service;1"].getService(Ci.nsISocketTransportService),
+  ps: Cc["@mozilla.org/network/protocol-proxy-service;1"].getService(Ci.nsIProtocolProxyService),
+
+  onStartRequest: function(req, ctx){
+    this.icon = ICON_CONNECT;
+    this.updateStatus();
+    this.worker.port.emit("bbsfox@ettoolong:bbsfox-connect", {});
+  },
+
+  onStopRequest: function(req, ctx, status){
+    if(this.alive) {
+      this.icon = ICON_DISCONNECT;
+      this.updateStatus();
+      this.worker.port.emit("bbsfox@ettoolong:bbsfox-disconnect", {status: status});
+    }
+  },
+
+  onDataAvailable: function(req, ctx, ins, off, count) {
+    let data="";
+    while(this.inputStream && count > 0) {
+      let s = this.inputStream.readBytes(count);
+      count -= s.length;
+      this.worker.port.emit("bbsfox@ettoolong:bbsfox-data", {data: s});
+    };
+  },
+
+  close: function() {
+    this.icon = ICON_DISCONNECT;
+    this.updateStatus();
+    this.alive = false;
+    if(this._inputStream && this.inputStream && this.outputStream) {
+      this._inputStream.close();
+      this.inputStream.close();
+      this.outputStream.close();
+      this._inputStream = this.inputStream = this.outputStream = this.transport = null;
+    }
+  },
+
+  updateStatus: function() {
+    this.owner.updateTabIcon(this.icon, this.worker);
+  },
+
+  send: function(str) {
+    this.outputStream.write(str, str.length);
+    this.outputStream.flush();
+  }
+}
+//
 
 //bbsfoxPage: handle keyboard, mouse, scroll and context menu event for telnet/ssh page
 let bbsfoxPage = {
@@ -24,10 +130,110 @@ let bbsfoxPage = {
   mouseRBtnDown: false,
   globalMouseLBtnDown: false,
   mouseLBtnDown: false,
+  pm: null,
+  connections: [],
 
   isBBSPage: function(url) {
     //check if this page protocol is telnet/ssh
     return this.urlCheck.test(url);
+  },
+
+  addWorker: function (worker) {
+    worker.alive = true;
+    worker.tabId = worker.tab.id;
+    this.connections.push({worker: worker, conn: null});
+  },
+
+  removeWorker: function (worker) {
+    //close
+    let connection = this.getConnectionByWorker(worker);
+    if(connection) {
+      if(connection.conn)
+        connection.conn.close();
+    }
+    this.connections = this.connections.filter( c => c.worker != worker);
+  },
+
+  getConnectionByWorker: function (worker) {
+    return this.connections.find( c => c.worker == worker);
+  },
+
+  getWorkerByTab: function (tab) {
+    let connection = this.connections.find( c => c.worker.tabId == tab.id);
+    if(connection)
+      return connection.worker;
+    else
+      return;
+  },
+
+  geXulTabBytWorker: function (worker) {
+    return tabUtils.getTabForId(worker.tabId);
+  },
+
+  getDOMWindowByWorker: function (worker) {
+    let xulTab = tabUtils.getTabForId(worker.tabId);
+    let chromeWindow = tabUtils.getOwnerWindow(xulTab);
+    return chromeWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
+  },
+
+  // getBrowserByWorker: function (worker) {
+  //   let xulTab = tabUtils.getTabForId(worker.tabId);
+  //   return tabUtils.getBrowserForTab(xulTab);
+  // },
+
+  rebuildWorkerMapping: function (worker) {
+    let workerTabIds = this.connections.filter( c => c.worker != worker).map( c2 => c2.worker.tabId );
+    let allWindows = winUtils.windows(null, {includePrivate:true});
+    for (let chromeWindow of allWindows) {
+      if(winUtils.isBrowser(chromeWindow)) {
+        this.onWinOpen( chromeWindow );
+        let openedTabs = tabUtils.getTabs( chromeWindow );
+        for(let openedTab of openedTabs) {
+          let uri = tabUtils.getURI(openedTab);
+          if(this.isBBSPage(uri)) {
+            let workerTabId = modelFor(openedTab).id;
+            if( !workerTabIds.includes(workerTabId) ) {
+              //console.log('set ' + worker.tabId + ' -> ' + workerTabId);
+              worker.tabId = workerTabId;
+              return;
+            }
+          }
+        }
+      }
+    }
+  },
+
+  loadPageMod: function () {
+    this.pm = pageMod.PageMod({
+      include: ["telnet://*", "ssh://*"],
+      attachTo: ["existing", "top"],
+      contentScriptFile: this.addonData.url("js/content-script.js"),
+      contentScriptWhen: "end",
+      onAttach: worker => {
+        this.addWorker(worker);
+        worker.port.on("bbsfox@ettoolong:bbsfox-coreCommand", msg => {
+          this.handleCoreCommand({worker: worker, data: msg});
+        });
+        worker.on("pageshow", () => {
+          // addon sdk bug :(  see: https://bugzil.la/1259292
+          if(!worker.tab) {
+            this.rebuildWorkerMapping(worker);
+            setTimeout(() => {
+              let connection = this.getConnectionByWorker(worker);
+              if(connection) {
+                connection.conn.updateStatus();
+              }
+            }, 0);
+          }
+        });
+        worker.on("detach", () => {
+          this.removeWorker(worker);
+        });
+      }
+    });
+    setAPICallback(commandSet => {
+      this.setBBSCmdEx(commandSet);
+    });
   },
 
   handleCoreCommand: function(message) {
@@ -35,72 +241,99 @@ let bbsfoxPage = {
     //must make sure command from BBS page.
     let data = message.data;
     switch (data.command) {
-      case "updateTabIcon": {
-        tabUtils.getTabForBrowser( message.target ).image = message.data.icon;
+      case "sendData":
+        this.sendData(data, message.worker);
         break;
-      }
+      case "createSocket":
+        this.createSocket(data, message.worker);
+        break;
+      // case "updateTabIcon": {
+      //   message.worker.tabImage = message.data.icon;
+      //   tabUtils.getTabForId(message.worker.tabId).image = message.data.icon;
+      //   //tabUtils.getTabForBrowser( message.target ).image = message.data.icon;
+      //   break;
+      // }
       case "openNewTabs":
         this.openNewTabs(data.urls, data.ref, data.charset, data.loadInBg);
         break;
       case "resetStatusBar":
-        this.resetStatusBar( message.target );
+        this.resetStatusBar( message.worker );
         break;
       case "updateEventPrefs": {
-        tabUtils.getTabForBrowser( message.target ).eventPrefs = data.eventPrefs;
+        message.worker.eventPrefs = data.eventPrefs;
+        //tabUtils.getTabForBrowser( message.target ).eventPrefs = data.eventPrefs;
         break;
       }
       case "writePrefs":
         this.writePrefs(data.branchName, data.name, data.vtype, data.value);
         break;
-      case "removeStatus": {
-        //tabUtils.getTabForBrowser( message.target ).eventPrefs;
-        let tab = tabUtils.getTabForBrowser( message.target );
-        if(tab) {
-          delete tab.eventPrefs;
-        }
-        break;
-      }
-      case "frameScriptReady": {
-        let xulTab = tabUtils.getTabForBrowser(message.target);
+      // case "removeStatus": {
+      //   //tabUtils.getTabForBrowser( message.target ).eventPrefs;
+      //   let tab = tabUtils.getTabForBrowser( message.target );
+      //   if(tab) {
+      //     delete tab.eventPrefs;
+      //   }
+      //   break;
+      // }
+      case "contentScriptReady": {
+        let xulTab = this.geXulTabBytWorker(message.worker);
         if(xulTab.selected)
-          this.setBBSCmd("setTabSelect", message.target );
-        //console.log("handleCoreCommand: frameScriptReady");
+          this.setBBSCmd("setTabSelect", message.worker );
         break;
       }
       case "loadAutoLoginInfo":
-        this.loadAutoLoginInfo(data.querys, message.target);
+        this.loadAutoLoginInfo(data.querys, message.worker);
         break;
       case "openEasyReadingTab":
-        this.openEasyReadingTab(data.htmlData, message.target);
+        this.openEasyReadingTab(data.htmlData);
         break;
       case "openFilepicker":
-        this.openFilepicker(data, message.target);
+        this.openFilepicker(data, message.worker);
         break;
       case "pushThreadDlg":
-        this.pushThreadDlg(data, message.target);
+        this.pushThreadDlg(data, message.worker);
         break;
       case "showNotifyMessage":
-        this.showNotifyMessage(data, message.target);
+        this.showNotifyMessage(data, message.worker);
         break;
       case "fireNotifySound":
         this.playNotifySound();
         break;
       case "popupVideoWindow":
-        this.popupVideoWindow(data.url, message.target);
+        this.popupVideoWindow(data.url, message.worker);
         break;
       default:
         break;
     }
   },
 
-  resetStatusBar: function(target) {
-    let xulTab = tabUtils.getTabForBrowser( target );
-    let chromeWindow = tabUtils.getOwnerWindow(xulTab);
-    let aDOMWindow = chromeWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
+  sendData: function(data, worker) {
+    let connection = this.getConnectionByWorker(worker);
+    if(connection) {
+      connection.conn.send(data.str);
+    }
+  },
+
+  createSocket: function(data, worker) {
+    let connection = this.getConnectionByWorker(worker);
+    if(connection) {
+      connection.conn = new BBSConnection(this, worker, data.host, data.port, data.proxy);
+    }
+  },
+
+  updateTabIcon: function(icon, worker) {
+    let xulTab = this.geXulTabBytWorker(worker);
+    if(xulTab) {
+      xulTab.image = icon;
+    }
+  },
+
+  resetStatusBar: function(worker) {
+    let aDOMWindow = this.getDOMWindowByWorker(worker);
     aDOMWindow.XULBrowserWindow.setOverLink('');
   },
 
-  loadAutoLoginInfo: function(querys, target) {
+  loadAutoLoginInfo: function(querys, worker) {
     let result = {};
     for(let query of querys){
       try{
@@ -120,10 +353,10 @@ let bbsfoxPage = {
     if(result.ssh) {
       key_entries = [];
     }
-    this.setBBSCmdEx({command: "loginInfoReady", result: result, hostkeys: key_entries}, target);
+    this.setBBSCmdEx({command: "loginInfoReady", result: result, hostkeys: key_entries}, worker);
   },
 
-  openEasyReadingTab: function(htmlData, target) {
+  openEasyReadingTab: function(htmlData) {
     let filetmp = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).get("TmpD", Ci.nsIFile);
     filetmp.append("easyreading.htm");
     filetmp.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, 0o666);
@@ -139,30 +372,27 @@ let bbsfoxPage = {
     this.tempFiles.push(filetmp);
   },
 
-  pushThreadDlg: function(data, target) {
-    let xulTab = tabUtils.getTabForBrowser( target );
-    let chromeWindow = tabUtils.getOwnerWindow(xulTab);
-    let aDOMWindow = chromeWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
-
+  pushThreadDlg: function(data, worker) {
     let EMURL = "chrome://bbsfox/content/pushThread.xul";
     let EMFEATURES = "chrome, dialog=yes, resizable=yes, modal=yes, centerscreen";
     let retVals = { exec: false, pushText: data.pushText, lineLength: data.lineLength};
     let retVals2 = [];
+    let aDOMWindow = this.getDOMWindowByWorker(worker);
     aDOMWindow.openDialog(EMURL, "", EMFEATURES, retVals, retVals2);
     if(retVals.exec) {
       this.setBBSCmdEx({command:"sendPushThreadText",
                         sendText:retVals2,
                         temp:""
-                      }, target);
+                      }, worker);
     }
     else {
       this.setBBSCmdEx({command:"sendPushThreadText",
                         temp: retVals.pushText
-                      }, target);
+                      }, worker);
     }
   },
 
-  showNotifyMessage: function(data, target){
+  showNotifyMessage: function(data, worker){
     let msg = {
       iconURL: data.imageUrl,
       title: data.title,
@@ -173,9 +403,9 @@ let bbsfoxPage = {
     };
     if(data.textClickable) {
       msg.onClick = () => {
-        this.setTabFocus(target);
+        this.setTabActive(worker);
         if(data.replyString) {
-          this.setBBSCmdEx({command:"sendText", text: data.replyString}, target);
+          this.setBBSCmdEx({command:"sendText", text: data.replyString}, worker);
         }
       }
     }
@@ -183,9 +413,7 @@ let bbsfoxPage = {
   },
 
   popupVideoWindow: function(url, target) {
-    let xulTab = tabUtils.getTabForBrowser( target );
-    let chromeWindow = tabUtils.getOwnerWindow(xulTab);
-    let aDOMWindow = chromeWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
+    let aDOMWindow = this.getDOMWindowByWorker(worker);
     if(aDOMWindow.PopupVideo_API)
       aDOMWindow.PopupVideo_API.popupVideo(url);
   },
@@ -196,16 +424,12 @@ let bbsfoxPage = {
     }
   },
 
-  setTabFocus: function(target) {
-    let xulTab = tabUtils.getTabForBrowser( target );
+  setTabActive: function(worker) {
+    let xulTab = tabUtils.getTabForId(worker.tabId);
     tabUtils.activateTab(xulTab, tabUtils.getOwnerWindow(xulTab));
   },
 
-  openFilepicker: function(data, target) {
-    let xulTab = tabUtils.getTabForBrowser( target );
-    let chromeWindow = tabUtils.getOwnerWindow(xulTab);
-    let aDOMWindow = chromeWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
-
+  openFilepicker: function(data, worker) {
     let title = data.title;
     let mode = data.mode;
     let extension = data.defaultExtension;
@@ -218,6 +442,7 @@ let bbsfoxPage = {
 
     let nsIFilePicker = Ci.nsIFilePicker;
     let fileChooser = Cc["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    let aDOMWindow = this.getDOMWindowByWorker(worker);
     fileChooser.init(aDOMWindow, title, mode);
     if(extension)
       fileChooser.defaultExtension = extension;
@@ -267,7 +492,7 @@ let bbsfoxPage = {
           bstream.setInputStream(fstream);
           let bytes = bstream.readBytes(bstream.available());
           if(postCommand) {
-            this.setBBSCmdEx({command: postCommand, fileData: bytes}, target);
+            this.setBBSCmdEx({command: postCommand, fileData: bytes}, worker);
           }
           bstream.close();
           fstream.close();
@@ -317,32 +542,29 @@ let bbsfoxPage = {
     }
   },
 
-  setBBSCmdEx: function(commandSet, target) {
-    if(!target) {
-      let tab = tabs.activeTab;
-      if(this.isBBSPage(tab.url)) { // telnet:// or ssh://
-        let xulTab = tabUtils.getTabForId(tab.id);
-        target = tabUtils.getBrowserForTab(xulTab);
-      }
-    }
-    if(target) {
-      let browserMM = target.messageManager;
-      browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
+  setBroadcastCmd: function(command) {
+    for(let connection of this.connections) {
+      this.setBBSCmdEx({command: command}, connection.worker);
     }
   },
 
-  setBBSCmd: function(command, target) {
-    if(!target) {
+  setBBSCmdEx: function(commandSet, worker) {
+    if(!worker) {
       let tab = tabs.activeTab;
-      if(tab && this.isBBSPage(tab.url)) { // telnet:// or ssh://
-        let xulTab = tabUtils.getTabForId(tab.id);
-        target = tabUtils.getBrowserForTab(xulTab);
+      if(!tab) {
+        //console.log(commandSet);
+      }
+      if(this.isBBSPage(tab.url)) { // telnet:// or ssh://
+        worker = this.getWorkerByTab(tab);
       }
     }
-    if(target) {
-      let browserMM = target.messageManager;
-      browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", {command: command});
+    if(worker && worker.alive) {
+      worker.port.emit("bbsfox@ettoolong:bbsfox-overlayCommand", commandSet);
     }
+  },
+
+  setBBSCmd: function(command, worker) {
+    this.setBBSCmdEx({command: command}, worker);
   },
 
   setItemVisible: function(doc, id, visible, checkHidden) {
@@ -362,13 +584,10 @@ let bbsfoxPage = {
       return;
     }
 
-    //console.log(event.target);
-    let eventPrefs = tab.eventPrefs;
-    if(!eventPrefs) {
-      return;
-    }
+    let worker = this.getWorkerByTab(modelFor(tab));
+    let eventPrefs = worker.eventPrefs;
 
-    let browser = e10s ? event.target.mCurrentBrowser : null;
+    // let browser = e10s ? event.target.mCurrentBrowser : null;
 
     let actions = [["",""],
                    ["doArrowUp", "doArrowDown"],
@@ -398,7 +617,7 @@ let bbsfoxPage = {
 
       let action = actions[mouseWheelFunc[mouseButton]][direction];
       if(action !== "") {
-        this.setBBSCmd(action, browser);
+        this.setBBSCmd(action);
         event.stopPropagation();
         event.preventDefault();
 
@@ -408,7 +627,7 @@ let bbsfoxPage = {
         if(this.mouseLBtnDown) {
           //TODO: fix this, tell content page skip this mouse click.
           if(eventPrefs.useMouseBrowsing) {
-            this.setBBSCmd("skipMouseClick", browser);
+            this.setBBSCmd("skipMouseClick");
           }
         }
       }
@@ -421,30 +640,22 @@ let bbsfoxPage = {
       return;
     }
     let tab = event.target.mCurrentTab; //tabUtils.getTabForBrowser(event.target);
-    //let uri = tabUtils.getURI(tab);
     this.handle_mouse_scroll({event: event, tab: tab, e10s:true});
   },
 
   mouse_scroll: function (event) {
     let tab = tabs.activeTab;
     let xulTab = tabUtils.getTabForId(tab.id);
-
-    //tabUtils.getTabForBrowser( message.target ).eventPrefs = data.eventPrefs;
-    //console.log(xulTab.eventPrefs);
     this.handle_mouse_scroll({event: event, tab: xulTab, e10s:false});
   },
 
   mouse_menu: function (event) {
     let tab = tabs.activeTab;
-    let xulTab = tabUtils.getTabForId(tab.id);
-    //let tab = event.target.mCurrentTab;
-    let uri = tabUtils.getURI(xulTab);
-    if(!this.isBBSPage(uri))
+    if(!this.isBBSPage(tab.url))
       return;
 
-    let eventPrefs = xulTab.eventPrefs;
-    if(!eventPrefs)
-      return;
+    let worker = this.getWorkerByTab(tab);
+    let eventPrefs = worker.eventPrefs;
 
     let mouseWheelFunc2 = (eventPrefs.mouseWheelFunc2 != 0);
     if(mouseWheelFunc2) {
@@ -476,9 +687,7 @@ let bbsfoxPage = {
     }
 
     let tab = tabs.activeTab;
-    let xulTab = tabUtils.getTabForId(tab.id);
-    let uri = tabUtils.getURI(xulTab);
-    if(!this.isBBSPage(uri))
+    if(!this.isBBSPage(tab.url))
       return;
 
     if(event.button==2) {
@@ -501,14 +710,11 @@ let bbsfoxPage = {
     }
 
     let tab = tabs.activeTab;
-    let xulTab = tabUtils.getTabForId(tab.id);
-    let uri = tabUtils.getURI(xulTab);
-    if(!this.isBBSPage(uri))
+    if(!this.isBBSPage(tab.url))
       return;
 
-    let eventPrefs = xulTab.eventPrefs;
-    if(!eventPrefs)
-      return;
+    let worker = this.getWorkerByTab(tab);
+    let eventPrefs = worker.eventPrefs;
 
     let mouseWheelFunc2 = (eventPrefs.mouseWheelFunc2 != 0);
     if(mouseWheelFunc2) {
@@ -518,12 +724,11 @@ let bbsfoxPage = {
         }
         else {//if Linux or Mac, show popup menu.
           if(!this.doDOMMouseScroll) {
-            let browser = event.target.mCurrentBrowser;
             this.setBBSCmdEx({command:"contextmenu",
                               screenX:event.screenX,
                               screenY:event.screenY,
                               clientX:event.clientX,
-                              clientY:event.clientY}, browser);
+                              clientY:event.clientY});
 
           }
         }
@@ -534,38 +739,34 @@ let bbsfoxPage = {
   key_press: function (event) {
 
     let tab = tabs.activeTab;
-    let xulTab = tabUtils.getTabForId(tab.id);
-    let eventPrefs = xulTab.eventPrefs;
-    if(!eventPrefs || !eventPrefs.keyEventStatus)
+    if(!this.isBBSPage(tab.url))
       return;
 
-    let uri = tabUtils.getURI(xulTab);
-    if(!this.isBBSPage(uri))
-      return;
+    let worker = this.getWorkerByTab(tab);
+    let eventPrefs = worker.eventPrefs;
 
-    let browser = event.target.mCurrentBrowser;
-
+    //let browser = event.target.mCurrentBrowser;
     if (!event.ctrlKey && !event.altKey && !event.shiftKey) {
       switch(event.keyCode) {
         case 33: //Page Up
           event.stopPropagation();
           event.preventDefault();
-          this.setBBSCmd("doPageUp", browser);
+          this.setBBSCmd("doPageUp", worker);
           return;
         case 34: //Page Down
           event.stopPropagation();
           event.preventDefault();
-          this.setBBSCmd("doPageDown", browser);
+          this.setBBSCmd("doPageDown", worker);
           return;
         case 38: //Arrow Up
           event.stopPropagation();
           event.preventDefault();
-          this.setBBSCmd("doArrowUp", browser);
+          this.setBBSCmd("doArrowUp", worker);
           return;
         case 40: //Arrow Down
           event.stopPropagation();
           event.preventDefault();
-          this.setBBSCmd("doArrowDown", browser);
+          this.setBBSCmd("doArrowDown", worker);
           return;
         default:
           break;
@@ -573,35 +774,35 @@ let bbsfoxPage = {
     }
     if(event.charCode){
       if(event.ctrlKey && !event.altKey && event.shiftKey && (event.charCode == 118 || event.charCode == 86) && eventPrefs.hokeyForPaste) { //Shift + ^V, do paste
-        this.setBBSCmd("doPaste", browser);
+        this.setBBSCmd("doPaste", worker);
         event.preventDefault();
         event.stopPropagation();
       }
 
       if (event.ctrlKey && !event.altKey && !event.shiftKey) {
         if((event.charCode==109 || event.charCode==77) && eventPrefs.hokeyForMouseBrowsing) {
-          this.setBBSCmd("switchMouseBrowsing", browser);
+          this.setBBSCmd("switchMouseBrowsing", worker);
           event.stopPropagation();
           event.preventDefault();
         }
         if(this.os != "darwin") {
           if((event.charCode==119 || event.charCode==87) && eventPrefs.hotkeyCtrlW == 1) {
-            this.setBBSCmdEx({command:"sendCharCode", charCode:23}, browser);
+            this.setBBSCmdEx({command:"sendCharCode", charCode:23}, worker);
             event.stopPropagation();
             event.preventDefault();
           }
           else if((event.charCode==98 || event.charCode==66) && eventPrefs.hotkeyCtrlB == 1) {
-            this.setBBSCmdEx({command:"sendCharCode", charCode:2}, browser);
+            this.setBBSCmdEx({command:"sendCharCode", charCode:2}, worker);
             event.stopPropagation();
             event.preventDefault();
           }
           else if((event.charCode==108 || event.charCode==76) && eventPrefs.hotkeyCtrlL == 1) {
-            this.setBBSCmdEx({command:"sendCharCode", charCode:12}, browser);
+            this.setBBSCmdEx({command:"sendCharCode", charCode:12}, worker);
             event.stopPropagation();
             event.preventDefault();
           }
           else if((event.charCode==116 || event.charCode==84) && eventPrefs.hotkeyCtrlT == 1) {
-            this.setBBSCmdEx({command:"sendCharCode", charCode:20}, browser);
+            this.setBBSCmdEx({command:"sendCharCode", charCode:20}, worker);
             event.stopPropagation();
             event.preventDefault();
           }
@@ -658,10 +859,10 @@ let bbsfoxPage = {
     //context-paste
     //previousSibling
     let tab = tabs.activeTab;
-    let tabId = tab.id;
-    let xulTab = tabUtils.getTabForId(tabId);
     if(this.isBBSPage(tab.url)) {
-      let eventPrefs = xulTab.eventPrefs;
+      let worker = this.getWorkerByTab(tab);
+      let eventPrefs = worker.eventPrefs;
+
       if(eventPrefs) {
         //console.log(event.target);
         let doc = event.target.ownerDocument;
@@ -756,14 +957,14 @@ let bbsfoxPage = {
   },
 
   tabAttrModified: function(event) {
-    //let tabId = tabUtils.getTabId(event.target);
-    let tabBrowser = tabUtils.getBrowserForTab(event.target);
-    let browserMM = tabBrowser.messageManager;
-    browserMM.sendAsyncMessage("bbsfox@ettoolong:bbsfox-overlayEvent", {command:"update"});
+    let worker = this.getWorkerByTab(modelFor(event.target));
+    if(worker && worker.tabImage)
+      event.target.image = worker.tabImage;
     this.setBBSCmd("updateCursor");
   },
 
-  init: function() {
+  init: function(data) {
+    this.addonData = data;
     this.eventMap.set("DOMMouseScroll-E10S", this.mouse_scroll_e10s.bind(this));
     this.eventMap.set("DOMMouseScroll", this.mouse_scroll.bind(this));
     this.eventMap.set("contextmenu", this.mouse_menu.bind(this));
@@ -777,6 +978,9 @@ let bbsfoxPage = {
 
     this.eventMap.set("tabAttrModified", this.tabAttrModified.bind(this));
     this.eventMap.set("handleCoreCommand", this.handleCoreCommand.bind(this));
+    PrefsTarget({ branchName: "extensions.bbsfox1." }).on("Update", prefName => {
+      this.setBroadcastCmd("checkPrefExist");
+    });
   },
 
   onWinOpen: function(chromeWindow) {
@@ -799,8 +1003,6 @@ let bbsfoxPage = {
       chromeBrowser.tabContainer.addEventListener("TabAttrModified", this.eventMap.get("tabAttrModified"), true);
 
       let aDOMWindow = chromeWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
-      aDOMWindow.messageManager.addMessageListener("bbsfox@ettoolong:bbsfox-coreCommand",  this.eventMap.get("handleCoreCommand") );
-      aDOMWindow.messageManager.loadFrameScript("chrome://bbsfox/content/bbsfox_frame_script.js", true);
 
       let contentAreaContextMenu = aDOMWindow.document.getElementById("contentAreaContextMenu");
 
@@ -831,8 +1033,6 @@ let bbsfoxPage = {
       chromeBrowser.tabContainer.removeEventListener("TabAttrModified", this.eventMap.get("tabAttrModified"), true);
 
       let aDOMWindow = chromeWindow.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIDOMWindow);
-      aDOMWindow.messageManager.removeDelayedFrameScript("chrome://bbsfox/content/bbsfox_frame_script.js");
-      aDOMWindow.messageManager.removeMessageListener("bbsfox@ettoolong:bbsfox-coreCommand",  this.eventMap.get("handleCoreCommand") );
 
       let contentAreaContextMenu = aDOMWindow.document.getElementById("contentAreaContextMenu");
 
@@ -846,12 +1046,10 @@ let bbsfoxPage = {
 
   onTabOpen: function(tab) {
     tab.on("activate", tab => {
-      Cc["@mozilla.org/globalmessagemanager;1"].getService(Ci.nsIMessageBroadcaster)
-        .broadcastAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", {command: "setTabUnselect"});
-      let tabId = tab.id;
-      let xulTab = tabUtils.getTabForId(tabId);
-      let tabBrowser = tabUtils.getBrowserForTab(xulTab);
-      this.setBBSCmd("setTabSelect", tabBrowser );
+      this.setBroadcastCmd("setTabUnselect");
+      let worker = this.getWorkerByTab(tab);
+      if(worker)
+        this.setBBSCmd("setTabSelect", worker );
     });
   },
 
@@ -863,15 +1061,8 @@ let bbsfoxPage = {
     this.onTabOpen(tab);
   },
 
-  unloadTab: function(xulTab) {
-    let url = modelFor(xulTab).url;
-    if(this.isBBSPage(url)) {
-      let target = tabUtils.getBrowserForTab(xulTab);
-      this.setBBSCmd("unload", target);
-    }
-  },
-
   startListenEvent: function(reason) {
+    this.loadPageMod();
     // Init event listener - start
     // 1. Listen open event that windows open before addon startup
     // 2. Listen open event that tabs open before addon startup
@@ -882,7 +1073,6 @@ let bbsfoxPage = {
         this.onWinOpen( chromeWindow );
         let openedTabs = tabUtils.getTabs( chromeWindow );
         for(let openedTab of openedTabs) {
-          //console.log(openedTabs[i]);
           this.onTabOpen(modelFor(openedTab));
         }
       }
@@ -891,19 +1081,25 @@ let bbsfoxPage = {
   },
 
   stopListenEvent: function(reason) {
+    for(let connection of this.connections) {
+        connection.worker.alive = false;
+        connection.conn.close();
+        connection.worker.destroy();
+        if (reason === "disable" || reason === "uninstall") {
+          let XulTab = this.geXulTabBytWorker(connection.worker);
+          let tab = modelFor(XulTab);
+          tab.close();
+        }
+    }
+
     // remove all event listener - start
     let allWindows = winUtils.windows(null, {includePrivate:true});
     for (let chromeWindow of allWindows) {
       if(winUtils.isBrowser(chromeWindow)) {
-        if (reason === "disable" || reason === "uninstall") {
-          let openedTabs = tabUtils.getTabs( chromeWindow );
-          for(let openedTab of openedTabs) {
-            this.unloadTab(openedTab);
-          }
-        }
         this.onWinClose( chromeWindow );
       }
     }
+    this.pm.destroy();
     // remove all event listener - end
   },
 
@@ -958,11 +1154,6 @@ let bbsfoxPage = {
       catch (e) {}
     }
     // close preference dialog - end
-  },
-
-  sendAddonEvent: function(event) {
-    Cc["@mozilla.org/globalmessagemanager;1"].getService(Ci.nsIMessageBroadcaster)
-      .broadcastAsyncMessage("bbsfox@ettoolong:bbsfox-addonCommand", {command: event});
   },
 
   cleanupTempFiles: function() {

@@ -1004,9 +1004,9 @@ BBSFoxOptions.prototype = {
 
   notifyPage: function() {
     //notify page to check pref...
-    Cc["@mozilla.org/globalmessagemanager;1"]
-      .getService(Ci.nsIMessageBroadcaster)
-      .broadcastAsyncMessage("bbsfox@ettoolong:bbsfox-overlayCommand", {command:"checkPrefExist"});
+    let branch = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService).getBranch("extensions.bbsfox1.");
+    let v = branch.getBoolPref("Update");
+    branch.setBoolPref("Update", !v);
   }
 };
 //
@@ -1381,7 +1381,7 @@ function createScript()
   elem = document.getElementById('scriptText');
   elem.value = '//' + scriptCaption+ '\r';
   {
-    scriptData+='if(gBrowser.mCurrentTab.eventPrefs){\r'; //TODO: need fix this!
+    scriptData+='if(BBSFox_API && BBSFox_API.isBBSPage()){\r'; //TODO: need fix this!
     scriptData+=cmdstr;
     scriptData+='  return;\r';
     scriptData+='}';

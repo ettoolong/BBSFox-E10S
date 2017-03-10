@@ -38,28 +38,23 @@ const STATE_DONT=5;
 const STATE_SB=6;
 
 function ConnectCore(listener) {
-    this.transport = null;
-    this.inputStream = null;
-    this.outputStream = null;
     this.host = null;
     this.port = 23;
 
     this.connectCount = 0;
-    this.listener=listener;
+    this.listener = listener;
     this.prefs = listener.prefs;
 
-    this.state=STATE_DATA;
-    this.iac_sb='';
+    this.state = STATE_DATA;
+    this.iac_sb = '';
     //this.b52k3uao=window.uaotable;
-    this.initial=true;
-    this.utf8Buffer=[];
+    this.initial = true;
+    this.utf8Buffer = [];
     this.blockSend = false;
+    this.alive = false;
 }
 
 ConnectCore.prototype={
-    // transport service
-    ts: Cc["@mozilla.org/network/socket-transport-service;1"].getService(Ci.nsISocketTransportService),
-    ps: Cc["@mozilla.org/network/protocol-proxy-service;1"].getService(Ci.nsIProtocolProxyService),
     // encoding converter
     oconv: Cc["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Ci.nsIScriptableUnicodeConverter),
 
@@ -73,22 +68,16 @@ ConnectCore.prototype={
 
         //this.isConnected = false;
         // create the socket
-        var proxyInfo = null;
-        if (this.prefs.telnetProxyType != "") {// use a proxy
-          proxyInfo = this.ps.newProxyInfo(this.prefs.telnetProxyType, this.prefs.telnetProxyHost, this.prefs.telnetProxyPort, Ci.nsIProxyInfo.TRANSPARENT_PROXY_RESOLVES_HOST, 30, null);
-        }
-
-        this.transport = this.ts.createTransport(null, 0, this.host, this.port, proxyInfo);
-        this._inputStream = this.transport.openInputStream(0,0,0);
-        this.outputStream = this.transport.openOutputStream(0,0,0);
-        // initialize input stream
-        this.inputStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(Ci.nsIBinaryInputStream);
-        this.inputStream.setInputStream(this._inputStream);
-        // data listener
-        var pump = Cc["@mozilla.org/network/input-stream-pump;1"].createInstance(Ci.nsIInputStreamPump);
-        pump.init(this._inputStream, -1, -1, 0, 0, false);
-        pump.asyncRead(this, null);
-        this.ipump = pump;
+        this.listener.sendCoreCommand({
+          command: "createSocket",
+          host: host,
+          port: port,
+          proxy: {
+            type: this.prefs.telnetProxyType,
+            host: this.prefs.telnetProxyHost,
+            port: this.prefs.telnetProxyPort
+          }
+        });
 
         this.connectTime = Date.now();
         this.connectCount++;
@@ -97,41 +86,24 @@ ConnectCore.prototype={
     },
 
     close: function() {
-      if(this._inputStream)
-        this._inputStream.close();
-      if(this.inputStream)
-        this.inputStream.close();
-      if(this.outputStream)
-        this.outputStream.close();
-
-      delete this._inputStream;
-      delete this.inputStream;
-      delete this.outputStream;
-      delete this.transport;
-      this._inputStream = this.inputStream = this.outputStream = this.transport = null;
-
       if(this.listener.abnormalClose)
         return;
 
       //do re-connect - start
-      if(this.prefs.reconnectType == 0)
-      {
+      if(this.prefs.reconnectType == 0) {
         //disable
       }
-      else
-      {
+      else {
         var ReconnectCount = this.prefs.reconnectCount;
         if(ReconnectCount && this.connectCount >= ReconnectCount) {
           this.connectFailed = true;
           return;
         }
 
-        if(this.prefs.reconnectType == 1)
-        {
+        if(this.prefs.reconnectType == 1) {
           this.listener.onReconnect();
         }
-        else
-        {
+        else {
           var time = Date.now();
           var reconnectTime = this.prefs.reconnectTime;
           if(reconnectTime <= 0)
@@ -141,27 +113,29 @@ ConnectCore.prototype={
           }
         }
       }
-    //do re-connect - end
+      //do re-connect - end
     },
 
     // data listener
-    onStartRequest: function(req, ctx){
+    onStartRequest: function(){
+      this.alive = true;
       if(this.listener)
         this.listener.onConnect(this);
     },
 
-    onStopRequest: function(req, ctx, status){
-      if(this._inputStream && this.inputStream && this.outputStream)
-        this.close();
+    onStopRequest: function(status){
+      this.alive = false;
+      this.close();
       if(this.listener.abnormalClose == false)
         this.listener.onClose(this);
     },
 
-    onDataAvailable: function(req, ctx, ins, off, count) {
+    onDataAvailable: function(s) {
         var data='';
+        count = s.length;
         // dump(count + 'bytes available\n');
-        while(this.inputStream && count > 0) {
-            var s = this.inputStream.readBytes(count);
+        while(this.alive && count > 0) {
+            //var s = this.inputStream.readBytes(count);
             count -= s.length;
             // dump(count + 'bytes remaining\n');
             var n=s.length;
@@ -259,24 +233,26 @@ ConnectCore.prototype={
 
     backgroundSend: function(s){
         this.delaySendStr = s;
-        if(!this.outputStream) return;
+        if(!this.alive) return;
         if(this.listener)
         {
           this.listener.resetUnusedTime();
           if(!s.length) return;
-          this.outputStream.write(s, s.length);
-          this.outputStream.flush();
+          this.listener.sendCoreCommand({command: "sendData", str: str});
+        //   this.outputStream.write(s, s.length);
+        //   this.outputStream.flush();
         }
     },
 
     send: function(str) {
-        if(!this.outputStream || this.blockSend) return;
+        if(!this.alive || this.blockSend) return;
         if(this.listener)
         {
           this.listener.resetUnusedTime();
           if(!str.length) return;
-          this.outputStream.write(str, str.length);
-          this.outputStream.flush();
+          this.listener.sendCoreCommand({command: "sendData", str: str});
+        //   this.outputStream.write(str, str.length);
+        //   this.outputStream.flush();
         }
     },
 

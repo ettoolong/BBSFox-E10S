@@ -2,13 +2,13 @@
   "title": "BBSFox",
   "name": "bbsfox",
   "id": "{86095750-AD15-46d8-BF32-C0789F7E6A32}",
-  "version": "5.0.16",
+  "version": "5.0.18",
   "description": "Telnet client extension specifically designed for BBS browsing.",
   "main": "data/js/addon-script.js",
   "author": "ettoolong@hotmail.com",
   "homepage": "https://addons.mozilla.org/zh-TW/firefox/user/ett-chung/",
   "engines": {
-    "firefox": "45.0 - 51.*"
+    "firefox": ">=51.0"
   },
   "license": "MIT",
   "keywords": [

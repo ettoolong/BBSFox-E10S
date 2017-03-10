@@ -1,29 +1,24 @@
 // SSH Connection porting from firessh 0.93.1
 
 function ConnectCore(listener) {
-    this.host = null;
-    this.port = BBSFOX_DEFAULT_PORT;
+  this.host = null;
+  this.port = BBSFOX_DEFAULT_PORT;
 
-    this.connectCount = 0;
-    this.listener = listener;
-    this.prefs = listener.prefs;
+  this.connectCount = 0;
+  this.listener = listener;
+  this.prefs = listener.prefs;
 
-    this.blockSend = false;
+  this.blockSend = false;
 
-    this.utf8Buffer=[];
+  this.utf8Buffer=[];
 
-    //this.utf8Buffer='';
-
-    //gPlatform = getPlatform();
-    //gCli = new cli(this);
-    this.shell = null;
-    this.client = null;
-    this.privatekey = '';
+  this.shell = null;
+  this.client = null;
+  this.privatekey = '';
+  this.alive = false;
 }
 
 ConnectCore.prototype={
-    ts: Cc["@mozilla.org/network/socket-transport-service;1"].getService(Ci.nsISocketTransportService),
-    ps: Cc["@mozilla.org/network/protocol-proxy-service;1"].getService(Ci.nsIProtocolProxyService),
     // encoding converter
     oconv: Cc["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Ci.nsIScriptableUnicodeConverter),
 
@@ -89,28 +84,42 @@ ConnectCore.prototype={
           if (str) {
             self.listener.resetUnusedTime();
             if(!str.length) return;
-            self.outputStream.write(str, str.length);
-            self.outputStream.flush();
+            self.listener.sendCoreCommand({command: "sendData", str: str});
+            // self.outputStream.write(str, str.length);
+            // self.outputStream.flush();
           }
         };
+
+        // create the socket
+        this.listener.sendCoreCommand({
+          command: "createSocket",
+          host: host,
+          port: port,
+          proxy: {
+            type: this.prefs.sshProxyType,
+            host: this.prefs.sshProxyHost,
+            port: this.prefs.sshProxyPort
+          }
+        });
+
         this.sshTransport = this.client.connect(write, auth_success, this.host, this.port, acc[0], acc[1], null, this.privatekey, 0, true, false);
 
-        var proxyInfo = null;
-        if (this.prefs.sshProxyType != "") {// use a proxy
-          proxyInfo = this.ps.newProxyInfo(this.prefs.sshProxyType, this.prefs.sshProxyHost, this.prefs.sshProxyPort, Ci.nsIProxyInfo.TRANSPARENT_PROXY_RESOLVES_HOST, 30, null);
-        }
+        // var proxyInfo = null;
+        // if (this.prefs.sshProxyType != "") {// use a proxy
+        //   proxyInfo = this.ps.newProxyInfo(this.prefs.sshProxyType, this.prefs.sshProxyHost, this.prefs.sshProxyPort, Ci.nsIProxyInfo.TRANSPARENT_PROXY_RESOLVES_HOST, 30, null);
+        // }
 
-        this.transport = this.ts.createTransport(null, 0, this.host, this.port, proxyInfo);
-        this._inputStream = this.transport.openInputStream(0,0,0);
-        this.outputStream = this.transport.openOutputStream(0,0,0);
-        // initialize input stream
-        this.inputStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(Ci.nsIBinaryInputStream);
-        this.inputStream.setInputStream(this._inputStream);
-        // data listener
-        var pump = Cc["@mozilla.org/network/input-stream-pump;1"].createInstance(Ci.nsIInputStreamPump);
-        pump.init(this._inputStream, -1, -1, 0, 0, false);
-        pump.asyncRead(this, null);
-        this.ipump = pump;
+        // this.transport = this.ts.createTransport(null, 0, this.host, this.port, proxyInfo);
+        // this._inputStream = this.transport.openInputStream(0,0,0);
+        // this.outputStream = this.transport.openOutputStream(0,0,0);
+        // // initialize input stream
+        // this.inputStream = Cc["@mozilla.org/binaryinputstream;1"].createInstance(Ci.nsIBinaryInputStream);
+        // this.inputStream.setInputStream(this._inputStream);
+        // // data listener
+        // var pump = Cc["@mozilla.org/network/input-stream-pump;1"].createInstance(Ci.nsIInputStreamPump);
+        // pump.init(this._inputStream, -1, -1, 0, 0, false);
+        // pump.asyncRead(this, null);
+        // this.ipump = pump;
 
         this.connectTime = Date.now();
         this.connectCount++;
@@ -120,18 +129,18 @@ ConnectCore.prototype={
 
     close: function() {
 
-      if(this._inputStream)
-        this._inputStream.close();
-      if(this.inputStream)
-        this.inputStream.close();
-      if(this.outputStream)
-        this.outputStream.close();
+      // if(this._inputStream)
+      //   this._inputStream.close();
+      // if(this.inputStream)
+      //   this.inputStream.close();
+      // if(this.outputStream)
+      //   this.outputStream.close();
 
-      delete this._inputStream;
-      delete this.inputStream;
-      delete this.outputStream;
-      delete this.transport;
-      this._inputStream = this.inputStream = this.outputStream = this.transport = null;
+      // delete this._inputStream;
+      // delete this.inputStream;
+      // delete this.outputStream;
+      // delete this.transport;
+      // this._inputStream = this.inputStream = this.outputStream = this.transport = null;
 
       //ssh - start
       this.isConnected = false;
@@ -175,22 +184,25 @@ ConnectCore.prototype={
 
     // data listener
     onStartRequest: function(){
+      this.alive = true;
       if(this.listener)
         this.listener.onConnect(this);
     },
 
-    onStopRequest: function(){
-      if(this._inputStream && this.inputStream && this.outputStream)
-        this.close();
+    onStopRequest: function(status){
+      //if(this._inputStream && this.inputStream && this.outputStream)
+      this.alive = false;
+      this.close();
       if(this.listener.abnormalClose == false)
         this.listener.onClose(this);
     },
 
-    onDataAvailable: function(req, ctx, ins, off, count) {
+    onDataAvailable: function(s) {
         //var str='';
         // dump(count + 'bytes available\n');
+        count = s.length;
         while(count > 0) {
-            var s = this.inputStream.readBytes(count);
+            // var s = this.inputStream.readBytes(count);
             count -= s.length;
             if(s.length) {
               try {
@@ -236,7 +248,7 @@ ConnectCore.prototype={
 
     backgroundSend: function(s){
       this.delaySendStr = s;
-        if(!this.inputStream) return;
+        if(!this.alive) return;
         if(this.listener)
         {
           this.listener.resetUnusedTime();
@@ -246,7 +258,7 @@ ConnectCore.prototype={
     },
 
     send: function(str) {
-        if(!this.inputStream || this.blockSend) return;
+        if(!this.alive || this.blockSend) return;
         if(this.listener)
         {
           this.listener.resetUnusedTime();

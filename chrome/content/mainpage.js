@@ -20,6 +20,10 @@ function startup() {
   bbsfox.setInputAreaFocus();
   resize();
   //bbsfox.connect();//document.location.host
+
+  var evt = new CustomEvent("bbsfoxReady", { bubbles: false, detail: '' });
+  document.body.dispatchEvent(evt);
+
 }
 
 function release() {
