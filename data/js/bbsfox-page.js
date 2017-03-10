@@ -223,7 +223,7 @@ let bbsfoxPage = {
               if(connection) {
                 connection.conn.updateStatus();
               }
-            }, 0);
+            }, 1000);
           }
         });
         worker.on("detach", () => {
