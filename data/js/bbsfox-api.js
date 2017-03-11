@@ -21,7 +21,7 @@ const setCallback = (cb) => {
 }
 
 const setBBSCmdEx = (commandSet) => {
-  console.log(commandSet);
+  //console.log(commandSet);
   if(commandSet.command && apiKeys.indexOf(commandSet.command) !== -1 ) { //only allow command that list in apiKeys
     if(callback)
       callback(commandSet);
