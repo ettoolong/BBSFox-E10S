@@ -221,6 +221,7 @@ ConnectCore.prototype={
                   return;
                 }
                 if (this.shell.closed) {
+                  this.listener.sendCoreCommand({command: "disconnect"});
                   this.close();
                   return;
                 }

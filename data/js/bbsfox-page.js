@@ -302,6 +302,12 @@ let bbsfoxPage = {
       case "popupVideoWindow":
         this.popupVideoWindow(data.url, message.worker);
         break;
+      case "disconnect":
+        let connection = this.getConnectionByWorker(message.worker);
+        if(connection) {
+          connection.conn.close();
+        }
+        break;
       default:
         break;
     }
@@ -554,7 +560,7 @@ let bbsfoxPage = {
       if(!tab) {
         //console.log(commandSet);
       }
-      if(this.isBBSPage(tab.url)) { // telnet:// or ssh://
+      if(tab && this.isBBSPage(tab.url)) { // telnet:// or ssh://
         worker = this.getWorkerByTab(tab);
       }
     }
