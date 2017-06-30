@@ -73,6 +73,7 @@ function regAll() {
     scheme: "telnet",
     protocolFlags: nsIProtocolHandler.URI_NORELATIVE |
                   nsIProtocolHandler.URI_NOAUTH |
+                  nsIProtocolHandler.URI_FORBIDS_AUTOMATIC_DOCUMENT_REPLACEMENT |
                   nsIProtocolHandler.URI_LOADABLE_BY_ANYONE,
 
     allowPort: function(port, scheme) {
@@ -94,7 +95,7 @@ function regAll() {
       return url.QueryInterface(nsIURI);
     },
 
-    newChannel: function(aURI, aSecurity_or_aLoadInfo) {
+    newChannel2: function(aURI, aSecurity_or_aLoadInfo) {
       // create dummy nsIURI and nsIChannel instances
       let ios = Cc[kIOSERVICE_CONTRACTID].getService(nsIIOService);
       let uri = ios.newURI("chrome://bbsfox/content/telnet.html", null, null);
@@ -121,6 +122,7 @@ function regAll() {
     defaultPort: 22,
     protocolFlags: nsIProtocolHandler.URI_NORELATIVE |
                   nsIProtocolHandler.URI_NOAUTH |
+                  nsIProtocolHandler.URI_FORBIDS_AUTOMATIC_DOCUMENT_REPLACEMENT |
                   nsIProtocolHandler.URI_LOADABLE_BY_ANYONE,
 
     allowPort: function(port, scheme) {
@@ -151,7 +153,7 @@ function regAll() {
       return cleanURI;
     },
 
-    newChannel: function(aURI, aSecurity_or_aLoadInfo) {
+    newChannel2: function(aURI, aSecurity_or_aLoadInfo) {
       // create dummy nsIURI and nsIChannel instances
       let ios = Cc[kIOSERVICE_CONTRACTID].getService(nsIIOService);
       let uri = ios.newURI("chrome://bbsfox/content/ssh.html", null, null);
