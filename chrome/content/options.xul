@@ -15,6 +15,7 @@
 
   <stringbundleset id="bbsfoxoptions-stringbundleset">
     <stringbundle id="bbsfoxoptions-string-bundle" src="chrome://bbsfox/locale/bbsfox.properties"/>
+    <stringbundle id="bundlePreferences" src="chrome://browser/locale/preferences/preferences.properties"/>
   </stringbundleset>
   <vbox flex="1" id="mainbox">
     <tabbox>

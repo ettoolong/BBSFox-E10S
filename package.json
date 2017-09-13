@@ -2,7 +2,7 @@
   "title": "BBSFox",
   "name": "bbsfox",
   "id": "{86095750-AD15-46d8-BF32-C0789F7E6A32}",
-  "version": "5.0.23",
+  "version": "5.0.24",
   "description": "Telnet client extension specifically designed for BBS browsing.",
   "main": "data/js/addon-script.js",
   "author": "ettoolong@hotmail.com",
